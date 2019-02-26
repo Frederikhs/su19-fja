@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.ConstrainedExecution;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
@@ -24,12 +26,13 @@ namespace Galaga_Exercise_1 {
         public void Move() {
             
             if (shape.Position.X >= 0.0 && shape.Position.X <= 0.9) {
-                shape.Move();    
+                shape.Move(); 
+                Console.WriteLine(shape.Position);
             } else if (shape.Position.X < 0.0) {
                 
-                shape.Position = new Vec2F(0.0f,0.0f);
+                shape.Position = new Vec2F(0.0f,0.1f);
             } else {
-                shape.Position = new Vec2F(0.9f,0.0f);
+                shape.Position = new Vec2F(0.9f,0.1f);
                 
             }
             
