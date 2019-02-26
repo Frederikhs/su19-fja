@@ -9,3 +9,14 @@
 /Users/frederik/Documents/Datalogi 2. semester/Softwareudvikling/Opgaver/Opgave 4/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csproj.CopyComplete
 /Users/frederik/Documents/Datalogi 2. semester/Softwareudvikling/Opgaver/Opgave 4/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exercise_1.exe
 /Users/frederik/Documents/Datalogi 2. semester/Softwareudvikling/Opgaver/Opgave 4/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exercise_1.pdb
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csprojAssemblyReference.cache
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csproj.CoreCompileInputs.cache
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exercise_1.exe
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exercise_1.pdb
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/bin/Debug/Galaga_Exercise_1.exe
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/bin/Debug/Galaga_Exercise_1.pdb
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/bin/Debug/DIKUArcade.dll
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/bin/Debug/OpenTK.dll
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/bin/Debug/DIKUArcade.pdb
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/bin/Debug/OpenTK.xml
+/home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csproj.CopyComplete
