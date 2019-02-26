@@ -5,8 +5,6 @@ namespace Galaga_Exercise_1 {
         public static void Main(string[] args) {
             Console.WriteLine("hej");
             Console.WriteLine("Rend mig diku!");
-
-
         }
     }
 }
