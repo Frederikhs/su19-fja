@@ -22,13 +22,13 @@
 /home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/bin/Debug/OpenTK.xml
 /home/anders/SU/Afleveringer/github/su19-h2g-fja/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csproj.CopyComplete
 =======
-C:\SU\uge4git\su19-h2g6\SU19-Exercises\Galaga-Exercise-1\bin\Debug\Galaga_Exercise_1.exe
-C:\SU\uge4git\su19-h2g6\SU19-Exercises\Galaga-Exercise-1\bin\Debug\Galaga_Exercise_1.pdb
-C:\SU\uge4git\su19-h2g6\SU19-Exercises\Galaga-Exercise-1\bin\Debug\OpenTK.dll
-C:\SU\uge4git\su19-h2g6\SU19-Exercises\Galaga-Exercise-1\bin\Debug\OpenTK.xml
-C:\SU\uge4git\su19-h2g6\SU19-Exercises\Galaga-Exercise-1\obj\Debug\Galaga-Exercise-1.csprojAssemblyReference.cache
-C:\SU\uge4git\su19-h2g6\SU19-Exercises\Galaga-Exercise-1\obj\Debug\Galaga-Exercise-1.csproj.CoreCompileInputs.cache
-C:\SU\uge4git\su19-h2g6\SU19-Exercises\Galaga-Exercise-1\obj\Debug\Galaga-Exercise-1.csproj.CopyComplete
-C:\SU\uge4git\su19-h2g6\SU19-Exercises\Galaga-Exercise-1\obj\Debug\Galaga_Exercise_1.exe
-C:\SU\uge4git\su19-h2g6\SU19-Exercises\Galaga-Exercise-1\obj\Debug\Galaga_Exercise_1.pdb
+C:/SU/uge4git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/bin/Debug/Galaga_Exercise_1.exe
+C:/SU/uge4git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/bin/Debug/Galaga_Exercise_1.pdb
+C:/SU/uge4git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/bin/Debug/OpenTK.dll
+C:/SU/uge4git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/bin/Debug/OpenTK.xml
+C:/SU/uge4git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csprojAssemblyReference.cache
+C:/SU/uge4git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csproj.CoreCompileInputs.cache
+C:/SU/uge4git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csproj.CopyComplete
+C:/SU/uge4git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exercise_1.exe
+C:/SU/uge4git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exercise_1.pdb
 >>>>>>> 57ae35a786cd7c033ef89ea685c4af3927769cf0
