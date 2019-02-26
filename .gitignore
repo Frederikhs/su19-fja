@@ -1,3 +1,7 @@
 *./idea
 *.\idea
 *.xml
+*.exe
+*.pdb
+*.dll
+Debug/
