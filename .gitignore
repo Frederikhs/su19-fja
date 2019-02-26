@@ -4,4 +4,4 @@
 *.exe
 *.pdb
 *.dll
-*/Debug
+Debug/
