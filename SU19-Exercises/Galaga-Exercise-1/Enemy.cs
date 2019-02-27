@@ -11,6 +11,7 @@ namespace Galaga_Exercise_1 {
         private Shape shape;
         public List<Image> enemyStrides;
         public List<Enemy> enemies;
+        private float xpos;
         
         public Enemy(Game game, DynamicShape shape, IBaseImage image)
             : base(shape, image) {
@@ -19,13 +20,13 @@ namespace Galaga_Exercise_1 {
             
         }
 
-        public void AddEnemy(int numberEnemies) {
-            float xpos = 0.15f;
+        public void AddEnemy(int numberEnemies,Image im) {
+            xpos = 0.15f;
             for (int i = 0; i < numberEnemies; i++) {
                 enemies.Add(new Enemy(this.game,
-                    new DynamicShape(new Vec2F(xpos, 1.0f), new Vec2F(0.1f, 0.1f)),
-                    enemyStrides[0]));
-                xpos += 0.6f;
+                    new DynamicShape(new Vec2F(xpos, 0.9f), new Vec2F(0.1f, 0.1f)),
+                    im));
+                xpos += 0.3f;
 
             }
         }

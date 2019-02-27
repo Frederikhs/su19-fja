@@ -20,8 +20,8 @@ namespace Galaga_Exercise_1 {
         private Player player;
         private DIKUArcade.Timers.GameTimer gameTimer;
         private GameEventBus<object> eventBus;
-        //public List<Image> enemyStrides;
-        //public List<Enemy> enemies;
+        public List<Image> enemyStrides;
+        public List<Enemy> enemies;
         private Enemy newEnemy;
         
         
@@ -44,7 +44,7 @@ namespace Galaga_Exercise_1 {
             newEnemy.enemyStrides = ImageStride.CreateStrides(4,
                 Path.Combine("Assets", "Images", "BlueMonster.png"));
             newEnemy.enemies = new List<Enemy>();
-            newEnemy.AddEnemy(2);
+            newEnemy.AddEnemy(3,newEnemy.enemyStrides[0]);
             
 
           
@@ -84,7 +84,11 @@ namespace Galaga_Exercise_1 {
                 if (gameTimer.ShouldRender()) {
                     win.Clear();
                     player.RenderEntity();
-                    newEnemy.RenderEntity();
+                    //newEnemy.RenderEntity();
+                    foreach (var el in newEnemy.enemies) {
+                        el.RenderEntity();
+                        
+                    }
                     win.SwapBuffers();
                 }
 
