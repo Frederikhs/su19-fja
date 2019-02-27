@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using DIKUArcade;
 using DIKUArcade.EventBus;
 using DIKUArcade.Timers;
@@ -12,22 +13,16 @@ using DIKUArcade.Math;
 
 namespace Galaga_Exercise_1 {
 
-
-
-
     public class Game : IGameEventProcessor<object> {
         private Window win;
         private Player player;
         private DIKUArcade.Timers.GameTimer gameTimer;
         private GameEventBus<object> eventBus;
-        //public List<Image> enemyStrides;
-        //public List<Enemy> enemies;
+        private List<Image> enemyStrides;
+        private List<Enemy> enemies;
         private Enemy newEnemy;
+        private ImageStride enemyAnimation;
         
-        
-
-
-
         public Game() {
             // TODO: Choose some reasonable values for the window and timer constructor.
             // For the window, we recommend a 500x500 resolution (a 1:1 aspect ratio).
@@ -38,18 +33,18 @@ namespace Galaga_Exercise_1 {
                 new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
                 new Image(Path.Combine("Assets", "Images", "Player.png")));
             
-            newEnemy = new Enemy(this, new DynamicShape(new Vec2F(0.45f, 0.9f), new Vec2F(0.1f, 0.1f)),
-                new Image(Path.Combine("Assets", "Images", "BlueMonster.png")));                
-            
-            newEnemy.enemyStrides = ImageStride.CreateStrides(4,
+            //CREATING 4 STRIDES OF 1 IMAGE
+            enemyStrides = ImageStride.CreateStrides(4,
                 Path.Combine("Assets", "Images", "BlueMonster.png"));
-            newEnemy.enemies = new List<Enemy>();
-            newEnemy.AddEnemy(2);
+
+            //CREATING NEW ANIMATION BASED ON IMAGE LIST
+            enemyAnimation = new ImageStride(80,enemyStrides);
             
+            //CREATING LIST FOR ENEMIES TO BE IN
+            enemies = new List<Enemy>();
 
-          
-
-         
+            //ADDING COUNT ENEMIES
+            AddEnemy(4);
             
             eventBus = new GameEventBus<object>();
             eventBus.InitializeEventBus(new List<GameEventType>() {
@@ -60,12 +55,23 @@ namespace Galaga_Exercise_1 {
             eventBus.Subscribe(GameEventType.InputEvent, this);
             eventBus.Subscribe(GameEventType.WindowEvent, this);
             
-            
-            
-
-
-
         }
+
+        public void AddEnemy(int count) {
+            //FIRST X POS OF FIRST ENEMY
+            float xPos = 0.15f;
+            
+            //CREATING COUNT ENEMIES AND ADDING TO enemies
+            for (int i = 0; i < count; i++) {
+            newEnemy = new Enemy(this,
+                new DynamicShape(new Vec2F(xPos, 0.9f), new Vec2F(0.1f, 0.1f)),
+                enemyAnimation);
+            enemies.Add(newEnemy);
+            //INCREMENTING XPOS WITH 0.2f
+            xPos += 0.2f;
+            }
+        }
+
 
         public void GameLoop() {
             while (win.IsRunning()) {
@@ -77,14 +83,16 @@ namespace Galaga_Exercise_1 {
                     eventBus.ProcessEvents();
                     
                     player.Move();
-                    
-                    
                 }
 
                 if (gameTimer.ShouldRender()) {
                     win.Clear();
                     player.RenderEntity();
-                    newEnemy.RenderEntity();
+                    
+                    //RENDER EACH ENEMY IN LIST enemies
+                    foreach (var anEnemy in enemies) {
+                        anEnemy.RenderEntity();
+                    }
                     win.SwapBuffers();
                 }
 
