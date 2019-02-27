@@ -3,11 +3,13 @@ using System.Runtime.ConstrainedExecution;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using System.IO;
 
 namespace Galaga_Exercise_1 {
     public class Player : Entity {
         private Game game;
         private Shape shape;
+        private PlayerShot playerShot;
         
 
         public Player(Game game, DynamicShape shape, IBaseImage image)
@@ -20,14 +22,12 @@ namespace Galaga_Exercise_1 {
             var test = shape.AsDynamicShape();
             test.ChangeDirection(directionVector);
             shape = test;
-
         }
 
         public void Move() {
             
             if (shape.Position.X >= 0.0 && shape.Position.X <= 0.9) {
                 shape.Move(); 
-                Console.WriteLine(shape.Position);
             } else if (shape.Position.X < 0.0) {
                 
                 shape.Position = new Vec2F(0.0f,0.1f);
@@ -37,6 +37,15 @@ namespace Galaga_Exercise_1 {
             }
             
         }
+        
+        private Image image = new Image(Path.Combine("Assets", "Images", "BulletRed2.png"));
+
+        public void Shoot() {
+            playerShot = new PlayerShot(game,
+                new DynamicShape(new Vec2F((shape.Position.X+shape.Extent.X/2)-0.004f, shape.Position.Y+0.1f), new Vec2F(0.008f, 0.027f)),image);
+            game.playerShots.Add(playerShot);
+        }
+        
     }
     
    
