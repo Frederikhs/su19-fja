@@ -38,13 +38,13 @@ namespace Galaga_Exercise_1 {
                 new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
                 new Image(Path.Combine("Assets", "Images", "Player.png")));
             
-            newEnemy = new Enemy(this, new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
+            newEnemy = new Enemy(this, new DynamicShape(new Vec2F(0.45f, 0.9f), new Vec2F(0.1f, 0.1f)),
                 new Image(Path.Combine("Assets", "Images", "BlueMonster.png")));                
             
             newEnemy.enemyStrides = ImageStride.CreateStrides(4,
                 Path.Combine("Assets", "Images", "BlueMonster.png"));
             newEnemy.enemies = new List<Enemy>();
-            newEnemy.AddEnemy(3);
+            newEnemy.AddEnemy(2);
             
 
           

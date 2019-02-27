@@ -20,12 +20,12 @@ namespace Galaga_Exercise_1 {
         }
 
         public void AddEnemy(int numberEnemies) {
-            float xpos = 0.25f;
+            float xpos = 0.15f;
             for (int i = 0; i < numberEnemies; i++) {
                 enemies.Add(new Enemy(this.game,
                     new DynamicShape(new Vec2F(xpos, 1.0f), new Vec2F(0.1f, 0.1f)),
                     enemyStrides[0]));
-                xpos += 0.2f;
+                xpos += 0.6f;
 
             }
         }
