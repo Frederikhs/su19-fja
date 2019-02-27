@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Sockets;
 using DIKUArcade;
 using DIKUArcade.EventBus;
 using DIKUArcade.Timers;
@@ -19,6 +20,11 @@ namespace Galaga_Exercise_1 {
         private Player player;
         private DIKUArcade.Timers.GameTimer gameTimer;
         private GameEventBus<object> eventBus;
+        //public List<Image> enemyStrides;
+        //public List<Enemy> enemies;
+        private Enemy newEnemy;
+        
+        
 
 
 
@@ -27,10 +33,24 @@ namespace Galaga_Exercise_1 {
             // For the window, we recommend a 500x500 resolution (a 1:1 aspect ratio).
             win = new Window("Window", 500, 500);
             gameTimer = new GameTimer(60, 60);
+            
             player = new Player(this,
                 new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
                 new Image(Path.Combine("Assets", "Images", "Player.png")));
+            
+            newEnemy = new Enemy(this, new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
+                new Image(Path.Combine("Assets", "Images", "BlueMonster.png")));                
+            
+            newEnemy.enemyStrides = ImageStride.CreateStrides(4,
+                Path.Combine("Assets", "Images", "BlueMonster.png"));
+            newEnemy.enemies = new List<Enemy>();
+            newEnemy.AddEnemy(3);
+            
 
+          
+
+         
+            
             eventBus = new GameEventBus<object>();
             eventBus.InitializeEventBus(new List<GameEventType>() {
                 GameEventType.InputEvent, // key press / key release
@@ -39,6 +59,10 @@ namespace Galaga_Exercise_1 {
             win.RegisterEventBus(eventBus);
             eventBus.Subscribe(GameEventType.InputEvent, this);
             eventBus.Subscribe(GameEventType.WindowEvent, this);
+            
+            
+            
+
 
 
         }
@@ -51,12 +75,16 @@ namespace Galaga_Exercise_1 {
 
                     // Update game logic here
                     eventBus.ProcessEvents();
+                    
                     player.Move();
+                    
+                    
                 }
 
                 if (gameTimer.ShouldRender()) {
                     win.Clear();
                     player.RenderEntity();
+                    newEnemy.RenderEntity();
                     win.SwapBuffers();
                 }
 
@@ -120,7 +148,7 @@ namespace Galaga_Exercise_1 {
             }
         }
 
-            }
-        }
+    }
+}
     
 

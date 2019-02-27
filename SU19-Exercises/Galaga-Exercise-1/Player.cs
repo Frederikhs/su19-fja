@@ -27,9 +27,9 @@ namespace Galaga_Exercise_1 {
                 shape.Move();    
             } else if (shape.Position.X < 0.0) {
                 
-                shape.Position = new Vec2F(0.0f,0.0f);
+                shape.Position = new Vec2F(0.0f,0.1f);
             } else {
-                shape.Position = new Vec2F(0.9f,0.0f);
+                shape.Position = new Vec2F(0.9f,0.1f);
                 
             }
             
