@@ -32,6 +32,7 @@ namespace Galaga_Exercise_1 {
         //EXPLOSIONS
         private List<Image> explosionStrides;
         private AnimationContainer explosions;
+        private ImageStride explosionStride;
         
         //SCORE
         private Score score;
@@ -76,6 +77,7 @@ namespace Galaga_Exercise_1 {
             explosionStrides = ImageStride.CreateStrides(8,
                 Path.Combine("Assets", "Images", "Explosion.png"));
             explosions = new AnimationContainer(16);
+            explosionStride = new ImageStride(explosionLength / 8, explosionStrides);
 
             //CREATING SCORE
             score = new Score(new Vec2F(0.45f,-0.12f), new Vec2F(0.2f,0.2f));
@@ -155,7 +157,7 @@ namespace Galaga_Exercise_1 {
             float extentX, float extentY) {
             explosions.AddAnimation(
                 new StationaryShape(posX, posY, extentX, extentY), explosionLength,
-                new ImageStride(explosionLength / 8, explosionStrides));
+                explosionStride);
         }
 
 
