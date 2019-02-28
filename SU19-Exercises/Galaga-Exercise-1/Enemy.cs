@@ -1,14 +1,12 @@
-using System.Collections.Generic;
-using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
-using DIKUArcade.Math;
 
 namespace Galaga_Exercise_1 {
     public class Enemy : Entity {
         private Game game;
         private Shape shape;
-        
+
+        //SETTING SHAPE WHEN INITIATING CLASS
         public Enemy(Game game, DynamicShape shape, IBaseImage image)
             : base(shape, image) {
             this.game = game;
