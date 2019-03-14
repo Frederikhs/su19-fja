@@ -7,20 +7,18 @@ namespace Galaga_Exercise_2 {
         private Game game;
         private Shape shape;
 
-        //SETTING SHAPE WHEN INITIATING CLASS
+        //Setting shape when instantiating class
         public PlayerShot(Game game, DynamicShape shape, IBaseImage image)
             : base(shape, image) {
             this.game = game;
             this.shape = shape;
-            //CHANGING DIRECTION WHEN INITIATED
+            //Set default direction
             Direction(new Vec2F(0.0f, 0.01f));
         }
 
-        //CHANGE DIRECTION OF SHAPE
+        //Change direction of the shape
         public void Direction(Vec2F directionVector) {
-            var test = shape.AsDynamicShape();
-            test.ChangeDirection(directionVector);
-            shape = test;
+            shape.AsDynamicShape().ChangeDirection(directionVector);
         }
     }
 }

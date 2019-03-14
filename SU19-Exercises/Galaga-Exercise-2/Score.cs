@@ -11,19 +11,19 @@ namespace Galaga_Exercise_2 {
             display = new Text(score.ToString(), position, extent);
         }
 
-        //ADD 1 POINT TO SCORE EACH TIME CALLED
+        //Add 1 point
         public void AddPoint() {
             score += 1;
         }
 
-        //SHOW THE SCORE
+        //Display the score
         public void RenderScore() {
             display.SetText(string.Format("Score: {0}", score.ToString()));
             display.SetColor(new Vec3I(255, 0, 0));
             display.RenderText();
         }
 
-        //SHOW WHEN GAME HAS ENDED
+        //Show if game ended
         public void GameOver() {
             display.SetText("Game over");
             display.SetColor(new Vec3I(0, 255, 0));

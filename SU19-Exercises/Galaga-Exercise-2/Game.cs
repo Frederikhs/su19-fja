@@ -15,7 +15,7 @@ using Galaga_Exercise_2.GalagaEntities.Enemy;
 
 namespace Galaga_Exercise_2 {
 
-    public class Game : IGameEventProcessor<object> {
+    public class Game : IGameEventProcessor<object>, ISquadron {
         private Window win;
         private Player player;
         private DIKUArcade.Timers.GameTimer gameTimer;
@@ -284,5 +284,10 @@ namespace Galaga_Exercise_2 {
             }
         }
 
+        public EntityContainer<Enemy> Enemies { get; }
+        public int MaxEnemies { get; }
+        public void CreateEnemies(List<Image> enemyStrides) {
+            throw new NotImplementedException();
+        }
     }
 }
