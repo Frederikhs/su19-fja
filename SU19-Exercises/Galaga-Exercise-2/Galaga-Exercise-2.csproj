@@ -44,6 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enemy.cs" />
+    <Compile Include="EnemyMovement\Down.cs" />
+    <Compile Include="EnemyMovement\IMovementStrategy.cs" />
+    <Compile Include="EnemyMovement\NoMove.cs" />
+    <Compile Include="EnemyMovement\ZigZagDown.cs" />
+    <Compile Include="EnemyPosition\LineFormation.cs" />
+    <Compile Include="EnemyPosition\PairsFormation.cs" />
+    <Compile Include="EnemyPosition\ZigZagFormation.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerShot.cs" />

@@ -8,7 +8,7 @@ namespace Galaga_Exercise_2.GalagaEntities.Enemy {
     public class Enemy : Entity {
         private Game game;
         private Shape shape;
-        private Vec2F StartPos { get; }
+        public Vec2F StartPos { get; }
 
         //ASD
         public Enemy(Game game, DynamicShape shape, IBaseImage image, Vec2F startPos) : base(shape, image) {
