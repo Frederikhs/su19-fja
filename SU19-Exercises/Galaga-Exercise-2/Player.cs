@@ -69,7 +69,7 @@ namespace Galaga_Exercise_2 {
         }
 
         //Player can shoot, shot will be positioned on front and center of player.
-        public void Shoot() {
+        private void Shoot() {
             playerShot = new PlayerShot(game,
                 new DynamicShape(
                     new Vec2F(shape.Position.X + shape.Extent.X / 2 - 0.004f,
