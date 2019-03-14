@@ -29,23 +29,23 @@ namespace Galaga_Exercise_2 {
             float yPos = 0.0f;
             
             //Need neighbor
-            bool neighbor = false;
+            bool hasBuddy = false;
             
             //Creating x enemies and placing them in Enemies container
             for (var i = 0; i < MaxEnemies; i++) {
-                if (neighbor) {
+                if (hasBuddy) {
                     yPos = 0.7f;
-                    neighbor = false;
+                    hasBuddy = false;
                 } else {
                     yPos = 0.9f;
                     spacePos += spaceInc;
-                    neighbor = true;
+                    hasBuddy = true;
                 }
                 
+                //Placing enemy at a position
                 Enemies.AddDynamicEntity(new Enemy(Game,
                     new DynamicShape(new Vec2F(spacePos, yPos), new Vec2F(0.1f, 0.1f)),
                     enemyAnimation, new Vec2F(spacePos,yPos)));
-                
             }
         }
     }

@@ -1,35 +1,35 @@
 using System;
 using DIKUArcade.Entities;
-using DIKUArcade.Math;
 using Galaga_Exercise_2.GalagaEntities.Enemy;
 using Galaga_Exercise_2.MovementStrategy;
 
 namespace Galaga_Exercise_2 {
     public class ZigZagDown : IMovementStrategy {
         public void MoveEnemy(Enemy enemy) {
-            var currentPosY = enemy.StartPos.X;
-//            var currentPosY = enemy.Shape.Position.Y;
-            var nextPosY = currentPosY + 0.0003f;
-
-//            var currentPosX = enemy.Shape.Position.X;
-            var currentPosX = enemy.StartPos.Y;
-            var nextPosX = currentPosX +
-                           0.05f * Math.Sin(
-                               (
-                                   2 * Math.PI * (currentPosY - nextPosY)
-                                            /
-                                            0.045f));
+            //Defining static values.
+            float s = 0.0003f;
+            float p = 0.045f;
+            float a = 0.05f;
             
-//            enemy.Shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0f,-0.001f));
-            //enemy.Position(new Vec2F(nextPosY, ((float)nextPosX)));
+            //Getting the start position
+            float startPosX = enemy.StartPos.X;
+            float startPosY = enemy.StartPos.Y;
             
+            //Moving enemy s points down.
+            enemy.Shape.Position.Y -= s;
             
-            enemy.Shape.Move(new Vec2F(nextPosY-currentPosY, ((float)nextPosX-(float)currentPosX)));
+            //Setting downwards wave movement.
+            enemy.Shape.Position.X =
+                (startPosX + a * (float) Math.Sin(
+                     (2.0 * Math.PI * (startPosY - enemy.Shape.Position.Y)
+                                    / p
+                    )));
         }
 
         public void MoveEnemies(EntityContainer<Enemy> enemies) {
-            foreach (Enemy anEnemey in enemies) {
-                MoveEnemy(anEnemey);
+            //Updating position for all enemies.
+            foreach (Enemy anEnemy in enemies) {
+                MoveEnemy(anEnemy);
             }
         }
     }

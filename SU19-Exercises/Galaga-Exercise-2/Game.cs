@@ -11,6 +11,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using Galaga_Exercise_2.GalagaEntities.Enemy;
+using Galaga_Exercise_2.MovementStrategy;
 
 
 namespace Galaga_Exercise_2 {
@@ -28,8 +29,16 @@ namespace Galaga_Exercise_2 {
         private Enemy newEnemy;
         private ImageStride enemyAnimation;
         
+        //Enemy formation choices
         private ISquadron enemyFormation;
-        private ZigZagDown Movement;
+        private LineFormation Form_LineFormation = new LineFormation(4);
+        private PairsFormation Form_PairsFormation = new PairsFormation(4);
+        private ZigZagFormation Form_ZigZag = new ZigZagFormation(4);
+        
+        //Enemy movement choices
+        private NoMove Move_No = new NoMove();
+        private Down Move_Down = new Down();
+        private ZigZagDown Move_Zig = new ZigZagDown();
         
         //PLAYERSHOTS
         public List<PlayerShot> playerShots { get; private set; }
@@ -61,10 +70,8 @@ namespace Galaga_Exercise_2 {
             enemyFormation = new PairsFormation(4);
             enemyFormation.CreateEnemies(enemyStrides);
             
-            //Move enemies
-            Movement = new ZigZagDown();
-            
-            
+            //Decisions for enemy position and movement:
+            // TODO: IMPLEMENT
             
             //CREATING LIST FOR ENEMIES TO BE IN
             enemies = new List<Enemy>();
@@ -203,10 +210,6 @@ namespace Galaga_Exercise_2 {
                     win.Clear();
                     player.RenderEntity();
                     
-                    //RENDER EACH ENEMY IN LIST enemies
-//                    foreach (var anEnemy in enemyFormation) {
-//                        anEnemy.RenderEntity();
-//                    }
                     enemyFormation.Enemies.RenderEntities();
 
                     //RENDER EACH SHOT
