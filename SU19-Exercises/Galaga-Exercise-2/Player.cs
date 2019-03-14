@@ -4,7 +4,7 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
-namespace Galaga_Exercise_1 {
+namespace Galaga_Exercise_2 {
     public class Player : Entity, IGameEventProcessor<object>  {
         public Entity Entity { get; private set; }
         private Game game;

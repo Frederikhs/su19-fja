@@ -10,9 +10,10 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
+using Galaga_Exercise_2.GalagaEntities.Enemy;
 
 
-namespace Galaga_Exercise_1 {
+namespace Galaga_Exercise_2 {
 
     public class Game : IGameEventProcessor<object> {
         private Window win;
@@ -103,7 +104,7 @@ namespace Galaga_Exercise_1 {
             for (int i = 0; i < count; i++) {
             newEnemy = new Enemy(this,
                 new DynamicShape(new Vec2F(xPos, 0.9f), new Vec2F(0.1f, 0.1f)),
-                enemyAnimation);
+                enemyAnimation, new Vec2F(0f,0f));
             enemies.Add(newEnemy);
             //INCREMENTING XPOS WITH 0.10625f
             xPos += 0.10625f;
