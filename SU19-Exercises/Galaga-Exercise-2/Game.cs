@@ -243,9 +243,21 @@ namespace Galaga_Exercise_2 {
         }
 
         public void KeyRelease(string key) {
-            eventBus.RegisterEvent(
-                GameEventFactory<object>.CreateGameEventForAllProcessors(
-                    GameEventType.PlayerEvent, this, "stop", "", ""));
+            switch (key) {
+            case "KEY_LEFT":
+                eventBus.RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "stop_left", "", ""));
+                break;
+                
+            case "KEY_RIGHT":
+                eventBus.RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "stop_right", "", ""));
+                break;
+            default:
+                break;
+            }
         }
 
 

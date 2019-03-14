@@ -57,14 +57,25 @@ namespace Galaga_Exercise_2 {
                 case "move_left":
                     Direction(new Vec2F(-0.01f, 0.0f));
                     break;
+                    
+                //If the player is moving in the same direction as the key pressed, we stop
+                case "stop_right":
+                    if (this.Shape.AsDynamicShape().Direction.X == 0.01f) {
+                        Direction(new Vec2F(0.0f,0.0f));                            
+                    }
+                    break;
+                case "stop_left":
+                    if (this.Shape.AsDynamicShape().Direction.X == -0.01f) {
+                        Direction(new Vec2F(0.0f,0.0f));                            
+                    }
+                    break;
                 case "space":
                     Shoot();
                     break;
+                default:
+                    break;
                 }
-            } else {
-                throw new System.NotImplementedException();
             }
-            
         }
     }
 }
