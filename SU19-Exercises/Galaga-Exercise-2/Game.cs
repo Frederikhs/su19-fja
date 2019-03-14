@@ -62,11 +62,13 @@ namespace Galaga_Exercise_1 {
             
             //CREATING EVENTBUS TO LISTEN
             eventBus = new GameEventBus<object>();
-            eventBus.InitializeEventBus(new List<GameEventType>() {
-                GameEventType.InputEvent, // key press / key release
-                GameEventType.WindowEvent, // messages to the window
+            eventBus.InitializeEventBus(new List<GameEventType> {
+                GameEventType.PlayerEvent, //player events
+                GameEventType.InputEvent, //key press / key release
+                GameEventType.WindowEvent //messages to the window
             });
             win.RegisterEventBus(eventBus);
+            eventBus.Subscribe(GameEventType.PlayerEvent, player);
             eventBus.Subscribe(GameEventType.InputEvent, this);
             eventBus.Subscribe(GameEventType.WindowEvent, this);
 
@@ -212,43 +214,41 @@ namespace Galaga_Exercise_1 {
         }
 
 
-        private void KeyPress(string key) {
+        // Key methods
+        // TODO: Tilføj is game over
+        public void KeyPress(string key) {
             switch (key) {
             case "KEY_ESCAPE":
                 eventBus.RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.WindowEvent, this, "CLOSE_WINDOW", "", ""));
                 break;
-                ;
             case "KEY_LEFT":
-                //SETS PLAYER DIRECTION TO LEFT IF GAME IS NOT OVER
-                if (!IsGameOver()) {
-                    player.Direction(new Vec2F(-0.01f, 0.0f));                    
-                }
+                eventBus.RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "move_left", "", ""));
                 break;
             case "KEY_RIGHT":
-                //SETS PLAYER DIRECTION TO RIGHT IF GAME IS NOT OVER
-                if (!IsGameOver()) {
-                    player.Direction(new Vec2F(0.01f, 0.0f));                    
-                }
+                eventBus.RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "move_right", "", ""));
                 break;
             case "KEY_SPACE":
-                //PLAYERSHOT IF GAME IS NOT OVER
-                if (!IsGameOver()) {
-                    player.Shoot();                    
-                }
+                eventBus.RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "shoot", "", ""));
                 break;
-            default:
-                break;
-
             }
         }
 
         public void KeyRelease(string key) {
-                    //throw new NotImplementedException();
-                }
+            eventBus.RegisterEvent(
+                GameEventFactory<object>.CreateGameEventForAllProcessors(
+                    GameEventType.PlayerEvent, this, "stop", "", ""));
+        }
 
 
+        // Process events
         public void ProcessEvent(GameEventType eventType,
             GameEvent<object> gameEvent) {
             if (eventType == GameEventType.WindowEvent) {
@@ -265,11 +265,7 @@ namespace Galaga_Exercise_1 {
                     KeyPress(gameEvent.Message);
                     break;
                 case "KEY_RELEASE":
-                    //RESETS DIRECTION FOR PLAYER
-                    player.Direction(new Vec2F(0.0f, 0.0f));
                     KeyRelease(gameEvent.Message);
-                    break;
-                default:
                     break;
                 }
             }
@@ -277,4 +273,3 @@ namespace Galaga_Exercise_1 {
 
     }
 }
-

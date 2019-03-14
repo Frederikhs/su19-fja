@@ -1,10 +1,12 @@
 using System.IO;
 using DIKUArcade.Entities;
+using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
 namespace Galaga_Exercise_1 {
-    public class Player : Entity {
+    public class Player : Entity, IGameEventProcessor<object>  {
+        public Entity Entity { get; private set; }
         private Game game;
 
         //CREATING ONE IMAGE FOR REFERENCE
@@ -35,8 +37,7 @@ namespace Galaga_Exercise_1 {
             } else {
                 shape.Position = new Vec2F(0.9f, 0.1f);
             }
-        }
-
+        }        
         //PLAYER CAN SHOOT, SHOT POSITIONED ON FRONT AND CENTER OF PLAYER
         public void Shoot() {
             playerShot = new PlayerShot(game,
@@ -45,6 +46,25 @@ namespace Galaga_Exercise_1 {
                         shape.Position.Y + 0.1f), new Vec2F(0.008f, 0.027f)), image);
             //ADDING SHOT TO LIST OF SHOTS
             game.playerShots.Add(playerShot);
+        }
+        
+        public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
+            if (eventType == GameEventType.PlayerEvent) {
+                switch (gameEvent.Message) {
+                case "move_right":
+                    Direction(new Vec2F(0.01f,0.0f));
+                    break;
+                case "move_left":
+                    Direction(new Vec2F(-0.01f, 0.0f));
+                    break;
+                case "space":
+                    Shoot();
+                    break;
+                }
+            } else {
+                throw new System.NotImplementedException();
+            }
+            
         }
     }
 }
