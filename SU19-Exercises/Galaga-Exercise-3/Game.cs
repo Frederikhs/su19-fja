@@ -10,6 +10,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
+using GalagaGame;
 using Galaga_Exercise_3.GalagaEntities.Enemy;
 using Galaga_Exercise_3.MovementStrategy;
 
@@ -74,7 +75,7 @@ namespace Galaga_Exercise_3 {
             enemyFormation.CreateEnemies(enemyStrides);
             
             //Create eventbus
-            eventBus = new GameEventBus<object>();
+            eventBus = GalagaBus.GetBus();
             eventBus.InitializeEventBus(new List<GameEventType> {
                 GameEventType.PlayerEvent,
                 GameEventType.InputEvent, //key press / key release

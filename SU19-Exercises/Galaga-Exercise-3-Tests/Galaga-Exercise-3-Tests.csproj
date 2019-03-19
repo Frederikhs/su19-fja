@@ -4,11 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6DF96FA8-1098-4F1C-9F82-4ECF2FB1CD34}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{35D45164-5F87-4FAA-B0A5-06B49CD7B835}</ProjectGuid>
+    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Galaga_Exercise_3</RootNamespace>
-    <AssemblyName>Galaga_Exercise_3</AssemblyName>
+    <RootNamespace>Galaga_Exercise_3_Tests</RootNamespace>
+    <AssemblyName>Galaga_Exercise_3_Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,37 +36,14 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
+    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
+      <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enemy.cs" />
-    <Compile Include="EnemyMovement\Down.cs" />
-    <Compile Include="EnemyMovement\IMovementStrategy.cs" />
-    <Compile Include="EnemyMovement\NoMove.cs" />
-    <Compile Include="EnemyMovement\ZigZagDown.cs" />
-    <Compile Include="EnemyPosition\LineFormation.cs" />
-    <Compile Include="EnemyPosition\PairsFormation.cs" />
-    <Compile Include="EnemyPosition\ZigZagFormation.cs" />
-    <Compile Include="GalagaBus.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="PlayerShot.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Score.cs" />
-    <Compile Include="Squadrons.cs" />
-    <Compile Include="StateMachine.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="OpenTK.dll.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\DIKUArcade\DIKUArcade\DIKUArcade.csproj">
-      <Project>{a1e4e4df-0967-4096-9e3c-fbc29b7d07dd}</Project>
-      <Name>DIKUArcade</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
