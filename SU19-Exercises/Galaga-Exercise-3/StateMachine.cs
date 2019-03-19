@@ -21,6 +21,14 @@ namespace GalagaGame.GalagaState {
             switch (stateType) {
                 case GameStateType.EnumGameStateType.GameRunning:
                     ActiveState = GameStateType.EnumGameStateType.GameRunning;
+                    break;
+                case GameStateType.EnumGameStateType.GamePaused:
+                    ActiveState = GameStateType.EnumGameStateType.GamePaused;
+                    break;
+                case GameStateType.EnumGameStateType.MainMenu:
+                    ActiveState = GameStateType.EnumGameStateType.MainMenu;
+                    break;
+                    
             }
 
             // vores kode her
