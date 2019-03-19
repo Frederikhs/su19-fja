@@ -5,20 +5,45 @@ using GalagaGame;
 using GalagaGame;
 using GalagaGame.GalagaState;
 using DIKUArcade.EventBus;
-
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Sockets;
+using System.Runtime.CompilerServices;
+using DIKUArcade;
+using DIKUArcade.EventBus;
+using DIKUArcade.Timers;
+using DIKUArcade.Graphics;
+using DIKUArcade.Entities;
+using DIKUArcade.Math;
+using DIKUArcade.Physics;
+using GalagaGame;
+using Galaga_Exercise_3;
+using Galaga_Exercise_3.GalagaEntities.Enemy;
+using Galaga_Exercise_3.MovementStrategy;
 
 namespace Galaga_Testing {
     [TestFixture]
     public class StateMachineTesting {
         private StateMachine stateMachine;
+        private GameEventBus<object> eventBus;
+        private Window win;
+        private Game game;
         [SetUp]
         public void InitiateStateMachine() {
             DIKUArcade.Window.CreateOpenGLContext();
 // Here you should:
 // (1) Initialize a GalagaBus with proper GameEventTypes
-// (2) Instantiate the StateMachine
-// (3) Subscribe the GalagaBus to proper GameEventTypes
-// and GameEventProcessors
+        
+        eventBus = GalagaBus.GetBus();
+        eventBus.InitializeEventBus(new List<GameEventType> {
+            GameEventType.GameStateEvent
+            
+        });
+
+        stateMachine = new StateMachine();
+
+        eventBus.Subscribe(GameEventType.GameStateEvent, stateMachine);
                 
                 
                 

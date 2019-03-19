@@ -49,6 +49,7 @@
     <Compile Include="EnemyPosition\ZigZagFormation.cs" />
     <Compile Include="GalagaBus.cs" />
     <Compile Include="GalagaStates\GameStateType.cs" />
+    <Compile Include="GalagaStates\MainMenu.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerShot.cs" />

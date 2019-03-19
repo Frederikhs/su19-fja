@@ -36,8 +36,24 @@ namespace GalagaGame.GalagaState {
             //
         }
 
-        public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
+        /*public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             throw new System.NotImplementedException();
+        }*/
+        public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
+            if (eventType == GameEventType.GameStateEvent) {
+                switch (gameEvent.Message) {
+                case "GAME_RUNNING":
+                    SwitchState(GameStateType.EnumGameStateType.GameRunning);
+                    break;
+                case "GAME_PAUSED":
+                    SwitchState(GameStateType.EnumGameStateType.GamePaused);
+                    break;
+
+                //If the player is moving in the same direction as the key pressed, we stop.
+                case "MAIN_MENU":
+                    SwitchState(GameStateType.EnumGameStateType.GamePaused);
+                }
+            }
         }
     }
 }
