@@ -1,3 +1,4 @@
+using System;
 using DIKUArcade.EventBus;
 using DIKUArcade.State;
 using DIKUArcade.Graphics;
@@ -21,38 +22,31 @@ namespace GalagaGame.GalagaState {
             switch (stateType) {
                 case GameStateType.EnumGameStateType.GameRunning:
                     ActiveState = GameRunning.GetInstance();
+                    Console.WriteLine("Change active state to running");
                     break;
-                /*case GameStateType.EnumGameStateType.GamePaused:
+                case GameStateType.EnumGameStateType.GamePaused:
                     ActiveState = GamePaused.GetInstance();
+                    Console.WriteLine("Change active state to pause");
                     break;
-                */case GameStateType.EnumGameStateType.MainMenu:
+                case GameStateType.EnumGameStateType.MainMenu:
                     ActiveState = MainMenu.GetInstance();
+                    Console.WriteLine("Change active state to main menu");
                     break;
-                    
             }
-
-            // vores kode her
-            //
-            //
+            
         }
 
-        /*public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
-            throw new System.NotImplementedException();
-        }*/
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.GameStateEvent) {
                 switch (gameEvent.Message) {
                 case "CHANGE_STATE":
                     SwitchState(GameStateType.TransformStringToState(gameEvent.Parameter1));
+                    Console.WriteLine("Changing state:"+gameEvent.Parameter1);
                     break;
-
-
 
                 }
             } else if (eventType == GameEventType.InputEvent) {
                 ActiveState.HandleKeyEvent(gameEvent.Message,gameEvent.Parameter1);
-                    
-                    
                 }
             }
         }

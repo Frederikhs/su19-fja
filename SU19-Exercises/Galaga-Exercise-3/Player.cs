@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -17,9 +18,10 @@ namespace Galaga_Exercise_3 {
         private GameRunning gameRunning;
 
         //Setting shape when initiating class.
-        public Player(DynamicShape shape, IBaseImage image)
-            : base(shape, image) {
-            
+        public Player(GameRunning gameRunning,DynamicShape shape, IBaseImage image)
+            : base(shape, image)
+        {
+            this.gameRunning = gameRunning;
             this.shape = shape;
             GalagaBus.GetBus().Subscribe(GameEventType.PlayerEvent,this);
         }
@@ -78,7 +80,7 @@ namespace Galaga_Exercise_3 {
                 new DynamicShape(
                     new Vec2F(shape.Position.X + shape.Extent.X / 2 - 0.004f,
                         shape.Position.Y + 0.1f), new Vec2F(0.008f, 0.027f)), image);
-            //Adding shot to list of shots
+//            //Adding shot to list of shots
             gameRunning.playerShots.Add(playerShot);
         }
     }

@@ -11,7 +11,7 @@ namespace Galaga_Exercise_3.GalagaStates {
                 case "GAME_RUNNING":
                     return EnumGameStateType.GameRunning;
                 case "GAME_PAUSED":
-                    return EnumGameStateType.GameRunning;
+                    return EnumGameStateType.GamePaused;
                 case "MAIN_MENU":
                     return EnumGameStateType.MainMenu;
                 default:

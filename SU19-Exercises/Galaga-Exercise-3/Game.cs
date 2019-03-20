@@ -21,18 +21,14 @@ namespace Galaga_Exercise_3 {
 
     public class Game : IGameEventProcessor<object> {
         private Window win;
-        //*private Player player;
-        private DIKUArcade.Timers.GameTimer gameTimer;
+        private GameTimer gameTimer;
         private GameEventBus<object> eventBus;
         private StateMachine stateMachine;
-        
- 
         
         public Game() {
             //Creating game window
             win = new Window("Window", 500, 500);
             gameTimer = new GameTimer(60, 60);
-            
           
             eventBus = GalagaBus.GetBus();
             eventBus.InitializeEventBus(new List<GameEventType> {
@@ -44,16 +40,10 @@ namespace Galaga_Exercise_3 {
             });
             win.RegisterEventBus(eventBus);
             eventBus.Subscribe(GameEventType.WindowEvent, this);
+            
+            //Creating state machine
             stateMachine = new StateMachine();
-            
-            
-            
-
-           
         }
-
-    
-        
 
         public void GameLoop() {
             while (win.IsRunning()) {
@@ -71,15 +61,10 @@ namespace Galaga_Exercise_3 {
                 if (gameTimer.ShouldReset()) {
                     win.Title = "Galaga | UPS: " + gameTimer.CapturedUpdates + ", FPS: " +
                                 gameTimer.CapturedFrames;
+                    //1 second passed
                 }
             }
         }
-
-        // User input events
-        
-
-        
-
 
         // Process events
         public void ProcessEvent(GameEventType eventType,

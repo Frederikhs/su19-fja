@@ -48,9 +48,11 @@
     <Compile Include="EnemyPosition\PairsFormation.cs" />
     <Compile Include="EnemyPosition\ZigZagFormation.cs" />
     <Compile Include="GalagaBus.cs" />
+    <Compile Include="GalagaStates\GamePaused.cs" />
     <Compile Include="GalagaStates\GameRunning.cs" />
     <Compile Include="GalagaStates\GameStateType.cs" />
     <Compile Include="GalagaStates\MainMenu.cs" />
+    <Compile Include="GalagaStates\StateMachine.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerShot.cs" />
@@ -58,7 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="Squadrons.cs" />
-    <Compile Include="StateMachine.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />

@@ -9,16 +9,16 @@ using DIKUArcade.EventBus;
 using DIKUArcade.State;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using GalagaGame;
 using GalagaGame.GalagaState;
 using Galaga_Exercise_3;
 using Galaga_Exercise_3.GalagaStates;
 using Image = DIKUArcade.Graphics.Image;
 
-using DIKUArcade.State;
-
-    namespace GalagaGame.GalagaState {
-        public class MainMenu : IGameState {
-            private static MainMenu instance;
+namespace Galaga_Exercise_3.GalagaStates
+{
+    public class GamePaused : IGameState {
+            private static GamePaused instance;
 
             private Entity backGroundImage;
             private Text[] menuButtons;
@@ -30,14 +30,13 @@ using DIKUArcade.State;
             private Vec3F inactive;
 
             //Return an instance, or creates a new one
-            public static MainMenu GetInstance() {
-                return MainMenu.instance ?? (MainMenu.instance = new MainMenu());
+            public static GamePaused GetInstance() {
+                return GamePaused.instance ?? (GamePaused.instance = new GamePaused());
             }
 
-            public MainMenu() {
+            public GamePaused() {
                 InitializeGameState();
             }
-
             public void RenderState() {
                 //Render background image
                 backGroundImage.RenderEntity();
@@ -48,9 +47,9 @@ using DIKUArcade.State;
                 }
             }
 
-            public void HandleKeyEvent(string keyValue, string keyAction)
-            {
+            public void HandleKeyEvent(string keyValue, string keyAction) {
                 if (keyAction == "KEY_PRESS")  {
+                    Console.WriteLine("Active:"+activeMenuButton);
                     switch (keyValue) {
                     case "KEY_UP":
                             //Setting inactive
@@ -60,7 +59,7 @@ using DIKUArcade.State;
                             //setting active
                             menuButtons[0].SetColor(active);
                             menuButtons[0].SetFontSize(70);
-                            activeMenuButton = 0;
+                            activeMenuButton = 1;
                         break;
                     
                     case "KEY_DOWN":
@@ -71,14 +70,14 @@ using DIKUArcade.State;
                             //setting active
                             menuButtons[1].SetColor(active);
                             menuButtons[1].SetFontSize(70);
-                            activeMenuButton = 1;
+                            activeMenuButton = 0;
                         break;
                     
                     case "KEY_ENTER":
                         switch (activeMenuButton)
                         {
-                            //If New Game is chosen, we change the state
-                            case 0:
+                            //If Continue is chosen, we change the state
+                            case 1:
                                 GalagaBus.GetBus().RegisterEvent(
                                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                                         GameEventType.GameStateEvent,
@@ -86,20 +85,18 @@ using DIKUArcade.State;
                                         "CHANGE_STATE",
                                         "GAME_RUNNING", ""));
                                 break;
-                            //If Quit is chosen we close the window
-                            case 1:
+                            //If Main Menu is chosen we return to main menu
+                            case 0:
                                 GalagaBus.GetBus().RegisterEvent(
                                     GameEventFactory<object>.CreateGameEventForAllProcessors(
-                                        GameEventType.WindowEvent,
+                                        GameEventType.GameStateEvent,
                                         this,
-                                        "CLOSE_WINDOW",
-                                        "", ""));
+                                        "CHANGE_STATE",
+                                        "MAIN_MENU", ""));
                                 break;
                         }
                         break;
                     }
-
-                    Console.WriteLine("Active key is now"+activeMenuButton);
                 }
             }
 
@@ -115,17 +112,17 @@ using DIKUArcade.State;
                 backGroundImage = new Entity(
                     new StationaryShape(new Vec2F(0.0f, 0.0f),
                     new Vec2F(1.0f, 1.0f)), 
-                    new Image(Path.Combine("Assets", "Images", "TitleImage.png")));
+                    new Image(Path.Combine("Assets", "Images", "SpaceBackground.png")));
 
                 //Creating new array and adding buttons to it.
                 menuButtons = new[] {
-                    new Text("New Game", new Vec2F(0.2f, 0.2f), new Vec2F(0.5f, 0.3f)),
-                    new Text("Quit", new Vec2F(0.2f, 0.1f), new Vec2F(0.3f, 0.3f))
+                    new Text("Continue", new Vec2F(0.2f, 0.2f), new Vec2F(0.5f, 0.3f)),
+                    new Text("Main Menu", new Vec2F(0.2f, 0.1f), new Vec2F(0.3f, 0.3f))
                 };
                 
                 //Setting button vars
+                activeMenuButton = 0;
                 maxMenuButtons = menuButtons.Length;
-                activeMenuButton = 1;
 
                 //Iterating over buttons and setting their default color and size
                 foreach (var button in menuButtons) {
@@ -143,6 +140,3 @@ using DIKUArcade.State;
         
         }
     }
-
-
-

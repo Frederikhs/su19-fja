@@ -18,12 +18,13 @@ using Galaga_Exercise_3.MovementStrategy;
 namespace Galaga_Exercise_3.GalagaStates {
     public class GameRunning : IGameState {
         
-     
-        
         private static GameRunning instance;
         private Player player;
         private List<Image> enemyStrides;
         private ImageStride enemyAnimation;
+        
+        //Background
+        private Entity backGroundImage;
         
         //Enemy formation vars
         private ISquadron enemyFormation;
@@ -46,75 +47,19 @@ namespace Galaga_Exercise_3.GalagaStates {
         //Enemy vars
         private EntityContainer<Enemy> enemies;
  
-        
-        
-        
-        
         private Score score;
 
         public GameRunning() {
-                        //Creating game window
-            
-            //Create the player
-            player = new Player(
-                new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
-                new Image(Path.Combine("Assets", "Images", "Player.png")));
-            
-            //Create 4 strides of 1 image for monsters
-            
-
-            enemyStrides = ImageStride.CreateStrides(4,
-                Path.Combine("Assets", "Images", "BlueMonster.png"));
-
-            //Create new animation based on image list for monsters
-            enemyAnimation = new ImageStride(80,enemyStrides);
-            
-            //Decisions for enemy position:
-            //Choose to uncomment your choice of formation (default is ZigZag):
-            enemyFormation = new ZigZagFormation(7);
-            //enemyFormation = new LineFormation(7);
-            //enemyFormation = new PairsFormation(7);
-            
-            enemyFormation.CreateEnemies(enemyStrides);
-            
-            enemies = new EntityContainer<Enemy>();
-
-            var enemySquad = enemyFormation;
-            enemySquad.CreateEnemies(enemyStrides);
-            enemies = enemySquad.Enemies;
-           
-
-            //Create list of playershots
-            playerShots = new List<PlayerShot>();
-            
-            //Animation stride for explosions
-            explosionStrides = ImageStride.CreateStrides(8,
-                Path.Combine("Assets", "Images", "Explosion.png"));
-            explosions = new AnimationContainer(enemyFormation.MaxEnemies);
-            explosionStride = new ImageStride(explosionLength / 8, explosionStrides);
-
-            //Create score
-            score = new Score(new Vec2F(0.45f,-0.12f), new Vec2F(0.2f,0.2f));
+            InitializeGameState();
         }
         
         public static GameRunning GetInstance() {
             return GameRunning.instance ?? (GameRunning.instance = new GameRunning());
         }
-
-        public static GameRunning NewInstance() {
-            GameRunning newInstance = new GameRunning();
-            return newInstance;
-        }
-        private bool IsGameOver() {
-            if (enemyFormation.Enemies.CountEntities() > 0) {
-                return false;
-            } else {
-                player.Direction(new Vec2F(0.00f, 0.01f));
-                return true;
-            }    
-        }
         
         private void IterateShots() {
+            //Bliver kaldt
+            //Console.WriteLine("Called IterateShots");
             foreach (var shot in playerShots) {
                 shot.Shape.Move();
                 if (shot.Shape.Position.Y > 1.0f) {
@@ -136,6 +81,7 @@ namespace Galaga_Exercise_3.GalagaStates {
                         
                         //Adds a point to the score
                         score.AddPoint();
+                        break;
                     }
                 }
             }
@@ -177,41 +123,34 @@ namespace Galaga_Exercise_3.GalagaStates {
             IterateShots();
             player.Move();
             Move_Zig.MoveEnemies(enemyFormation.Enemies);
-            IsGameOver();
         }
         private void KeyPress(string key) {
-            switch (key) {
+            Console.WriteLine(key);
+            switch (key)
+            {
             case "KEY_ESCAPE":
-                if (!IsGameOver()) {
-                    GalagaBus.GetBus().RegisterEvent(
-                        GameEventFactory<object>.CreateGameEventForAllProcessors(
-                            GameEventType.WindowEvent, this, "CLOSE_WINDOW", "", ""));
-                }
+                GalagaBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.GameStateEvent,
+                        this,
+                        "CHANGE_STATE",
+                        "GAME_PAUSED", ""));
                 break;
             case "KEY_LEFT":
-                if (!IsGameOver()) {
-                    GalagaBus.GetBus().RegisterEvent(
-                        GameEventFactory<object>.CreateGameEventForAllProcessors(
-                            GameEventType.PlayerEvent, this, "move_left", "", ""));
-                }
-
+                GalagaBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "move_left", "", ""));
                 break;
             case "KEY_RIGHT":
-                if (!IsGameOver()) {
-                    GalagaBus.GetBus().RegisterEvent(
-                        GameEventFactory<object>.CreateGameEventForAllProcessors(
-                            GameEventType.PlayerEvent, this, "move_right", "", ""));
-                }
-
+                GalagaBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "move_right", "", ""));
                 break;
             case "KEY_SPACE":
-                if (!IsGameOver()) {
-                    GalagaBus.GetBus().RegisterEvent(
-                        GameEventFactory<object>.CreateGameEventForAllProcessors(
-                            GameEventType.PlayerEvent, this, "shoot", "", ""));
-                }
+                GalagaBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.PlayerEvent, this, "shoot", "", ""));
                 break;
-    
             }
         }
         
@@ -228,44 +167,93 @@ namespace Galaga_Exercise_3.GalagaStates {
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.PlayerEvent, this, "stop_right", "", ""));
                 break;
-         
             }
         }
 
-      
-
         public void HandleKeyEvent(string keyValue,string keyAction) {
-            switch (keyAction) {
-            case "KEY_RIGHT":
-                KeyPress(keyValue);
-                break;
-            case "KEY_LEFT":
-                KeyPress(keyValue);
-                break;
-                
+            if (keyAction == "KEY_PRESS") {
+                switch (keyValue) {
+                    case "KEY_RIGHT":
+                        KeyPress(keyValue);
+                        break;
+                    case "KEY_LEFT":
+                        KeyPress(keyValue);
+                        break;
+                    case "KEY_SPACE":
+                        KeyPress(keyValue);
+                        break;
+                    case "KEY_ESCAPE":
+                        KeyPress(keyValue);
+                        break;
+                }
+            } else if (keyAction == "KEY_RELEASE") {
+                switch (keyValue) {
+                    case "KEY_RIGHT":
+                        KeyRelease(keyValue);
+                        break;
+                    case "KEY_LEFT":
+                        KeyRelease(keyValue);
+                        break;
+                }
             }
         }
 
         public void InitializeGameState() {
+            //Background image while playing
+            backGroundImage = new Entity(
+                new StationaryShape(new Vec2F(0.0f, 0.0f),
+                    new Vec2F(1.0f, 1.0f)), 
+                new Image(Path.Combine("Assets", "Images", "SpaceBackground.png")));
             
+            //Create the player
+            player = new Player(this,
+                new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
+                new Image(Path.Combine("Assets", "Images", "Player.png")));
             
+            //Create 4 strides of 1 image for monsters
+            enemyStrides = ImageStride.CreateStrides(4,
+                Path.Combine("Assets", "Images", "BlueMonster.png"));
+    
+            //Create new animation based on image list for monsters
+            enemyAnimation = new ImageStride(80,enemyStrides);
             
+            //Decisions for enemy position:
+            //Choose to uncomment your choice of formation (default is ZigZag):
+            enemyFormation = new ZigZagFormation(3);
+            //enemyFormation = new LineFormation(7);
+            //enemyFormation = new PairsFormation(7);
+            enemyFormation.CreateEnemies(enemyStrides);
+            enemies = new EntityContainer<Enemy>();
+            enemies = enemyFormation.Enemies;
+           
+            //Create list of playershots
+            playerShots = new List<PlayerShot>();
+            
+            //Animation stride for explosions
+            explosionStrides = ImageStride.CreateStrides(8,
+                Path.Combine("Assets", "Images", "Explosion.png"));
+            explosions = new AnimationContainer(enemyFormation.MaxEnemies);
+            explosionStride = new ImageStride(explosionLength / 8, explosionStrides);
+    
+            //Create score
+            score = new Score(new Vec2F(0.45f,-0.12f), new Vec2F(0.2f,0.2f));
         }
 
-        public void GameLoop() {
-            
-        }
+        public void GameLoop() { }
 
         public void RenderState() {
+            backGroundImage.RenderEntity();
+            //Render the player
             player.RenderEntity();
+            
+            //Render each shot in the air
             foreach (var aShot in playerShots) {
                 aShot.RenderEntity();
+            }
+            //Render all enemies and their explosions if there is any
             enemies.RenderEntities();
             explosions.RenderAnimations();
-            
-                
-            }
-            
+            score.RenderScore();
             
         }
         
