@@ -176,6 +176,7 @@ namespace Galaga_Exercise_3.GalagaStates {
         public void UpdateGameLogic() {
             IterateShots();
             player.Move();
+            Move_Zig.MoveEnemies(enemyFormation.Enemies);
             IsGameOver();
         }
         private void KeyPress(string key) {
@@ -231,9 +232,7 @@ namespace Galaga_Exercise_3.GalagaStates {
             }
         }
 
-        public void GameLoop() {
-            
-        }
+      
 
         public void HandleKeyEvent(string keyValue,string keyAction) {
             switch (keyAction) {
@@ -250,6 +249,10 @@ namespace Galaga_Exercise_3.GalagaStates {
         public void InitializeGameState() {
             
             
+            
+        }
+
+        public void GameLoop() {
             
         }
 
