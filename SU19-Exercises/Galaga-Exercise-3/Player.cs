@@ -3,21 +3,25 @@ using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using GalagaGame;
+using Galaga_Exercise_3.GalagaStates;
 
 namespace Galaga_Exercise_3 {
     public class Player : Entity, IGameEventProcessor<object> {
-        private Game game;
+        
 
         //Creating image for reference.
         private Image image = new Image(Path.Combine("Assets", "Images", "BulletRed2.png"));
         private PlayerShot playerShot;
         private Shape shape;
+        private GameRunning gameRunning;
 
         //Setting shape when initiating class.
-        public Player(Game game, DynamicShape shape, IBaseImage image)
+        public Player(DynamicShape shape, IBaseImage image)
             : base(shape, image) {
-            this.game = game;
+            
             this.shape = shape;
+            GalagaBus.GetBus().Subscribe(GameEventType.PlayerEvent,this);
         }
 
         public Entity Entity { get; private set; }
@@ -70,12 +74,12 @@ namespace Galaga_Exercise_3 {
 
         //Player can shoot, shot will be positioned on front and center of player.
         private void Shoot() {
-            playerShot = new PlayerShot(game,
+            playerShot = new PlayerShot(gameRunning,
                 new DynamicShape(
                     new Vec2F(shape.Position.X + shape.Extent.X / 2 - 0.004f,
                         shape.Position.Y + 0.1f), new Vec2F(0.008f, 0.027f)), image);
             //Adding shot to list of shots
-            game.playerShots.Add(playerShot);
+            gameRunning.playerShots.Add(playerShot);
         }
     }
 }

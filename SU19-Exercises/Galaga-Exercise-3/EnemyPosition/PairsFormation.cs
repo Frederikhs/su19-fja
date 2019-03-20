@@ -3,12 +3,13 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using Galaga_Exercise_3.GalagaEntities.Enemy;
+using Galaga_Exercise_3.GalagaStates;
 
 namespace Galaga_Exercise_3 {
     public class PairsFormation : ISquadron {
         public EntityContainer<Enemy> Enemies { get; }
         public int MaxEnemies { get; }
-        private Game Game;
+        private GameRunning gameRunning;
         
         //Constructor
         public PairsFormation(int enemyCount) {
@@ -43,7 +44,7 @@ namespace Galaga_Exercise_3 {
                 }
                 
                 //Placing enemy at a position
-                Enemies.AddDynamicEntity(new Enemy(Game,
+                Enemies.AddDynamicEntity(new Enemy(gameRunning,
                     new DynamicShape(new Vec2F(spacePos, yPos), new Vec2F(0.1f, 0.1f)),
                     enemyAnimation, new Vec2F(spacePos,yPos)));
             }
