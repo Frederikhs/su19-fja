@@ -20,6 +20,7 @@ using DIKUArcade.Physics;
 using GalagaGame;
 using Galaga_Exercise_3;
 using Galaga_Exercise_3.GalagaEntities.Enemy;
+using Galaga_Exercise_3.GalagaStates;
 using Galaga_Exercise_3.MovementStrategy;
 
 namespace Galaga_Testing {
@@ -32,36 +33,33 @@ namespace Galaga_Testing {
         [SetUp]
         public void InitiateStateMachine() {
             DIKUArcade.Window.CreateOpenGLContext();
-// Here you should:
-// (1) Initialize a GalagaBus with proper GameEventTypes
-        
-        eventBus = GalagaBus.GetBus();
-        eventBus.InitializeEventBus(new List<GameEventType> {
-            GameEventType.GameStateEvent
+            GalagaBus.GetBus().InitializeEventBus(new List<GameEventType> {
+            GameEventType.GameStateEvent,
+            GameEventType.InputEvent
             
         });
-
+            
         stateMachine = new StateMachine();
-
-        eventBus.Subscribe(GameEventType.GameStateEvent, stateMachine);
-                
-                
+        GalagaBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
+        GalagaBus.GetBus().Subscribe(GameEventType.InputEvent, stateMachine);
                 
         }
+        
         [Test]
         public void TestInitialState() {
             Assert.That(stateMachine.ActiveState, Is.InstanceOf<MainMenu>());
         }
-//        [Test]
-//        public void TestEventGamePaused() {
-//            GalagaBus.GetBus().RegisterEvent(
-//                GameEventFactory<object>.CreateGameEventForAllProcessors(
-//                    GameEventType.GameStateEvent,
-//                    this,
-//                    "CHANGE_STATE",
-//                    "GAME_PAUSED", ""));
-//            GalagaBus.GetBus().ProcessEventsSequentially();
-//            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GamePaused>());
-//        }
+        
+        [Test]
+        public void TestEventGamePaused() {
+            GalagaBus.GetBus().RegisterEvent(
+                GameEventFactory<object>.CreateGameEventForAllProcessors(
+                    GameEventType.GameStateEvent,
+                    this,
+                    "CHANGE_STATE",
+                    "GAME_PAUSED", ""));
+            GalagaBus.GetBus().ProcessEventsSequentially();
+            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GamePaused>());
+        }
     }
 }

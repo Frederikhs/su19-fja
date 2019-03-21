@@ -219,7 +219,7 @@ namespace Galaga_Exercise_3.GalagaStates {
             
             //Decisions for enemy position:
             //Choose to uncomment your choice of formation (default is ZigZag):
-            enemyFormation = new ZigZagFormation(3);
+            enemyFormation = new ZigZagFormation(20);
             //enemyFormation = new LineFormation(7);
             //enemyFormation = new PairsFormation(7);
             enemyFormation.CreateEnemies(enemyStrides);
