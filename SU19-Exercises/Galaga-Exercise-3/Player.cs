@@ -17,7 +17,7 @@ namespace Galaga_Exercise_3 {
 
         //Setting shape when initiating class.
         public Player(GameRunning gameRunning, DynamicShape shape, IBaseImage image)
-            : base(shape, image) {
+            : base(shape, image) {            
             this.gameRunning = gameRunning;
             this.shape = shape;
             GalagaBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);

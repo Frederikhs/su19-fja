@@ -25,25 +25,27 @@ namespace Galaga_Exercise_3.GalagaStates {
         private List<Image> enemyStrides;
 
         //Function for displaying explosions
-        private int explosionLength = 500;
+        private int explosionLength;
         private AnimationContainer explosions;
         private ImageStride explosionStride;
 
         //Explosion vars
         private List<Image> explosionStrides;
+        
+        //Formation
         private LineFormation Form_LineFormation;
         private PairsFormation Form_PairsFormation;
         private ZigZagFormation Form_ZigZag;
-        private Down Move_Down = new Down();
 
         //Enemy movement vars
-        private NoMove Move_No = new NoMove();
-        private ZigZagDown Move_Zig = new ZigZagDown();
+        private NoMove Move_No;
+        private ZigZagDown Move_Zig;
+        private Down Move_Down;
         private Player player;
 
         private Score score;
 
-        public GameRunning() {
+        public GameRunning() { 
             InitializeGameState();
         }
 
@@ -84,6 +86,10 @@ namespace Galaga_Exercise_3.GalagaStates {
         }
 
         public void InitializeGameState() {
+            Move_No = new NoMove();
+            Move_Zig = new ZigZagDown();
+            Move_Down = new Down();
+            explosionLength = 500;
             //Background image while playing
             backGroundImage = new Entity(
                 new StationaryShape(new Vec2F(0.0f, 0.0f),
