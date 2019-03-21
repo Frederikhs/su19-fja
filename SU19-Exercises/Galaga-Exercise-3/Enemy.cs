@@ -1,8 +1,6 @@
-using System.Drawing.Text;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-using Galaga_Exercise_3;
 using Galaga_Exercise_3.GalagaStates;
 
 namespace Galaga_Exercise_3.GalagaEntities.Enemy {

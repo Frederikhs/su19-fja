@@ -14,7 +14,6 @@ namespace Galaga_Exercise_3 {
         
         //Constructor
         public ZigZagFormation(int enemyCount) {
-            Console.WriteLine("Called ZigZagFormation");
             //Adding x enemies
             MaxEnemies = enemyCount;
             
@@ -23,7 +22,6 @@ namespace Galaga_Exercise_3 {
         }
         
         public void CreateEnemies(List<Image> enemyStrides) {
-            Console.WriteLine("Called CreateEnemies");
             //Creating image strides for the enemies
             ImageStride enemyAnimation = new ImageStride(80,enemyStrides);
             
