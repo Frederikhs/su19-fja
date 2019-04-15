@@ -24,4 +24,4 @@ namespace SpaceTaxi_1 {
             }
         }
     }
-}∆
+}
