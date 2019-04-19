@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace SpaceTaxi_1 {
-    public class text_loader {
+    public class TextLoader {
 
         private string[] allLevelText;
+        
 
-        public text_loader(string level_string) {
-            var path = "../../Levels/"+level_string+".txt";
+        public TextLoader(string levelString) {
+            var path = "../../Levels/"+levelString+".txt";
             allLevelText = File.ReadAllLines(path);
         }
 
