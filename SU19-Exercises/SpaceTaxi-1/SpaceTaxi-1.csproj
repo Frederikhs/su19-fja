@@ -45,11 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LvlStructures.cs" />
+    <Compile Include="GraphicsGenerator.cs" />
+    <Compile Include="LevelParts\LvlCustomer.cs" />
+    <Compile Include="LevelParts\LvlInfo.cs" />
+    <Compile Include="LevelParts\LvlLegends.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="LvlCustomer.cs" />
-    <Compile Include="LvlInfo.cs" />
-    <Compile Include="LvlLegends.cs" />
+    <Compile Include="LevelParts\LvlStructures.cs" />
+    <Compile Include="LevelParts\pixel.cs" />
     <Compile Include="Taxi\Orientation.cs" />
     <Compile Include="Taxi\Player.cs" />
     <Compile Include="Program.cs" />

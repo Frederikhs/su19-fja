@@ -13,7 +13,7 @@ namespace SpaceTaxi_1 {
         }
 
         //Method for getting a level map
-        public List<string> get_lvl_string() {
+        public List<string> get_lvl_struc_string() {
             List<string> map = new List<string>(); 
             for (int i = 0; i < 23; i++) {
                 map.Add(allLevelText[i]);

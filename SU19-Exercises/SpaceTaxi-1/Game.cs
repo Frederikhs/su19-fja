@@ -16,6 +16,8 @@ namespace SpaceTaxi_1 {
         private Player player;
         private Window win;
 
+        private GraphicsGenerator grafgen;
+
         public Game() {
             // window
             win = new Window("Space Taxi Game v0.1", 500, AspectRatio.R1X1);
@@ -49,6 +51,10 @@ namespace SpaceTaxi_1 {
             eventBus.Subscribe(GameEventType.InputEvent, this);
             eventBus.Subscribe(GameEventType.WindowEvent, this);
             eventBus.Subscribe(GameEventType.PlayerEvent, player);
+
+            grafgen = new GraphicsGenerator("short-n-sweet", 500, 500);
+
+
         }
 
         public void GameLoop() {
@@ -64,6 +70,8 @@ namespace SpaceTaxi_1 {
                     win.Clear();
                     backGroundImage.RenderEntity();
                     player.RenderPlayer();
+
+//                    grafgen.pixels.RenderEntities();
 
                     win.SwapBuffers();
                 }
