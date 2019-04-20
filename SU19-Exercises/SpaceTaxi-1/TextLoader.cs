@@ -6,7 +6,6 @@ namespace SpaceTaxi_1 {
     public class TextLoader {
 
         private string[] allLevelText;
-        
 
         public TextLoader(string levelString) {
             var path = "../../Levels/"+levelString+".txt";

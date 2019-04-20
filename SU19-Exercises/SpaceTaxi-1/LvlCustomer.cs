@@ -18,5 +18,6 @@ namespace SpaceTaxi_1 {
             }
             
         }
+        // TODO: Maybe consider using list of customers or arrays. Looking up in dictionary can be non-scalable
     }
 }
