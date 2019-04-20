@@ -8,7 +8,7 @@ namespace SpaceTaxi_1 {
         public static void Main(string[] args) {
             LvlLegends some = new LvlLegends("short-n-sweet");
             Console.WriteLine(
-            some.LegendsDic['C']);
+            some.LegendsDic['%']);
         }
     }
 }

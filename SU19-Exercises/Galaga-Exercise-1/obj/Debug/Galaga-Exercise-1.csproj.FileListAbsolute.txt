@@ -43,3 +43,14 @@ C:/SU/uge4git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exerci
 /home/frederik/Desktop/hubbi-git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csproj.CopyComplete
 /home/frederik/Desktop/hubbi-git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exercise_1.exe
 /home/frederik/Desktop/hubbi-git/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exercise_1.pdb
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/bin/Debug/Galaga_Exercise_1.exe
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/bin/Debug/Galaga_Exercise_1.pdb
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/bin/Debug/DIKUArcade.dll
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/bin/Debug/OpenTK.dll
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/bin/Debug/DIKUArcade.pdb
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/bin/Debug/OpenTK.xml
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csprojAssemblyReference.cache
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csproj.CoreCompileInputs.cache
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga-Exercise-1.csproj.CopyComplete
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exercise_1.exe
+/home/frederik/RiderProjects/su19-h2g6/SU19-Exercises/Galaga-Exercise-1/obj/Debug/Galaga_Exercise_1.pdb
