@@ -19,6 +19,8 @@ namespace SpaceTaxi_1
         
         private Game game;
 
+        public float width;
+
         public GraphicsGenerator(string level, int width, int height, Game game) {
             //We gather all level info required to produce graphics
             Legends = new LvlLegends(level);
@@ -39,8 +41,9 @@ namespace SpaceTaxi_1
             //Each image is to be image_width wide, and have image_height height
             
             //We start at pos -1,1 (top-left), each image is to be placed image_width and image_height apart
-            var posX = -1f;
-            var posY = 1f;
+            var posX = -1f-image_width;
+            var posY = 1f-1*image_height;
+            this.width = posX;
 
             EntityContainer<Entity> returner = new EntityContainer<Entity>();
                     
@@ -49,7 +52,7 @@ namespace SpaceTaxi_1
                 //Then we iterate over each char in the line 
                 char[] line = new char[elem.Length];
                 line = elem.ToCharArray();
-                foreach (var someChar in line)
+                foreach (char someChar in line)
                 {
                     if (Legends.LegendsDic.ContainsKey(someChar))
                     {
@@ -58,26 +61,20 @@ namespace SpaceTaxi_1
                             new pixel(game,
                                 new DynamicShape(
                                     new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image));
+                        Console.WriteLine("PosX:"+posX+" PosY:"+posY);
+                        if (Legends.LegendsDic.ContainsKey(someChar))
+                        {
+                            Console.WriteLine(Legends.LegendsDic[someChar]);
+                        }
                     }
-                    else
-                    {
-                        var image = new Image(Path.Combine("Assets", "Images", "deep-bronze-square.png"));
-                        returner.AddDynamicEntity(
-                            new pixel(game,
-                                new DynamicShape(
-                                    new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image));
-                    }
+                    
 
                     posX += image_width;
-                    Console.WriteLine("PosX:"+posX+" PosY:"+posY);
-                    if (Legends.LegendsDic.ContainsKey(someChar))
-                    {
-                        Console.WriteLine(Legends.LegendsDic[someChar]);
-                    }
+                    
                 }
 
-                posX = 1f;
-                posY += -image_height;
+                posX = 0f;
+                posY -= image_height;
             }
 
             return returner;
