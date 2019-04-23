@@ -13,7 +13,7 @@ namespace SpaceTaxi_1 {
         private Entity backGroundImage;
         private GameEventBus<object> eventBus;
         private GameTimer gameTimer;
-        private Player player;
+        public Player player;
         private Window win;
 
         private GraphicsGenerator grafgen;
@@ -46,7 +46,7 @@ namespace SpaceTaxi_1 {
 
             // game entities
             player = new Player();
-            player.SetPosition(0.45f, 0.6f);
+            player.SetPosition(0.0f, 0.0f);
             player.SetExtent(0.1f, 0.1f);
 
             // event delegation
@@ -54,10 +54,10 @@ namespace SpaceTaxi_1 {
             eventBus.Subscribe(GameEventType.WindowEvent, this);
             eventBus.Subscribe(GameEventType.PlayerEvent, player);
 
-            grafgen = new GraphicsGenerator("short-n-sweet", 500, 500,this);
+            grafgen = new GraphicsGenerator("short-n-sweet", 500, 500,this, player);
+            
             pixel_container = grafgen.GenerateImages(500, 500);
             pixel_container.RenderEntities();
-            Console.WriteLine(pixel_container.CountEntities());
 
         }
 
@@ -73,8 +73,8 @@ namespace SpaceTaxi_1 {
                 if (gameTimer.ShouldRender()) {
                     win.Clear();
                     backGroundImage.RenderEntity();
-                    player.RenderPlayer();
                     pixel_container.RenderEntities();
+                    player.RenderPlayer();
                     
                     win.SwapBuffers();
                 }

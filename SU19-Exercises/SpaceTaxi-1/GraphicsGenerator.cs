@@ -20,8 +20,9 @@ namespace SpaceTaxi_1
         private Game game;
 
         public float width;
+        public Player player;
 
-        public GraphicsGenerator(string level, int width, int height, Game game) {
+        public GraphicsGenerator(string level, int width, int height, Game game, Player player) {
             //We gather all level info required to produce graphics
             Legends = new LvlLegends(level);
             Structure = new LvlStructures(level);
@@ -30,7 +31,7 @@ namespace SpaceTaxi_1
             pixel_container = new EntityContainer<pixel>();
 
             this.game = game;
-
+            this.player = player;
         }
 
         public EntityContainer<Entity> GenerateImages(int width, int height) {
@@ -41,7 +42,7 @@ namespace SpaceTaxi_1
             //Each image is to be image_width wide, and have image_height height
             
             //We start at pos -1,1 (top-left), each image is to be placed image_width and image_height apart
-            var posX = -1f-image_width;
+            var posX = 0f;
             var posY = 1f-1*image_height;
             this.width = posX;
 
@@ -61,10 +62,21 @@ namespace SpaceTaxi_1
                             new pixel(game,
                                 new DynamicShape(
                                     new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image));
-                        Console.WriteLine("PosX:"+posX+" PosY:"+posY);
-                        if (Legends.LegendsDic.ContainsKey(someChar))
+                    }
+                    else
+                    {
+                        switch (someChar)
                         {
-                            Console.WriteLine(Legends.LegendsDic[someChar]);
+                            case '^':
+                                //Empty for passage way
+                                break;
+                            case '>':
+                                //This is the player. We set the position
+//                                player.SetPosition(posX, posY);
+                                Console.WriteLine("Sets player pos to"+posX+" & "+posY);
+                                break;
+                            default:
+                                break;
                         }
                     }
                     
