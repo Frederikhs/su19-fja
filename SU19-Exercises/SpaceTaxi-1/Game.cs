@@ -56,7 +56,7 @@ namespace SpaceTaxi_1 {
 
             grafgen = new GraphicsGenerator("short-n-sweet", 500, 500,this, player);
             
-            pixel_container = grafgen.GenerateImages(500, 500);
+            pixel_container = grafgen.GenerateImages(500, 500, player);
             pixel_container.RenderEntities();
 
         }

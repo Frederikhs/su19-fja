@@ -26,7 +26,7 @@ namespace SpaceTaxi_1
             //We gather all level info required to produce graphics
             Legends = new LvlLegends(level);
             Structure = new LvlStructures(level);
-            GenerateImages(width, height);
+            GenerateImages(width, height, player);
             
             pixel_container = new EntityContainer<pixel>();
 
@@ -34,7 +34,7 @@ namespace SpaceTaxi_1
             this.player = player;
         }
 
-        public EntityContainer<Entity> GenerateImages(int width, int height) {
+        public EntityContainer<Entity> GenerateImages(int width, int height, Player player) {
             //We calculate the width and height of each "pixel"
             //We know that the width and height of the level chars is 40x23
             var image_width = ConvertRange((float)width / 40);
@@ -72,7 +72,7 @@ namespace SpaceTaxi_1
                                 break;
                             case '>':
                                 //This is the player. We set the position
-//                                player.SetPosition(posX, posY);
+                                player.SetPosition(posX, posY);
                                 Console.WriteLine("Sets player pos to"+posX+" & "+posY);
                                 break;
                             default:
