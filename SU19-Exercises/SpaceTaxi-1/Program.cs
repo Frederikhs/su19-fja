@@ -7,13 +7,6 @@ namespace SpaceTaxi_1 {
         
         public static void Main(string[] args)
         {
-//            GraphicsGenerator gene = new GraphicsGenerator("short-n-sweet",500,500);
-//            LvlStructures sss = new LvlStructures("short-n-sweet");
-//            foreach (var VARIABLE in sss.structure)
-//            {
-//                Console.WriteLine(VARIABLE);
-//            }
-
             Game newGame = new Game();
             newGame.GameLoop();
         }

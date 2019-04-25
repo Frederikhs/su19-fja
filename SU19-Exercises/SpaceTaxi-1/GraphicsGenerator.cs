@@ -93,16 +93,7 @@ namespace SpaceTaxi_1
         }
 
         public float ConvertRange(float i) {
-            var val1 = i;
-            var min1 = 0f;
-            var max1 = 500f;
-            var range1 = max1 - min1;
-
-            var min2 = 0f;
-            var max2 = 1f;
-            var range2 = max2 - min2;
-
-            return val1*range2/range1 + min2;
+            return i*1/500;
         }
     }
 }

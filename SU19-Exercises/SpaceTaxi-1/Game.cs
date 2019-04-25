@@ -46,6 +46,7 @@ namespace SpaceTaxi_1 {
 
             // game entities
             player = new Player();
+            // initial position, actual position is set by "grafgen" (l. 58)
             player.SetPosition(0.0f, 0.0f);
             player.SetExtent(0.1f, 0.1f);
 
@@ -54,7 +55,7 @@ namespace SpaceTaxi_1 {
             eventBus.Subscribe(GameEventType.WindowEvent, this);
             eventBus.Subscribe(GameEventType.PlayerEvent, player);
 
-            grafgen = new GraphicsGenerator("short-n-sweet", 500, 500,this, player);
+            grafgen = new GraphicsGenerator("the-beach", 500, 500,this, player);
             
             pixel_container = grafgen.GenerateImages(500, 500, player);
             pixel_container.RenderEntities();

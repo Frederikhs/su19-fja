@@ -7,6 +7,7 @@ namespace SpaceTaxi_1 {
 
         private string[] allLevelText;
 
+        // A TextLoader loads an entire .txt file into a string array 
         public TextLoader(string levelString) {
             var path = "../../Levels/"+levelString+".txt";
             allLevelText = File.ReadAllLines(path);

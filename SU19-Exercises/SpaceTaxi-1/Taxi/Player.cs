@@ -12,6 +12,7 @@ namespace SpaceTaxi_1 {
         private readonly DynamicShape shape;
         private Orientation taxiOrientation;
 
+        // A Player has a shape
         public Player() {
             shape = new DynamicShape(new Vec2F(), new Vec2F());
             taxiBoosterOffImageLeft =
