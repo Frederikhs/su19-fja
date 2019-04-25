@@ -9,8 +9,29 @@ namespace SpaceTaxi_1 {
 
         // A TextLoader loads an entire .txt file into a string array 
         public TextLoader(string levelString) {
-            var path = "../../Levels/"+levelString+".txt";
+            var path = GetLevelFilePath("short-n-sweet.txt");
             allLevelText = File.ReadAllLines(path);
+        }
+        
+        // Method for retrieving path to Levels
+        private string GetLevelFilePath(string filename) {
+            // Find base path.
+            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(
+                System.Reflection.Assembly.GetExecutingAssembly().Location));
+
+            while (dir.Name != "bin") {
+                dir = dir.Parent;
+            }
+            dir = dir.Parent;
+
+            // Find level file.
+            string path = Path.Combine(dir.FullName.ToString(), "Levels", filename);
+
+            if (!File.Exists(path)) {
+                throw new FileNotFoundException($"Error: The file \"{path}\" does not exist.");
+            }
+
+            return path;
         }
 
         //Method for getting a level map
