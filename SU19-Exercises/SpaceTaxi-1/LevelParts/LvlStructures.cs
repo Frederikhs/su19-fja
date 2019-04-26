@@ -9,7 +9,7 @@ namespace SpaceTaxi_1 {
 
         public LvlStructures(string level) {
             myLoader = new TextLoader(level);
-            Structure = myLoader.get_lvl_struc_string();
+            Structure = myLoader.GetLvlStructure();
         }
         
     }

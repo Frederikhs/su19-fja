@@ -9,7 +9,7 @@ namespace SpaceTaxi_1 {
         // The constructors input determines of which lvl a dictionary is made
         public LvlInfo(string levelString) {
             InfoDic = new Dictionary<string, string>();
-            var infoString = new TextLoader(levelString).get_lvl_info();
+            var infoString = new TextLoader(levelString).GetLvlInfo();
             foreach (var elem in infoString) {
                 string[] split = Regex.Split(elem, ": ");
                 InfoDic.Add(split[0], split[1]);

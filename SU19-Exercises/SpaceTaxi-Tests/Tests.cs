@@ -17,7 +17,7 @@ namespace SpaceTaxi_Tests {
         [Test]
         public void Test1() {
             var expected = new TestData().customers;
-            CollectionAssert.AreEquivalent(expected, textLoader.get_customer_info());
+            CollectionAssert.AreEquivalent(expected, textLoader.GetCustomerInfo());
         }
     }
 }

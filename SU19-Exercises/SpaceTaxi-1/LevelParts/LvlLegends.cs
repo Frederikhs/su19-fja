@@ -9,7 +9,7 @@ namespace SpaceTaxi_1 {
         // The constructors input determines of which lvl a dictionary is made
         public LvlLegends(string levelString) {
             LegendsDic = new Dictionary<char, string>();
-            var legendsString = new TextLoader(levelString).get_lvl_legends();
+            var legendsString = new TextLoader(levelString).GetLvlLegends();
             foreach (var elem in legendsString) {
                 LegendsDic.Add(elem[0], elem.Substring(3));
             }

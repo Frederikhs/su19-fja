@@ -35,7 +35,7 @@ namespace SpaceTaxi_1 {
         }
 
         //Method for getting a level map
-        public List<string> get_lvl_struc_string() {
+        public List<string> GetLvlStructure() {
             List<string> map = new List<string>(); 
             for (int i = 0; i < 23; i++) {
                 map.Add(allLevelText[i]);
@@ -45,7 +45,7 @@ namespace SpaceTaxi_1 {
         }
 
         //Method for getting level info
-        public List<string> get_lvl_info() {
+        public List<string> GetLvlInfo() {
             List<string> levelInfo = new List<string>();
             levelInfo.Add(allLevelText[24]);
             levelInfo.Add(allLevelText[25]);
@@ -54,7 +54,7 @@ namespace SpaceTaxi_1 {
         }
         
         //Method for getting level legends
-        public List<string> get_lvl_legends() {
+        public List<string> GetLvlLegends() {
             List<string> levelLegends = new List<string>();
 
             foreach (var line in allLevelText) {
@@ -69,7 +69,7 @@ namespace SpaceTaxi_1 {
         }
         
         //Method for getting customer info
-        public List<string> get_customer_info() {
+        public List<string> GetCustomerInfo() {
             List<string> custInfo = new List<string>();
             
             foreach (var line in allLevelText) {
