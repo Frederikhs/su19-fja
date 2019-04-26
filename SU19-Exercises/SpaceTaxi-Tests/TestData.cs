@@ -12,6 +12,7 @@ namespace SpaceTaxi_Tests {
             customers = new Dictionary<string, string>();
             customers.Add("Customer:", " Alice 10 1 ^J 10 100");
             
+            
         }
     }
 }

@@ -17,7 +17,7 @@ namespace SpaceTaxi_1 {
         private Window win;
 
         private GraphicsGenerator grafgen;
-        public EntityContainer<Entity> pixel_container;
+        public EntityContainer<pixel> pixel_container;
         private Entity asdasdsasdsa;
 
         public Game() {
@@ -56,9 +56,7 @@ namespace SpaceTaxi_1 {
             eventBus.Subscribe(GameEventType.PlayerEvent, player);
 
             grafgen = new GraphicsGenerator("the-beach", 500, 500,this, player);
-            
-            pixel_container = grafgen.GenerateImages(500, 500, player);
-            pixel_container.RenderEntities();
+            pixel_container = grafgen.GenerateImages();
 
         }
 

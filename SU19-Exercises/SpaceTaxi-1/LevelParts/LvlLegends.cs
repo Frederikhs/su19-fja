@@ -11,7 +11,7 @@ namespace SpaceTaxi_1 {
             LegendsDic = new Dictionary<char, string>();
             var legendsString = new TextLoader(levelString).get_lvl_legends();
             foreach (var elem in legendsString) {
-                LegendsDic.Add(elem[0], elem.Substring(3)); // Changed from 2 to 3, thus removing whitespace
+                LegendsDic.Add(elem[0], elem.Substring(3));
             }
             
         }

@@ -11,8 +11,7 @@ namespace SpaceTaxi_1 {
             InfoDic = new Dictionary<string, string>();
             var infoString = new TextLoader(levelString).get_lvl_info();
             foreach (var elem in infoString) {
-                string[] split = Regex.Split(elem, ": "); // Added Regex split, so we don't get a space in the string
-                
+                string[] split = Regex.Split(elem, ": ");
                 InfoDic.Add(split[0], split[1]);
             }
             
