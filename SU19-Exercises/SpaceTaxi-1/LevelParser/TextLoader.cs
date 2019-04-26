@@ -9,7 +9,7 @@ namespace SpaceTaxi_1 {
 
         // A TextLoader loads an entire .txt file into a string array 
         public TextLoader(string levelString) {
-            var path = GetLevelFilePath("short-n-sweet.txt");
+            var path = GetLevelFilePath(levelString+".txt");
             allLevelText = File.ReadAllLines(path);
         }
         

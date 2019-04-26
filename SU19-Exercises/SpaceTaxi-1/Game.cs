@@ -54,7 +54,8 @@ namespace SpaceTaxi_1 {
             eventBus.Subscribe(GameEventType.WindowEvent, this);
             eventBus.Subscribe(GameEventType.PlayerEvent, player);
 
-            grafgen = new GraphicsGenerator("the-beach", 500, 500,this, player);
+            //Change the level based on what level name graphics generator is constructed with:
+            grafgen = new GraphicsGenerator("short-n-sweet", 500, 500,this, player);
             pixel_container = grafgen.AllGraphics;
 
         }
