@@ -15,7 +15,7 @@ namespace SpaceTaxi_1
         private LvlStructures Structure;
         public List<Entity> elements;
         
-        public EntityContainer<pixel> pixel_container { get; }
+        public EntityContainer<pixel> pixelContainer { get; }
         
         private Game game;
 
@@ -28,7 +28,7 @@ namespace SpaceTaxi_1
             Structure = new LvlStructures(level);
             GenerateImages(width, height, player);
             
-            pixel_container = new EntityContainer<pixel>();
+            pixelContainer = new EntityContainer<pixel>();
 
             this.game = game;
             this.player = player;
@@ -49,7 +49,7 @@ namespace SpaceTaxi_1
             EntityContainer<Entity> returner = new EntityContainer<Entity>();
                     
             //We iterate over each line
-            foreach (var elem in Structure.structure) {
+            foreach (var elem in Structure.Structure) {
                 //Then we iterate over each char in the line 
                 char[] line = new char[elem.Length];
                 line = elem.ToCharArray();

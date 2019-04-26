@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SpaceTaxi_1 {
@@ -13,6 +14,8 @@ namespace SpaceTaxi_1 {
             var customerString = new TextLoader(levelString).get_customer_info();
             foreach (var elem in customerString) {
                 string[] split = elem.Split(':');
+                Console.WriteLine(split[0]);
+                Console.WriteLine(split[1]);
                 
                 CustomerDic.Add(split[0], split[1]);
             }

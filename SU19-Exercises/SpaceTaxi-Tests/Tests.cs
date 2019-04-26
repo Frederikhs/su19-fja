@@ -16,9 +16,8 @@ namespace SpaceTaxi_Tests {
         
         [Test]
         public void Test1() {
-            var actual = new TestData();
-            
-            Assert.That(textLoader.get_customer_info(), Is.EqualTo(actual));
+            var expected = new TestData().customers;
+            CollectionAssert.AreEquivalent(expected, textLoader.get_customer_info());
         }
     }
 }
