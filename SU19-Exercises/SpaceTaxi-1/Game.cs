@@ -18,7 +18,6 @@ namespace SpaceTaxi_1 {
 
         private GraphicsGenerator grafgen;
         public EntityContainer<pixel> pixel_container;
-        private Entity asdasdsasdsa;
 
         public Game() {
             // window

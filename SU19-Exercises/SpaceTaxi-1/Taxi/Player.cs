@@ -28,7 +28,6 @@ namespace SpaceTaxi_1 {
         public void SetPosition(float x, float y) {
             shape.Position.X = x;
             shape.Position.Y = y;
-            Console.WriteLine("Position is set!");
         }
 
         public void SetExtent(float width, float height) {
