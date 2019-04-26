@@ -56,7 +56,7 @@ namespace SpaceTaxi_1 {
             eventBus.Subscribe(GameEventType.PlayerEvent, player);
 
             grafgen = new GraphicsGenerator("the-beach", 500, 500,this, player);
-            pixel_container = grafgen.GenerateImages();
+            pixel_container = grafgen.AllGraphics;
 
         }
 

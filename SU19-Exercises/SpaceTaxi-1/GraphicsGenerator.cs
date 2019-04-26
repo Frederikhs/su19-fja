@@ -16,6 +16,8 @@ namespace SpaceTaxi_1
         public float width;
         public Player player;
 
+        public EntityContainer<pixel> AllGraphics;
+
         public GraphicsGenerator(string level, int width, int height, Game game, Player player) {
             //We gather all level info required to produce graphics
             Legends = new LvlLegends(level);
@@ -23,9 +25,11 @@ namespace SpaceTaxi_1
             this.game = game;
             this.player = player;
             this.width = width;
+
+            this.AllGraphics = GenerateImages();
         }
 
-        public EntityContainer<pixel> GenerateImages() {
+        private EntityContainer<pixel> GenerateImages() {
             var width = (int) this.width;
             var height = (int) this.width;
             var player = this.player;
@@ -83,7 +87,7 @@ namespace SpaceTaxi_1
         }
 
         //Converts the range of an aspect ratio to another
-        public float ConvertRange(float i) {
+        private float ConvertRange(float i) {
             return i*1/this.width;
         }
     }
