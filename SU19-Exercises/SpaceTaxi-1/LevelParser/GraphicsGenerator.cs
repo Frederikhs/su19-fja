@@ -18,17 +18,19 @@ namespace SpaceTaxi_1
 
         public EntityContainer<pixel> AllGraphics;
 
-        public GraphicsGenerator(string level, int width, int height, Game game, Player player) {
+        public GraphicsGenerator(LvlLegends legends, LvlStructures structures, int width, Game game, Player player) {
             //We gather all level info required to produce graphics
-            Legends = new LvlLegends(level);
-            Structure = new LvlStructures(level);
+            this.Legends = legends;
+            this.Structure = structures;
             this.game = game;
             this.player = player;
             this.width = width;
-
             this.AllGraphics = GenerateImages();
         }
 
+        /// <summary>
+        /// Method for creating an entity container for a given level based on legends, structures, width of viewport, game and player.
+        /// </summary>
         private EntityContainer<pixel> GenerateImages() {
             var width = (int) this.width;
             var height = (int) this.width;
@@ -73,7 +75,6 @@ namespace SpaceTaxi_1
                                 break;
                         }
                     }
-                    
 
                     posX += image_width;
                     
@@ -86,7 +87,9 @@ namespace SpaceTaxi_1
             return returnContainer;
         }
 
-        //Converts the range of an aspect ratio to another
+        /// <summary>
+        /// Convert the range of a float to the viewpoint
+        /// </summary>
         private float ConvertRange(float i) {
             return i*1/this.width;
         }

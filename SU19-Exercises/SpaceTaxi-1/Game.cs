@@ -15,7 +15,6 @@ namespace SpaceTaxi_1 {
         private GameTimer gameTimer;
         public Player player;
         private Window win;
-
         private GraphicsGenerator grafgen;
         public EntityContainer<pixel> pixel_container;
 
@@ -29,7 +28,7 @@ namespace SpaceTaxi_1 {
                 GameEventType.InputEvent, // key press / key release
                 GameEventType.WindowEvent, // messages to the window, e.g. CloseWindow()
                 GameEventType.PlayerEvent // commands issued to the player object, e.g. move,
-                                          // destroy, receive health, etc.
+                // destroy, receive health, etc.
             });
             win.RegisterEventBus(eventBus);
 
@@ -54,10 +53,10 @@ namespace SpaceTaxi_1 {
             eventBus.Subscribe(GameEventType.WindowEvent, this);
             eventBus.Subscribe(GameEventType.PlayerEvent, player);
 
-            //Change the level based on what level name graphics generator is constructed with:
-            grafgen = new GraphicsGenerator("short-n-sweet", 500, 500,this, player);
+            //Change the level based on what level name the level components are constructed with
+            grafgen = new GraphicsGenerator(new LvlLegends("the-beach"),
+                new LvlStructures("the-beach"), 500, this, player);
             pixel_container = grafgen.AllGraphics;
-
         }
 
         public void GameLoop() {
@@ -74,14 +73,14 @@ namespace SpaceTaxi_1 {
                     backGroundImage.RenderEntity();
                     pixel_container.RenderEntities();
                     player.RenderPlayer();
-                    
+
                     win.SwapBuffers();
                 }
 
                 if (gameTimer.ShouldReset()) {
                     // 1 second has passed - display last captured ups and fps from the timer
                     win.Title = "Space Taxi | UPS: " + gameTimer.CapturedUpdates + ", FPS: " +
-                                 gameTimer.CapturedFrames;
+                                gameTimer.CapturedFrames;
                 }
             }
         }
