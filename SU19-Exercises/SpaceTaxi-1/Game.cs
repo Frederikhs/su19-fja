@@ -45,8 +45,6 @@ namespace SpaceTaxi_1 {
 
             // game entities
             player = new Player();
-            // initial position, actual position is set by "grafgen" (l. 58)
-            player.SetPosition(0.0f, 0.0f);
             player.SetExtent(0.1f, 0.1f);
 
             // event delegation
