@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DIKUArcade.Graphics;
 
 namespace SpaceTaxi_1 {
     public class LvlLegends {
@@ -9,9 +10,9 @@ namespace SpaceTaxi_1 {
         /// LvlLegends is a dictionary of ASCII chars and their corresponding .png file name
         /// The constructors input determines of which lvl a dictionary is made
         /// </summary>
-        public LvlLegends(string levelString) {
+        public LvlLegends(TextLoader loader) {
             LegendsDic = new Dictionary<char, string>();
-            var legendsString = new TextLoader(levelString).GetLvlLegends();
+            var legendsString = loader.GetLvlLegends();
             foreach (var elem in legendsString) {
                 LegendsDic.Add(elem[0], elem.Substring(3));
             }

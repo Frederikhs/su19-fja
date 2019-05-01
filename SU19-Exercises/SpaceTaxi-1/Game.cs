@@ -15,6 +15,7 @@ namespace SpaceTaxi_1 {
         private GameTimer gameTimer;
         public Player player;
         private Window win;
+        private TextLoader loader;
         private GraphicsGenerator grafgen;
         public EntityContainer<pixel> pixel_container;
 
@@ -53,9 +54,10 @@ namespace SpaceTaxi_1 {
             eventBus.Subscribe(GameEventType.WindowEvent, this);
             eventBus.Subscribe(GameEventType.PlayerEvent, player);
 
-            //Change the level based on what level name the level components are constructed with
-            grafgen = new GraphicsGenerator(new LvlLegends("the-beach"),
-                new LvlStructures("the-beach"), 500, this, player);
+            //Change the level based on what level name the loader is constructed with
+            loader = new TextLoader("the-beach");
+            grafgen = new GraphicsGenerator(new LvlLegends(loader),
+                new LvlStructures(loader), 500, this, player);
             pixel_container = grafgen.AllGraphics;
         }
 

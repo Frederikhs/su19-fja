@@ -13,7 +13,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void short_n_sweet_LvlCustomer() {
-            LvlCustomer lvlcustomer = new LvlCustomer("short-n-sweet");
+            LvlCustomer lvlcustomer = new LvlCustomer(new TextLoader("short-n-sweet"));
             List<String> Customers = new List<string> {
                 "Customer: Alice 10 1 ^J 10 100"
             };
@@ -25,7 +25,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void short_n_sweet_LvlInfo() {
-            LvlInfo lvlinfo = new LvlInfo("short-n-sweet");
+            LvlInfo lvlinfo = new LvlInfo(new TextLoader("short-n-sweet"));
             Dictionary<string, string> infoDic = new Dictionary<string, string> {
                 {"Name","SHORT -N- SWEET"},
                 {"Platforms","1"}
@@ -38,7 +38,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void short_n_sweet_LvlLegends() {
-            LvlLegends lvllegends = new LvlLegends("short-n-sweet");
+            LvlLegends lvllegends = new LvlLegends(new TextLoader("short-n-sweet"));
             Dictionary<char, string> LegendsDic = new Dictionary<char, string> {
                 {'%', "white-square.png"},
                 {'#', "ironstone-square.png"},
@@ -71,7 +71,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void short_n_sweet_LvlStructure() {
-            LvlStructures lvlstructures = new LvlStructures("short-n-sweet");
+            LvlStructures lvlstructures = new LvlStructures(new TextLoader("short-n-sweet"));
             List<String> Structure = new List<string> {
                 "%#%#%#%#%#%#%#%#%#^^^^^^%#%#%#%#%#%#%#%#",
                 "#               JW      JW             %",
@@ -105,7 +105,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void the_beach_LvlCustomer() {
-            LvlCustomer lvlcustomer = new LvlCustomer("the-beach");
+            LvlCustomer lvlcustomer = new LvlCustomer(new TextLoader("the-beach"));
             List<String> Customers = new List<string> {
                 "Customer: Bob 10 J r 10 100",
                 "Customer: Carol 30 r ^ 10 100"
@@ -118,7 +118,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void the_beach_LvlInfo() {
-            LvlInfo lvlinfo = new LvlInfo("the-beach");
+            LvlInfo lvlinfo = new LvlInfo(new TextLoader("the-beach"));
             Dictionary<string, string> infoDic = new Dictionary<string, string> {
                 {"Name","THE BEACH"},
                 {"Platforms","J, i, r"}
@@ -131,7 +131,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void the_beach_LvlLegends() {
-            LvlLegends lvllegends = new LvlLegends("the-beach");
+            LvlLegends lvllegends = new LvlLegends(new TextLoader("the-beach"));
             Dictionary<char, string> LegendsDic = new Dictionary<char, string> {
                 {'A', "aspargus-edge-left.png"},
                 {'B', "aspargus-edge-right.png"},
@@ -171,7 +171,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void the_beach_LvlStructure() {
-            LvlStructures lvlstructures = new LvlStructures("the-beach");
+            LvlStructures lvlstructures = new LvlStructures(new TextLoader("the-beach"));
             List<String> Structure = new List<string> {
                 "CTTTTTTTTTTTTTTTTD^^^^^^CTTTTTTTTTTTTttt",
                 "A                                    stt",
