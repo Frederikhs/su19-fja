@@ -7,6 +7,9 @@ namespace SpaceTaxi_1 {
         private TextLoader myLoader;
         public List<string> Customers;
 
+        /// <summary>
+        /// Method for getting key/value dictionary for customer info
+        /// </summary>
         public LvlCustomer(string level) {
             myLoader = new TextLoader(level);
             this.Customers = myLoader.GetCustomerInfo();

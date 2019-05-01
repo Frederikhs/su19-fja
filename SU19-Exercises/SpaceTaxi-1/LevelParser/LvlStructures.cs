@@ -7,6 +7,9 @@ namespace SpaceTaxi_1 {
         private TextLoader myLoader;
         public List<string> Structure;
 
+        /// <summary>
+        /// Retrieves the list of string of level structure for a given level
+        /// </summary>
         public LvlStructures(string level) {
             myLoader = new TextLoader(level);
             Structure = myLoader.GetLvlStructure();

@@ -7,13 +7,17 @@ namespace SpaceTaxi_1 {
 
         private string[] allLevelText;
 
-        // A TextLoader loads an entire .txt file into a string array 
+        /// <summary>
+        /// A TextLoader loads an entire .txt file into a string array
+        /// </summary>
         public TextLoader(string levelString) {
             var path = GetLevelFilePath(levelString+".txt");
             allLevelText = File.ReadAllLines(path);
         }
         
-        // Method for retrieving path to Levels
+        /// <summary>
+        /// Method for retrieving path to Levels
+        /// </summary>
         private string GetLevelFilePath(string filename) {
             // Find base path.
             DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(
@@ -34,7 +38,9 @@ namespace SpaceTaxi_1 {
             return path;
         }
 
-        //Method for getting a level map
+        /// <summary>
+        /// Method for getting a level map
+        /// </summary>
         public List<string> GetLvlStructure() {
             List<string> map = new List<string>(); 
             for (int i = 0; i < 23; i++) {
@@ -44,7 +50,9 @@ namespace SpaceTaxi_1 {
             return map;
         }
 
-        //Method for getting level info
+        /// <summary>
+        /// Method for getting level info
+        /// </summary>
         public List<string> GetLvlInfo() {
             List<string> levelInfo = new List<string>();
             levelInfo.Add(allLevelText[24]);
@@ -53,7 +61,9 @@ namespace SpaceTaxi_1 {
             return levelInfo;
         }
         
-        //Method for getting level legends
+        /// <summary>
+        /// Method for getting level legends
+        /// </summary>
         public List<string> GetLvlLegends() {
             List<string> levelLegends = new List<string>();
 
@@ -68,7 +78,9 @@ namespace SpaceTaxi_1 {
             return levelLegends;
         }
         
-        //Method for getting customer info
+        /// <summary>
+        /// Method for getting customer info
+        /// </summary>
         public List<string> GetCustomerInfo() {
             List<string> custInfo = new List<string>();
             

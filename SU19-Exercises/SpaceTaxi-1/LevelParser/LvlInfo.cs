@@ -5,8 +5,10 @@ namespace SpaceTaxi_1 {
     public class LvlInfo {
         public Dictionary<string, string> InfoDic { get; }
 
-        // A LvlInfo is a dictionary of various info about a lvl
-        // The constructors input determines of which lvl a dictionary is made
+        /// <summary>
+        /// A LvlInfo is a dictionary of various info about a lvl
+        /// The constructors input determines of which lvl a dictionary is made
+        /// </summary>
         public LvlInfo(string levelString) {
             InfoDic = new Dictionary<string, string>();
             var infoString = new TextLoader(levelString).GetLvlInfo();
