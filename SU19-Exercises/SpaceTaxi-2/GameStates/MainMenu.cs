@@ -61,7 +61,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                     switch (activeMenuButton) {
                     //If New Game is chosen, we change the state
                     case 0:
-                        GalagaBus.GetBus().RegisterEvent(
+                        SpaceTaxiBus.GetBus().RegisterEvent(
                             GameEventFactory<object>.CreateGameEventForAllProcessors(
                                 GameEventType.GameStateEvent,
                                 this,
@@ -70,7 +70,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                         break;
                     //If Quit is chosen we close the window
                     case 1:
-                        GalagaBus.GetBus().RegisterEvent(
+                        SpaceTaxiBus.GetBus().RegisterEvent(
                             GameEventFactory<object>.CreateGameEventForAllProcessors(
                                 GameEventType.WindowEvent,
                                 this,
