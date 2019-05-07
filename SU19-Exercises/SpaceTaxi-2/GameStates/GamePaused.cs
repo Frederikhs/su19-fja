@@ -64,7 +64,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                     switch (activeMenuButton) {
                     //If Continue is chosen, we change the state
                     case 1:
-                        GalagaBus.GetBus().RegisterEvent(
+                        SpaceTaxiBus.GetBus().RegisterEvent(
                             GameEventFactory<object>.CreateGameEventForAllProcessors(
                                 GameEventType.GameStateEvent,
                                 this,
@@ -73,7 +73,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                         break;
                     //If Main Menu is chosen we return to main menu
                     case 0:
-                        GalagaBus.GetBus().RegisterEvent(
+                        SpaceTaxiBus.GetBus().RegisterEvent(
                             GameEventFactory<object>.CreateGameEventForAllProcessors(
                                 GameEventType.GameStateEvent,
                                 this,
