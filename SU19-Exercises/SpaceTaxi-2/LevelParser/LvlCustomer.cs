@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SpaceTaxi_1 {
+namespace SpaceTaxi_2 {
     public class LvlCustomer {
       
         private TextLoader myLoader;

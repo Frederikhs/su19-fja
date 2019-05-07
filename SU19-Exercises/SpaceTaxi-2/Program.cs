@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace SpaceTaxi_1 {
+namespace SpaceTaxi_2 {
     internal class Program {
         
         public static void Main(string[] args)

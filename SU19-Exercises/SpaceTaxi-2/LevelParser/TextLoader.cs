@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SpaceTaxi_1 {
+namespace SpaceTaxi_2 {
     public class TextLoader {
 
         private string[] allLevelText;

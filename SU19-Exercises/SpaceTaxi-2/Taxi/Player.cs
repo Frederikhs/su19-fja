@@ -5,7 +5,7 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
-namespace SpaceTaxi_1 {
+namespace SpaceTaxi_2 {
     public class Player : IGameEventProcessor<object> {
         private readonly Image taxiBoosterOffImageLeft;
         private readonly Image taxiBoosterOffImageRight;

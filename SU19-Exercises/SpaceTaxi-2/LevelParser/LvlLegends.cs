@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using DIKUArcade.Graphics;
 
-namespace SpaceTaxi_1 {
+namespace SpaceTaxi_2 {
     public class LvlLegends {
         public Dictionary<char, string> LegendsDic { get; }
 

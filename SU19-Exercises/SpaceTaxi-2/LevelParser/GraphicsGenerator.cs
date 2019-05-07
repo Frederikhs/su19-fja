@@ -6,7 +6,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using OpenTK;
 
-namespace SpaceTaxi_1
+namespace SpaceTaxi_2
 {
     public class GraphicsGenerator {
         private LvlLegends Legends;

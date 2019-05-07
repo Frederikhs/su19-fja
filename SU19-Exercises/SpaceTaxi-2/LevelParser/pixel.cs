@@ -3,7 +3,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
-namespace SpaceTaxi_1
+namespace SpaceTaxi_2
 {
     public class pixel : Entity
     {

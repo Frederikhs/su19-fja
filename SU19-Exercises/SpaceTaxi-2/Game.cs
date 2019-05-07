@@ -8,7 +8,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Timers;
 
-namespace SpaceTaxi_1 {
+namespace SpaceTaxi_2 {
     public class Game : IGameEventProcessor<object> {
         private Entity backGroundImage;
         private GameEventBus<object> eventBus;

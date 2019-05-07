@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace SpaceTaxi_1 {
+namespace SpaceTaxi_2 {
     public class LvlInfo {
         public Dictionary<string, string> InfoDic { get; }
 
