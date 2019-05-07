@@ -1,3 +1,4 @@
+using System;
 using DIKUArcade.EventBus;
 using DIKUArcade.State;
 using SpaceTaxi_2.SpaceTaxiStates;
@@ -11,6 +12,7 @@ namespace SpaceTaxi_2.SpaceTaxiState {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.InputEvent, this);
             ActiveState = MainMenu.GetInstance();
+            Console.WriteLine("Statemachine created");
         }
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
@@ -28,12 +30,15 @@ namespace SpaceTaxi_2.SpaceTaxiState {
         private void SwitchState(GameStateType.EnumGameStateType stateType) {
             switch (stateType) {
             case GameStateType.EnumGameStateType.GameRunning:
+                Console.WriteLine("Game is now running");
                 ActiveState = GameRunning.GetInstance();
                 break;
             case GameStateType.EnumGameStateType.GamePaused:
+                Console.WriteLine("Game is now paused");
                 ActiveState = GamePaused.GetInstance();
                 break;
             case GameStateType.EnumGameStateType.MainMenu:
+                Console.WriteLine("Game is now in Main Menu");
                 ActiveState = MainMenu.GetInstance();
                 break;
             }

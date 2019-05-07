@@ -43,8 +43,8 @@ namespace SpaceTaxi_2 {
 
             // event delegation
             eventBus.Subscribe(GameEventType.WindowEvent, this);
-            
             stateMachine = new StateMachine();
+
 
         }
 
