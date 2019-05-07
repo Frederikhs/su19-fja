@@ -28,22 +28,25 @@ namespace SpaceTaxi_2 {
             win = new Window("Space Taxi Game v0.1", 500, AspectRatio.R1X1);
 
             // event bus
-            eventBus = new GameEventBus<object>();
+            eventBus = SpaceTaxiBus.GetBus();
             eventBus.InitializeEventBus(new List<GameEventType> {
                 GameEventType.InputEvent, // key press / key release
                 GameEventType.WindowEvent, // messages to the window, e.g. CloseWindow()
-                GameEventType.PlayerEvent // commands issued to the player object, e.g. move,
+                GameEventType.PlayerEvent,
+                GameEventType.GameStateEvent // commands issued to the player object, e.g. move,
                 // destroy, receive health, etc.
             });
             win.RegisterEventBus(eventBus);
 
             // game timer
-            gameTimer = new GameTimer(60); // 60 UPS, no FPS limit
+            gameTimer = new GameTimer(60, 60); // 60 UPS, no FPS limit
 
 
             // event delegation
             eventBus.Subscribe(GameEventType.WindowEvent, this);
+            eventBus.Subscribe(GameEventType.InputEvent, this);
             stateMachine = new StateMachine();
+
 
 
         }
@@ -86,6 +89,7 @@ namespace SpaceTaxi_2 {
                 eventBus.RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.PlayerEvent, this, "BOOSTER_UPWARDS", "", ""));
+                
                 break;
             case "KEY_LEFT":
                 eventBus.RegisterEvent(

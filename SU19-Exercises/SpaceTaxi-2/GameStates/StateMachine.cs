@@ -12,10 +12,11 @@ namespace SpaceTaxi_2.SpaceTaxiState {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.InputEvent, this);
             ActiveState = MainMenu.GetInstance();
-            Console.WriteLine("Statemachine created");
+            Console.WriteLine("Statemachine created, we are now in Main Menu");
         }
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
+            Console.WriteLine("SgtateEv ent");
             if (eventType == GameEventType.GameStateEvent) {
                 switch (gameEvent.Message) {
                 case "CHANGE_STATE":
@@ -23,6 +24,7 @@ namespace SpaceTaxi_2.SpaceTaxiState {
                     break;
                 }
             } else if (eventType == GameEventType.InputEvent) {
+                Console.WriteLine("HANDLE");
                 ActiveState.HandleKeyEvent(gameEvent.Message, gameEvent.Parameter1);
             }
         }

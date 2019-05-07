@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -34,6 +35,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         }
 
         public void HandleKeyEvent(string keyValue, string keyAction) {
+            Console.WriteLine("Callaskdljasd");
             if (keyAction == "KEY_PRESS") {
                 switch (keyValue) {
                 case "KEY_UP":
@@ -121,7 +123,9 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         }
 
         //Not used
-        public void UpdateGameLogic() { }
+        public void UpdateGameLogic() {
+            SpaceTaxiBus.GetBus().ProcessEvents();
+        }
 
         //Return an instance, or creates a new one
         public static MainMenu GetInstance() {
