@@ -30,11 +30,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             PickLevel(level);
         }
 
-        
-
-        public void UpdateGameLogic() {
-            
-        }
+        public void UpdateGameLogic() { }
 
         public void HandleKeyEvent(string keyValue, string keyAction) {
             if (keyAction == "KEY_PRESS") {
@@ -64,7 +60,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             }
         }
 
-        public void PickLevel(string level) {
+        private void PickLevel(string level) {
             loader = new TextLoader(level);
             grafgen = new GraphicsGenerator(new LvlLegends(loader),
                 new LvlStructures(loader), 500, game, player);
@@ -83,12 +79,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             // game entities
             player = new Player();
             player.SetExtent(0.1f, 0.1f);
-
-            //Change the level based on what level name the loader is constructed with
-            loader = new TextLoader("the-beach");
-            grafgen = new GraphicsGenerator(new LvlLegends(loader),
-                new LvlStructures(loader), 500, game, player);
-            pixel_container = grafgen.AllGraphics;
         }
 
         public void GameLoop() { }
@@ -122,7 +112,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                         GameEventType.GameStateEvent,
                         this,
                         "CHANGE_STATE",
-                        "GAME_PAUSED", ""));
+                        "GAME_PAUSED", this.CurrentLevel));
                 break;
             case "KEY_LEFT":
                 SpaceTaxiBus.GetBus().RegisterEvent(

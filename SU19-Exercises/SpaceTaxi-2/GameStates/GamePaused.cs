@@ -13,17 +13,18 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
 
         //Colors
         private Vec3F active;
-        private int activeMenuButton;
 
         private Entity backGroundImage;
         private Vec3F inactive;
         private int maxMenuButtons;
         private Text[] menuButtons;
         public string PausedLevel;
+        private int selectedMenu;
 
         public GamePaused(string pausedLevel) {
             InitializeGameState();
             this.PausedLevel = pausedLevel;
+            Console.WriteLine("Game is paused with level:"+pausedLevel);
         }
 
         public void RenderState() {
@@ -35,45 +36,48 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 aButton.RenderText();
             }
         }
+        
+        private void SetActiveMenu() {
+            foreach (var button in menuButtons) {
+                button.SetColor(inactive);
+                button.SetFontSize(50);
+            }
+            menuButtons[selectedMenu].SetColor(active);
+            menuButtons[selectedMenu].SetFontSize(70);
+            Console.WriteLine("Active Menu button:"+selectedMenu);
+        }
+
+        private void UpMenu() {
+            if (selectedMenu + 1 < menuButtons.Length) {
+                selectedMenu++;
+            } else {
+                selectedMenu = menuButtons.Length -1 ;
+            }
+            SetActiveMenu();
+        }
+
+        private void DownMenu() {
+            if (selectedMenu - 1 > 0) {
+                selectedMenu--;
+            } else {
+                selectedMenu = 0;
+            }
+            SetActiveMenu();
+        }
 
         public void HandleKeyEvent(string keyValue, string keyAction) {
             if (keyAction == "KEY_PRESS") {
-                Console.WriteLine("Active:" + activeMenuButton);
                 switch (keyValue) {
                 case "KEY_UP":
-                    //Setting inactive
-                    menuButtons[1].SetColor(inactive);
-                    menuButtons[1].SetFontSize(50);
-
-                    //setting active
-                    menuButtons[0].SetColor(active);
-                    menuButtons[0].SetFontSize(70);
-                    activeMenuButton = 1;
+                    UpMenu();
                     break;
 
                 case "KEY_DOWN":
-                    //Setting inactive
-                    menuButtons[0].SetColor(inactive);
-                    menuButtons[0].SetFontSize(50);
-
-                    //setting active
-                    menuButtons[1].SetColor(active);
-                    menuButtons[1].SetFontSize(70);
-                    activeMenuButton = 0;
+                    DownMenu();
                     break;
 
                 case "KEY_ENTER":
-                    switch (activeMenuButton) {
-                    //If Continue is chosen, we change the state
-                    case 1:
-                        SpaceTaxiBus.GetBus().RegisterEvent(
-                            GameEventFactory<object>.CreateGameEventForAllProcessors(
-                                GameEventType.GameStateEvent,
-                                this,
-                                "CHANGE_STATE",
-                                "GAME_RUNNING", this.PausedLevel));
-                        break;
-                    //If Main Menu is chosen we return to main menu
+                    switch (selectedMenu) {
                     case 0:
                         SpaceTaxiBus.GetBus().RegisterEvent(
                             GameEventFactory<object>.CreateGameEventForAllProcessors(
@@ -81,6 +85,15 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                                 this,
                                 "CHANGE_STATE",
                                 "MAIN_MENU", ""));
+                        break;
+                    
+                    case 1:
+                        SpaceTaxiBus.GetBus().RegisterEvent(
+                            GameEventFactory<object>.CreateGameEventForAllProcessors(
+                                GameEventType.GameStateEvent,
+                                this,
+                                "CHANGE_STATE",
+                                "GAME_RUNNING", this.PausedLevel));
                         break;
                     }
 
@@ -105,13 +118,12 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
 
             //Creating new array and adding buttons to it.
             menuButtons = new[] {
-                new Text("Continue", new Vec2F(0.2f, 0.2f), new Vec2F(0.5f, 0.3f)),
-                new Text("Main Menu", new Vec2F(0.2f, 0.1f), new Vec2F(0.3f, 0.3f))
+                new Text("Main Menu", new Vec2F(0.2f, 0.1f), new Vec2F(0.3f, 0.3f)),
+                new Text("Continue", new Vec2F(0.2f, 0.2f), new Vec2F(0.5f, 0.3f))
             };
 
             //Setting button vars
-            activeMenuButton = 0;
-            maxMenuButtons = menuButtons.Length;
+            selectedMenu = 0;
 
             //Iterating over buttons and setting their default color and size
             foreach (var button in menuButtons) {
@@ -120,8 +132,8 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             }
 
             //Setting color and font size of active button
-            menuButtons[activeMenuButton].SetColor(active);
-            menuButtons[activeMenuButton].SetFontSize(70);
+            menuButtons[selectedMenu].SetColor(active);
+            menuButtons[selectedMenu].SetFontSize(70);
         }
 
         //Not used

@@ -34,7 +34,7 @@ namespace SpaceTaxi_2.SpaceTaxiState {
                 ActiveState = GameRunning.GetInstance(level);
                 break;
             case GameStateType.EnumGameStateType.GamePaused:
-                Console.WriteLine("Game is now paused");
+                Console.WriteLine("STATEMACHINE: Game is now paused ("+level+")");
                 ActiveState = GamePaused.GetInstance(level);
                 break;
             case GameStateType.EnumGameStateType.GameLevelPicker:

@@ -123,12 +123,12 @@ namespace SpaceTaxi_2 {
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.WindowEvent) {
                 Console.WriteLine("Window event");
-//                switch (gameEvent.Message) {
-//                    case "CLOSE_WINDOW":
-//                        Console.WriteLine("Closing window");
-//                        win.CloseWindow();
-//                        break;
-//                }
+                switch (gameEvent.Message) {
+                    case "CLOSE_WINDOW":
+                        Console.WriteLine("Closing window");
+                        win.CloseWindow();
+                        break;
+                }
             } else if (eventType == GameEventType.InputEvent) {
                 switch (gameEvent.Parameter1) {
                     case "KEY_PRESS":
