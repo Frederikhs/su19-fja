@@ -32,23 +32,19 @@ namespace SpaceTaxi_2 {
             eventBus.InitializeEventBus(new List<GameEventType> {
                 GameEventType.InputEvent, // key press / key release
                 GameEventType.WindowEvent, // messages to the window, e.g. CloseWindow()
-                GameEventType.PlayerEvent,
-                GameEventType.GameStateEvent // commands issued to the player object, e.g. move,
+                GameEventType.PlayerEvent, // commands issued to the player object, e.g. move,
+                GameEventType.GameStateEvent // game state events
                 // destroy, receive health, etc.
             });
             win.RegisterEventBus(eventBus);
 
             // game timer
-            gameTimer = new GameTimer(60, 60); // 60 UPS, no FPS limit
-
-
+            gameTimer = new GameTimer(60); // 60 UPS, no FPS limit
+            
             // event delegation
             eventBus.Subscribe(GameEventType.WindowEvent, this);
             eventBus.Subscribe(GameEventType.InputEvent, this);
             stateMachine = new StateMachine();
-
-
-
         }
 
         public void GameLoop() {
@@ -78,9 +74,9 @@ namespace SpaceTaxi_2 {
 
         public void KeyPress(string key) {
             switch (key) {
-            case "KEY_ESCAPE":
-                win.CloseWindow();
-                break;
+//            case "KEY_ESCAPE":
+//                win.CloseWindow();
+//                break;
             case "KEY_F12":
                 Console.WriteLine("Saving screenshot");
                 win.SaveScreenShot();
@@ -126,19 +122,21 @@ namespace SpaceTaxi_2 {
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.WindowEvent) {
-                switch (gameEvent.Message) {
-                case "CLOSE_WINDOW":
-                    win.CloseWindow();
-                    break;
-                }
+                Console.WriteLine("Window event");
+//                switch (gameEvent.Message) {
+//                    case "CLOSE_WINDOW":
+//                        Console.WriteLine("Closing window");
+//                        win.CloseWindow();
+//                        break;
+//                }
             } else if (eventType == GameEventType.InputEvent) {
                 switch (gameEvent.Parameter1) {
-                case "KEY_PRESS":
-                    KeyPress(gameEvent.Message);
-                    break;
-                case "KEY_RELEASE":
-                    KeyRelease(gameEvent.Message);
-                    break;
+                    case "KEY_PRESS":
+                        KeyPress(gameEvent.Message);
+                        break;
+                    case "KEY_RELEASE":
+                        KeyRelease(gameEvent.Message);
+                        break;
                 }
             }
         }

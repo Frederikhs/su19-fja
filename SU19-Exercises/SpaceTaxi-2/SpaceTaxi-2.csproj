@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
+    <Compile Include="GameStates\GameLevelPicker.cs" />
     <Compile Include="GameStates\GamePaused.cs" />
     <Compile Include="GameStates\GameRunning.cs" />
     <Compile Include="GameStates\GameStateType.cs" />

@@ -8,6 +8,7 @@ using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.State;
 using DIKUArcade.Timers;
+using OpenTK;
 using SpaceTaxi_2.SpaceTaxiState;
 using SpaceTaxiGame;
 
@@ -22,10 +23,11 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public EntityContainer<pixel> pixel_container;
         private StateMachine stateMachine;
         private Game game;
-        
+        public string CurrentLevel;
 
-        public GameRunning() { 
+        public GameRunning(string level) { 
             InitializeGameState();
+            PickLevel(level);
         }
 
         
@@ -62,6 +64,14 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             }
         }
 
+        public void PickLevel(string level) {
+            loader = new TextLoader(level);
+            grafgen = new GraphicsGenerator(new LvlLegends(loader),
+                new LvlStructures(loader), 500, game, player);
+            pixel_container = grafgen.AllGraphics;
+            CurrentLevel = level;
+        }
+
         public void InitializeGameState() {
             // game assets
             backGroundImage = new Entity(
@@ -90,8 +100,17 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             
         }
 
-        public static GameRunning GetInstance() {
-            return GameRunning.instance ?? (GameRunning.instance = new GameRunning());
+        public static GameRunning GetInstance(string level) {
+            var running = GameRunning.instance;
+            if (running != null) {
+                if (running.CurrentLevel != level) {
+                    return new GameRunning(level);
+                } else {
+                    return running;
+                }
+            } else {
+                return new GameRunning(level);
+            }
         }
         
 

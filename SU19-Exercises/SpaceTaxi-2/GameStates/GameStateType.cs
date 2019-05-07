@@ -5,6 +5,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public enum EnumGameStateType {
             GameRunning,
             GamePaused,
+            GameLevelPicker,
             MainMenu
         }
 
@@ -14,6 +15,8 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 return EnumGameStateType.GameRunning;
             case "GAME_PAUSED":
                 return EnumGameStateType.GamePaused;
+            case "GAME_LEVEL_PICKER":
+                return EnumGameStateType.GameLevelPicker;
             case "MAIN_MENU":
                 return EnumGameStateType.MainMenu;
             default:
@@ -27,6 +30,8 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 return "GAME_RUNNING";
             case EnumGameStateType.GamePaused:
                 return "GAME_PAUSED";
+            case EnumGameStateType.GameLevelPicker:
+                return "GAME_LEVEL_PICKER";
             case EnumGameStateType.MainMenu:
                 return "MAIN_MENU";
             default:

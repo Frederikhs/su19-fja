@@ -16,28 +16,30 @@ namespace SpaceTaxi_2.SpaceTaxiState {
         }
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
-            Console.WriteLine("SgtateEv ent");
             if (eventType == GameEventType.GameStateEvent) {
                 switch (gameEvent.Message) {
                 case "CHANGE_STATE":
-                    SwitchState(GameStateType.TransformStringToState(gameEvent.Parameter1));
+                    SwitchState(GameStateType.TransformStringToState(gameEvent.Parameter1),gameEvent.Parameter2);
                     break;
                 }
             } else if (eventType == GameEventType.InputEvent) {
-                Console.WriteLine("HANDLE");
                 ActiveState.HandleKeyEvent(gameEvent.Message, gameEvent.Parameter1);
             }
         }
 
-        private void SwitchState(GameStateType.EnumGameStateType stateType) {
+        private void SwitchState(GameStateType.EnumGameStateType stateType, string level) {
             switch (stateType) {
             case GameStateType.EnumGameStateType.GameRunning:
                 Console.WriteLine("Game is now running");
-                ActiveState = GameRunning.GetInstance();
+                ActiveState = GameRunning.GetInstance(level);
                 break;
             case GameStateType.EnumGameStateType.GamePaused:
                 Console.WriteLine("Game is now paused");
-                ActiveState = GamePaused.GetInstance();
+                ActiveState = GamePaused.GetInstance(level);
+                break;
+            case GameStateType.EnumGameStateType.GameLevelPicker:
+                Console.WriteLine("Game is now in Level Picker");
+                ActiveState = GameLevelPicker.GetInstance();
                 break;
             case GameStateType.EnumGameStateType.MainMenu:
                 Console.WriteLine("Game is now in Main Menu");

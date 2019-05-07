@@ -19,9 +19,11 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         private Vec3F inactive;
         private int maxMenuButtons;
         private Text[] menuButtons;
+        public string PausedLevel;
 
-        public GamePaused() {
+        public GamePaused(string pausedLevel) {
             InitializeGameState();
+            this.PausedLevel = pausedLevel;
         }
 
         public void RenderState() {
@@ -69,7 +71,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                                 GameEventType.GameStateEvent,
                                 this,
                                 "CHANGE_STATE",
-                                "GAME_RUNNING", ""));
+                                "GAME_RUNNING", this.PausedLevel));
                         break;
                     //If Main Menu is chosen we return to main menu
                     case 0:
@@ -126,8 +128,17 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public void UpdateGameLogic() { }
 
         //Return an instance, or creates a new one
-        public static GamePaused GetInstance() {
-            return GamePaused.instance ?? (GamePaused.instance = new GamePaused());
+        public static GamePaused GetInstance(string PausedLevel) {
+            var running = GamePaused.instance;
+            if (running != null) {
+                if (running.PausedLevel != PausedLevel) {
+                    return new GamePaused(PausedLevel);
+                } else {
+                    return running;
+                }
+            } else {
+                return new GamePaused(PausedLevel);
+            }
         }
     }
 }
