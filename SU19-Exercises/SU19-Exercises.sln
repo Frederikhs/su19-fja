@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceTaxi-1", "SpaceTaxi-1\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceTaxi-Tests", "SpaceTaxi-Tests\SpaceTaxi-Tests.csproj", "{EF3B04C8-75DE-4580-97AF-4EABDE0FD504}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceTaxi-2", "SpaceTaxi-2\SpaceTaxi-2.csproj", "{6B6B73FE-D105-4F0E-9B51-069B6FD6328F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,13 +42,13 @@ Global
 		{35D45164-5F87-4FAA-B0A5-06B49CD7B835}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35D45164-5F87-4FAA-B0A5-06B49CD7B835}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35D45164-5F87-4FAA-B0A5-06B49CD7B835}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B6B73FE-D105-4F0E-9B51-069B6FD6328F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B6B73FE-D105-4F0E-9B51-069B6FD6328F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B6B73FE-D105-4F0E-9B51-069B6FD6328F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B6B73FE-D105-4F0E-9B51-069B6FD6328F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF3B04C8-75DE-4580-97AF-4EABDE0FD504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF3B04C8-75DE-4580-97AF-4EABDE0FD504}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF3B04C8-75DE-4580-97AF-4EABDE0FD504}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF3B04C8-75DE-4580-97AF-4EABDE0FD504}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B6B73FE-D105-4F0E-9B51-069B6FD6328F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B6B73FE-D105-4F0E-9B51-069B6FD6328F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B6B73FE-D105-4F0E-9B51-069B6FD6328F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B6B73FE-D105-4F0E-9B51-069B6FD6328F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
