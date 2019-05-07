@@ -4,6 +4,7 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.State;
+using SpaceTaxiGame;
 
 namespace SpaceTaxi_2.SpaceTaxiStates {
     public class MainMenu : IGameState {

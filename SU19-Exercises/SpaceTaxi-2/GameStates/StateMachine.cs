@@ -1,6 +1,7 @@
 using DIKUArcade.EventBus;
 using DIKUArcade.State;
-using Galaga_Exercise_3.GalagaStates;
+using SpaceTaxi_2.SpaceTaxiStates;
+using SpaceTaxiGame;
 
 namespace SpaceTaxi_2.SpaceTaxiState {
     public class StateMachine : IGameEventProcessor<object> {

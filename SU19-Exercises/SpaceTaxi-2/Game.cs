@@ -7,6 +7,9 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Timers;
+using SpaceTaxi_2.SpaceTaxiState;
+using SpaceTaxi_2.SpaceTaxiStates;
+using SpaceTaxiGame;
 
 namespace SpaceTaxi_2 {
     public class Game : IGameEventProcessor<object> {
@@ -18,6 +21,7 @@ namespace SpaceTaxi_2 {
         private TextLoader loader;
         private GraphicsGenerator grafgen;
         public EntityContainer<pixel> pixel_container;
+        private StateMachine stateMachine;
 
         public Game() {
             // window
@@ -36,27 +40,12 @@ namespace SpaceTaxi_2 {
             // game timer
             gameTimer = new GameTimer(60); // 60 UPS, no FPS limit
 
-            // game assets
-            backGroundImage = new Entity(
-                new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
-                new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
-            );
-            backGroundImage.RenderEntity();
-
-            // game entities
-            player = new Player();
-            player.SetExtent(0.1f, 0.1f);
 
             // event delegation
-            eventBus.Subscribe(GameEventType.InputEvent, this);
             eventBus.Subscribe(GameEventType.WindowEvent, this);
-            eventBus.Subscribe(GameEventType.PlayerEvent, player);
+            
+            stateMachine = new StateMachine();
 
-            //Change the level based on what level name the loader is constructed with
-            loader = new TextLoader("the-beach");
-            grafgen = new GraphicsGenerator(new LvlLegends(loader),
-                new LvlStructures(loader), 500, this, player);
-            pixel_container = grafgen.AllGraphics;
         }
 
         public void GameLoop() {
@@ -66,14 +55,13 @@ namespace SpaceTaxi_2 {
                 while (gameTimer.ShouldUpdate()) {
                     win.PollEvents();
                     eventBus.ProcessEvents();
+                    SpaceTaxiBus.GetBus().ProcessEvents();
+                    stateMachine.ActiveState.UpdateGameLogic();
                 }
 
                 if (gameTimer.ShouldRender()) {
                     win.Clear();
-                    backGroundImage.RenderEntity();
-                    pixel_container.RenderEntities();
-                    player.RenderPlayer();
-
+                    stateMachine.ActiveState.RenderState();
                     win.SwapBuffers();
                 }
 
