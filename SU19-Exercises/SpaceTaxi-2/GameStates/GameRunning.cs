@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using DIKUArcade;
@@ -15,6 +16,7 @@ using SpaceTaxiGame;
 namespace SpaceTaxi_2.SpaceTaxiStates {
     public class GameRunning : IGameState {
         private static GameRunning instance;
+        public static int InstancesRunning = 1;
         private Entity backGroundImage;
         private GameTimer gameTimer;
         public Player player;
@@ -28,12 +30,11 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public GameRunning(string level) { 
             InitializeGameState();
             PickLevel(level);
+            GameRunning.instance = this;
         }
 
         public void UpdateGameLogic() {
             player.Move(); // Updates the player position
-            
-            
         }
 
         private void PickLevel(string level) {
@@ -70,13 +71,17 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             var running = GameRunning.instance;
             if (running != null) {
                 if (running.CurrentLevel != level) {
+                    Console.WriteLine("GameRunning was not the same, we change level");
                     return new GameRunning(level);
                 } else {
+                    Console.WriteLine("GameRunning was the same, returning level");
                     return running;
                 }
             } else {
+                Console.WriteLine("No GameRunning active, creating new");
                 return new GameRunning(level);
             }
+
         }
         
         public void HandleKeyEvent(string keyValue, string keyAction) {
@@ -121,7 +126,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                             GameEventType.GameStateEvent,
                             this,
                             "CHANGE_STATE",
-                            "GAME_PAUSED", ""));
+                            "GAME_PAUSED", CurrentLevel));
                     break;
                 case "KEY_UP":
                     SpaceTaxiBus.GetBus().RegisterEvent(

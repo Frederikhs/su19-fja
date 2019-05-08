@@ -104,7 +104,7 @@ namespace SpaceTaxi_2 {
                         break;
                     
                     case "STOP_ACCELERATE_UP":
-                        Console.WriteLine("stopped moviing up");
+                        Console.WriteLine("stopped moving up");
                         if (Trusting) {
                             Trusting = false;
                         }

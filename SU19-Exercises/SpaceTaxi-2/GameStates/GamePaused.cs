@@ -24,7 +24,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public GamePaused(string pausedLevel) {
             InitializeGameState();
             this.PausedLevel = pausedLevel;
-            Console.WriteLine("Game is paused with level:"+pausedLevel);
+            GamePaused.instance = this;
         }
 
         public void RenderState() {
