@@ -12,6 +12,9 @@ namespace SpaceTaxi_2 {
         private readonly Image taxiBoosterOffImageRight;
         private DynamicShape shape;
         private Orientation taxiOrientation;
+        private Gravity gravity;
+
+        private bool Trusting;
 
         // A Player has a shape
         public Player() {
@@ -23,6 +26,9 @@ namespace SpaceTaxi_2 {
 
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
+            gravity = new Gravity(this);
+            Trusting = false;
+
         }
 
         public Entity Entity { get; }
@@ -44,9 +50,35 @@ namespace SpaceTaxi_2 {
                 : taxiBoosterOffImageRight;
             Entity.RenderEntity();
         }
+        
+        /// <summary>
+        /// Moved the player in the direction of the direction vector,
+        /// if the player is inside bounding box of map.
+        /// </summary>
+        public void Move() {
+            var x = 0f;
+            if (taxiOrientation == Orientation.Right) {
+                x = 0.003f;
+            } else if (taxiOrientation == Orientation.Left) {
+                x = -0.003f;
+            }
+            
+            if (Trusting) {
+                var dir = gravity.NextVel(0.0001f);
+                Direction(new Vec2F(x,dir));
+            } else {
+                var dir = gravity.NextVel(0f);
+                Direction(new Vec2F(x,dir));
+            }
+            shape.Move();
 
+        }
+
+        /// <summary>
+        /// Changes the Player direction to the supplied directionVector
+        /// </summary>
         public void Direction(Vec2F directionVector) {
-            Entity.Shape.Move(directionVector);
+            Entity.Shape.AsDynamicShape().ChangeDirection(directionVector);
         }
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
@@ -54,29 +86,41 @@ namespace SpaceTaxi_2 {
                 switch (gameEvent.Message) {
                     case "BOOSTER_TO_RIGHT":
                         Console.WriteLine("Moving right");
-                        Direction(new Vec2F(0.05f, 0.0f));
+                        Direction(new Vec2F(0.01f, 0.0f));
+                        taxiOrientation = Orientation.Right;
                         break;
+                    
                     case "BOOSTER_TO_LEFT":
                         Console.WriteLine("Moving left");
-                        Direction(new Vec2F(-0.05f, 0.0f));
+                        Direction(new Vec2F(-0.01f, 0.0f));
+                        taxiOrientation = Orientation.Left;
+                        break;
+                    
+                    case "BOOSTER_UPWARDS":
+                        Console.WriteLine("Moving up");
+                        if (!Trusting) {
+                            Trusting = true;
+                        }
+                        break;
+                    
+                    case "STOP_ACCELERATE_UP":
+                        Console.WriteLine("stopped moviing up");
+                        if (Trusting) {
+                            Trusting = false;
+                        }
                         break;
 
-                    //If the player is moving in the same direction as the key pressed, we stop.
-//                    case "STOP_ACCELERATE_RIGHT":
-//                        if (shape.AsDynamicShape().Direction.X == 0.01f) {
-//                            Direction(new Vec2F(0.0f, 0.0f));
-//                        }
-//
-//                        break;
-//                    case "STOP_ACCELERATE_LEFT":
-//                        if (shape.AsDynamicShape().Direction.X == -0.01f) {
-//                            Direction(new Vec2F(0.0f, 0.0f));
-//                        }
-//
-//                        break;
-//                    case "shoot":
-//                        Shoot();
-//                        break;
+                    case "STOP_ACCELERATE_RIGHT":
+                        if (taxiOrientation == Orientation.Right) {
+                            Direction(new Vec2F(0.0f, 0.0f));
+                        }
+                        break;
+                    case "STOP_ACCELERATE_LEFT":
+                        if (taxiOrientation == Orientation.Left) {
+                            Direction(new Vec2F(0.0f, 0.0f));
+                        }
+                        break;
+
                 }
             }
         }

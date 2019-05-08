@@ -30,7 +30,11 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             PickLevel(level);
         }
 
-        public void UpdateGameLogic() { }
+        public void UpdateGameLogic() {
+            player.Move(); // Updates the player position
+            
+            
+        }
 
         private void PickLevel(string level) {
             loader = new TextLoader(level);
@@ -51,6 +55,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             // game entities
             player = new Player();
             player.SetExtent(0.1f, 0.1f);
+            
         }
 
         public void GameLoop() { }
@@ -83,6 +88,9 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                     case "KEY_LEFT":
                         KeyPress(keyValue);
                         break;
+                    case "KEY_UP":
+                        KeyPress(keyValue);
+                        break;
                     case "KEY_SPACE":
                         KeyPress(keyValue);
                         break;
@@ -96,6 +104,9 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                         KeyRelease(keyValue);
                         break;
                     case "KEY_LEFT":
+                        KeyRelease(keyValue);
+                        break;
+                    case "KEY_UP":
                         KeyRelease(keyValue);
                         break;
                 }

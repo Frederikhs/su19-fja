@@ -51,6 +51,7 @@
     <Compile Include="GameStates\MainMenu.cs" />
     <Compile Include="GameStates\SpaceTaxiBus.cs" />
     <Compile Include="GameStates\StateMachine.cs" />
+    <Compile Include="Gravity.cs" />
     <Compile Include="LevelParser\GraphicsGenerator.cs" />
     <Compile Include="LevelParser\LvlCustomer.cs" />
     <Compile Include="LevelParser\LvlInfo.cs" />
