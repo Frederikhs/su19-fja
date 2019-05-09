@@ -30,12 +30,18 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         
         private AnimationContainer explosions;
         private int explosionLength = 500;
+        public readonly ImageStride playerDead;
+        public List<Image> playerDeadStrides;
+        
 
 
         public GameRunning(string level) { 
             InitializeGameState();
             PickLevel(level);
             GameRunning.instance = this;
+            playerDeadStrides = ImageStride.CreateStrides(8, Path.Combine("Assets", "Images", "Explosion.png" ));
+            playerDead = new ImageStride(500/8, playerDeadStrides);
+            explosions = new AnimationContainer(10);
             
         }
 
@@ -44,9 +50,9 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             if (collisions.CollisionCheck()) {
                 
                 Console.WriteLine("hej");
-               //AddExplosion(player.Entity.Shape.Position.X,player.Entity.Shape.Position.Y,0.1f,0.1f);
-               //player.Entity.DeleteEntity();
-               //explosions.RenderAnimations();
+               AddExplosion(player.Entity.Shape.Position.X,player.Entity.Shape.Position.Y,0.1f,0.1f);
+               
+               
                
             }
             //collisions.CollisionCheck(player.Entity.Shape.AsDynamicShape(),player); // Updates the player position
@@ -89,9 +95,10 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             backGroundImage.RenderEntity();
             pixel_container.RenderEntities();
             player.RenderPlayer();
-            //explosions.RenderAnimations();
+            explosions.RenderAnimations();
             
         }
+
 
         public static GameRunning GetInstance(string level) {
             var running = GameRunning.instance;
@@ -114,7 +121,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             float extentX, float extentY) {
             explosions.AddAnimation(
                 new StationaryShape(posX, posY, extentX, extentY), explosionLength,
-                collisions.playerDead);
+                playerDead);
         }
         
         public void HandleKeyEvent(string keyValue, string keyAction) {
