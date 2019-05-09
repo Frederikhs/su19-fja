@@ -38,6 +38,9 @@ namespace SpaceTaxi_2 {
         private bool Trusting;
         private bool tSideways;
         private bool leftDir;
+        public bool platform;
+        public bool tooFast;
+        public float maxSpeed;
 
         // A Player has a shape
         public Player() {
@@ -79,6 +82,9 @@ namespace SpaceTaxi_2 {
             Trusting = false;
             tSideways = false;
             leftDir = true;
+            platform = false;
+            tooFast = false;
+            maxSpeed = -0.0f;
 
         }
 
@@ -103,7 +109,13 @@ namespace SpaceTaxi_2 {
                 Entity.Image = taxiBoosterOffImageLeft;
 
             } else if (taxiOrientation == Orientation.Right && !tSideways) {
-                Entity.Image = taxiBoosterOffImageLeft;
+                Entity.Image = taxiBoosterOffImageRight;
+            }
+            else if (taxiOrientation == Orientation.Left && tSideways) {
+                Entity.Image = taxiBoosterOffImageUpLeft;
+            }
+            else if (taxiOrientation == Orientation.Right && tSideways) {
+                Entity.Image = taxiBoosterOffImageUpRight;
             }
             
             else if (taxiOrientation == Orientation.LeftT && !tSideways) {
@@ -113,17 +125,12 @@ namespace SpaceTaxi_2 {
                 Entity.Image = taxiBoosterOnImageRight;
             }
             else if (taxiOrientation == Orientation.LeftT && tSideways) {
-                Entity.Image = taxiBoosterOnImageUpLeft;
+                Entity.Image = taxiBoosterOnImageUpRight;
             }
             else if (taxiOrientation == Orientation.RightT && tSideways) {
                 Entity.Image = taxiBoosterOnImageUpRight;
             }
-            else if (taxiOrientation == Orientation.Left && leftDir && tSideways) {
-                Entity.Image = taxiBoosterOffImageUpLeft;
-            }
-            else if (taxiOrientation == Orientation.Right && !leftDir && tSideways) {
-                Entity.Image = taxiBoosterOffImageUpRight;
-            }
+            
 
             
             Entity.RenderEntity();
@@ -137,16 +144,37 @@ namespace SpaceTaxi_2 {
             var x = 0f;
             if (taxiOrientation == Orientation.RightT) {
                 x = 0.003f;
+                
             } else if (taxiOrientation == Orientation.LeftT) {
                 x = -0.003f;
             }
             
             if (Trusting) {
-                var dir = gravity.NextVel(0.0001f);
+                var dir = gravity.NextVel(0.0001f,platform);
+               
+               
+                if (dir < maxSpeed && !platform) {
+                    Console.WriteLine(dir);
+                    tooFast = true;
+                } else if (dir > maxSpeed && !platform) {
+                    Console.WriteLine(dir);
+                    tooFast = false;  
+                }
                 Direction(new Vec2F(x,dir));
             } else {
-                var dir = gravity.NextVel(0f);
+                
+                var dir = gravity.NextVel(0f,platform);
+                
+                if (dir < maxSpeed && !platform) {
+                    Console.WriteLine(dir);
+                    tooFast = true;
+                } else if (dir > maxSpeed && !platform) {
+                    Console.WriteLine(dir);
+                    tooFast = false;  
+                }
+
                 Direction(new Vec2F(x,dir));
+                
             }
             shape.Move();
         }
@@ -185,7 +213,8 @@ namespace SpaceTaxi_2 {
                             Trusting = true;
                             tSideways = true;
                             //taxiOrientation = Orientation.Up;
-                            
+                            platform = false;
+
                         }
                         
                         break;
@@ -203,16 +232,17 @@ namespace SpaceTaxi_2 {
                         if (taxiOrientation == Orientation.RightT) {
                             Direction(new Vec2F(0.0f, 0.0f));
                             taxiOrientation = Orientation.Right;
-                            tSideways = false;
+                            
                         }
                         break;
                     case "STOP_ACCELERATE_LEFT":
                         if (taxiOrientation == Orientation.LeftT) {
                             Direction(new Vec2F(0.0f, 0.0f));
                             taxiOrientation = Orientation.Left;
-                            tSideways = false;
+                            
                         }
                         break;
+                    
 
                 }
             }

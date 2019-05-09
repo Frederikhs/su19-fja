@@ -59,7 +59,7 @@ namespace SpaceTaxi_2
                 line = elem.ToCharArray();
                 foreach (char someChar in line) {
                     if (Legends.LegendsDic.ContainsKey(someChar)) {
-                        if (Legends.LegendsDic[someChar] == "neptune-square.png") {
+                        if (Legends.LegendsDic[someChar] == "neptune-square.png" || Legends.LegendsDic[someChar] == "white-square.png") {
                             isDangerous = false;
                         }
                         var image = new Image(Path.Combine("Assets", "Images", Legends.LegendsDic[someChar]));
@@ -84,6 +84,7 @@ namespace SpaceTaxi_2
                     }
 
                     posX += image_width;
+                    isDangerous = true;
                     
                 }
 

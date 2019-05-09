@@ -28,10 +28,12 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public string CurrentLevel;
         private Collisions collisions;
         
+        
         private AnimationContainer explosions;
         private int explosionLength = 500;
-        public readonly ImageStride playerDead;
-        public List<Image> playerDeadStrides;
+        private Score score;
+        private int explosionCount;
+        
         
 
 
@@ -39,23 +41,22 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             InitializeGameState();
             PickLevel(level);
             GameRunning.instance = this;
-            playerDeadStrides = ImageStride.CreateStrides(8, Path.Combine("Assets", "Images", "Explosion.png" ));
-            playerDead = new ImageStride(500/8, playerDeadStrides);
+           
             explosions = new AnimationContainer(10);
             
         }
 
         public void UpdateGameLogic() {
-            player.Move();
+            
             if (collisions.CollisionCheck()) {
                 
-                Console.WriteLine("hej");
+                //Console.WriteLine("hej");
                AddExplosion(player.Entity.Shape.Position.X,player.Entity.Shape.Position.Y,0.1f,0.1f);
                
-               
-               
+            } else {
+                player.Move();
             }
-            //collisions.CollisionCheck(player.Entity.Shape.AsDynamicShape(),player); // Updates the player position
+            
 
 
         }
@@ -80,13 +81,15 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             // game entities
             player = new Player();
             player.SetExtent(0.1f, 0.1f);
+            score = new Score(new Vec2F(0.3f,-0.12f), new Vec2F(0.5f,0.5f));
+            explosionCount = 0;
             
-            
+
+
         }
 
         public void GameLoop() {
-            //collisions.CollisionCheck();
-            //player.Entity.DeleteEntity();
+           
             
 
         }
@@ -94,8 +97,26 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public void RenderState() {
             backGroundImage.RenderEntity();
             pixel_container.RenderEntities();
-            player.RenderPlayer();
-            explosions.RenderAnimations();
+            if (explosionCount >= 1 && explosionCount <= 2) {
+                explosions.RenderAnimations();
+                
+            }
+
+            
+            if (!collisions.hasCollided) {
+                player.RenderPlayer();    
+            } else {
+                
+                
+                score.GameOver();
+                explosionCount++;
+                
+                
+            }
+            
+
+            
+            
             
         }
 
@@ -121,8 +142,25 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             float extentX, float extentY) {
             explosions.AddAnimation(
                 new StationaryShape(posX, posY, extentX, extentY), explosionLength,
-                playerDead);
+                collisions.playerDead);
         }
+
+        private void GameOverMainMenu(string key) {
+            switch (key) {
+            case "GAME_OVER":
+           
+                SpaceTaxiBus.GetBus().RegisterEvent(
+                    GameEventFactory<object>.CreateGameEventForAllProcessors(
+                        GameEventType.GameStateEvent,
+                        this,
+                        "CHANGE_STATE",
+                        "MAIN_MENU", "wut"));
+                break;
+            
+                
+            }
+        }
+        
         
         public void HandleKeyEvent(string keyValue, string keyAction) {
             if (keyAction == "KEY_PRESS") {
@@ -169,6 +207,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                             "GAME_PAUSED", CurrentLevel));
                     break;
                 case "KEY_UP":
+                    player.platform = false;
                     SpaceTaxiBus.GetBus().RegisterEvent(
                         GameEventFactory<object>.CreateGameEventForAllProcessors(
                             GameEventType.PlayerEvent, this, "BOOSTER_UPWARDS", "", ""));
@@ -184,7 +223,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                         GameEventFactory<object>.CreateGameEventForAllProcessors(
                             GameEventType.PlayerEvent, this, "BOOSTER_TO_RIGHT", "", ""));
                     break;
-            }
+                            }
         }
 
         public void KeyRelease(string key) {

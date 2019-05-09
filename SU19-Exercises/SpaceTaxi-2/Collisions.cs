@@ -14,6 +14,8 @@ namespace SpaceTaxi_2 {
         public readonly ImageStride playerDead;
         public List<Image> playerDeadStrides;
         public Player player;
+        public bool hasCollided;
+        public bool platform;
         
 
         public Collisions(EntityContainer<pixel> pixels, Player player) {
@@ -21,16 +23,33 @@ namespace SpaceTaxi_2 {
             this.pixels = pixels;
             
             this.playerDeadStrides = ImageStride.CreateStrides(8, Path.Combine("Assets", "Images", "Explosion.png" ));
-            this.playerDead = new ImageStride(500/8, playerDeadStrides);
+            this.playerDead = new ImageStride(5000, playerDeadStrides);
+            hasCollided = false;
+            platform = false;
         }
 
         public bool CollisionCheck() {
             foreach (pixel pixel in pixels) {
                 if (CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), pixel.Shape.AsDynamicShape()).Collision && pixel.danger) {
-                    Console.WriteLine("hej");
                     
+                    hasCollided = true;
                     return true;
+                } else if (CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), pixel.Shape.AsDynamicShape()).Collision && !pixel.danger) {
+                    if (player.tooFast) {
+                        player.SetPosition(pixel.Shape.Position.X,pixel.Shape.Extent.Y);
+                        player.platform = true;
+                        return true;
+
+                    } else {
+                        player.SetPosition(pixel.Shape.Position.X,pixel.Shape.Extent.Y);
+                        player.platform = true;
+                        return false;
+                    }
+
+                    
                 }
+
+                
             }
 
             return false;
