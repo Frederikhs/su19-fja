@@ -26,15 +26,32 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         private StateMachine stateMachine;
         private Game game;
         public string CurrentLevel;
+        private Collisions collisions;
+        
+        private AnimationContainer explosions;
+        private int explosionLength = 500;
+
 
         public GameRunning(string level) { 
             InitializeGameState();
             PickLevel(level);
             GameRunning.instance = this;
+            
         }
 
         public void UpdateGameLogic() {
-            player.Move(); // Updates the player position
+            player.Move();
+            if (collisions.CollisionCheck()) {
+                
+                Console.WriteLine("hej");
+               //AddExplosion(player.Entity.Shape.Position.X,player.Entity.Shape.Position.Y,0.1f,0.1f);
+               //player.Entity.DeleteEntity();
+               //explosions.RenderAnimations();
+               
+            }
+            //collisions.CollisionCheck(player.Entity.Shape.AsDynamicShape(),player); // Updates the player position
+
+
         }
 
         private void PickLevel(string level) {
@@ -43,6 +60,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 new LvlStructures(loader), 500, game, player);
             pixel_container = grafgen.AllGraphics;
             CurrentLevel = level;
+            collisions = new Collisions(pixel_container,player);
         }
 
         public void InitializeGameState() {
@@ -57,14 +75,22 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             player = new Player();
             player.SetExtent(0.1f, 0.1f);
             
+            
         }
 
-        public void GameLoop() { }
+        public void GameLoop() {
+            //collisions.CollisionCheck();
+            //player.Entity.DeleteEntity();
+            
+
+        }
 
         public void RenderState() {
             backGroundImage.RenderEntity();
             pixel_container.RenderEntities();
             player.RenderPlayer();
+            //explosions.RenderAnimations();
+            
         }
 
         public static GameRunning GetInstance(string level) {
@@ -82,6 +108,13 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 return new GameRunning(level);
             }
 
+        }
+        
+        private void AddExplosion(float posX, float posY,
+            float extentX, float extentY) {
+            explosions.AddAnimation(
+                new StationaryShape(posX, posY, extentX, extentY), explosionLength,
+                collisions.playerDead);
         }
         
         public void HandleKeyEvent(string keyValue, string keyAction) {

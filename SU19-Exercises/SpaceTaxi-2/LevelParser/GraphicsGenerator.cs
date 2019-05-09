@@ -63,7 +63,7 @@ namespace SpaceTaxi_2
                             isDangerous = false;
                         }
                         var image = new Image(Path.Combine("Assets", "Images", Legends.LegendsDic[someChar]));
-                        returnContainer.AddDynamicEntity(
+                        returnContainer.AddStationaryEntity(
                             new pixel(game,
                                 new DynamicShape(
                                     new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,isDangerous));
