@@ -9,13 +9,15 @@ namespace SpaceTaxi_2
     {
         private Game game;
         private Shape shape;
+        private bool danger;
 
         /// <summary>
         /// Creates what we define as a pixel. The pixel has an image and resides in a game class
         /// </summary>
-        public pixel(Game game, DynamicShape shape, IBaseImage image) : base(shape, image) {
+        public pixel(Game game, DynamicShape shape, IBaseImage image, bool danger) : base(shape, image) {
             this.game = game;
             this.shape = shape;
+            this.danger = danger;
         }
     }
 }

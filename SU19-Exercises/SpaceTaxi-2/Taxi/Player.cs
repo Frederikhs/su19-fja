@@ -5,6 +5,8 @@ using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using DIKUArcade.Physics;
+using SpaceTaxi_2.SpaceTaxiState;
 using SpaceTaxiGame;
 
 namespace SpaceTaxi_2 {
@@ -147,7 +149,6 @@ namespace SpaceTaxi_2 {
                 Direction(new Vec2F(x,dir));
             }
             shape.Move();
-
         }
 
         /// <summary>
@@ -156,6 +157,8 @@ namespace SpaceTaxi_2 {
         public void Direction(Vec2F directionVector) {
             Entity.Shape.AsDynamicShape().ChangeDirection(directionVector);
         }
+        
+        
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.PlayerEvent) {

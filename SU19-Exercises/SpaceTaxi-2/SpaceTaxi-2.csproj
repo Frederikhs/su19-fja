@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collisions.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameStates\GameLevelPicker.cs" />
     <Compile Include="GameStates\GamePaused.cs" />

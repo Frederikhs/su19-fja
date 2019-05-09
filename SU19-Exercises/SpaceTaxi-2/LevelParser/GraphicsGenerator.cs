@@ -5,6 +5,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace SpaceTaxi_2
 {
@@ -15,6 +16,7 @@ namespace SpaceTaxi_2
         private Game game;
         public float width;
         public Player player;
+        private bool isDangerous;
 
         public EntityContainer<pixel> AllGraphics;
 
@@ -26,6 +28,7 @@ namespace SpaceTaxi_2
             this.player = player;
             this.width = width;
             this.AllGraphics = GenerateImages();
+            this.isDangerous = true;
         }
 
         /// <summary>
@@ -49,17 +52,21 @@ namespace SpaceTaxi_2
             EntityContainer<pixel> returnContainer = new EntityContainer<pixel>();
                     
             //We iterate over each line
+            
             foreach (var elem in Structure.Structure) {
                 //Then we iterate over each char in the line 
                 char[] line = new char[elem.Length];
                 line = elem.ToCharArray();
                 foreach (char someChar in line) {
                     if (Legends.LegendsDic.ContainsKey(someChar)) {
+                        if (Legends.LegendsDic[someChar] == "neptune-square.png") {
+                            isDangerous = false;
+                        }
                         var image = new Image(Path.Combine("Assets", "Images", Legends.LegendsDic[someChar]));
                         returnContainer.AddDynamicEntity(
                             new pixel(game,
                                 new DynamicShape(
-                                    new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image));
+                                    new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,isDangerous));
                     }
                     else {
                         switch (someChar)
@@ -82,6 +89,7 @@ namespace SpaceTaxi_2
 
                 posX = 0f;
                 posY -= image_height;
+                isDangerous = true;
             }
 
             return returnContainer;
