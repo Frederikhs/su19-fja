@@ -12,7 +12,6 @@ namespace SpaceTaxi_2.SpaceTaxiState {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.InputEvent, this);
             ActiveState = MainMenu.GetInstance("");
-            Console.WriteLine("Statemachine created, we are now in Main Menu");
         }
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {

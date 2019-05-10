@@ -1,24 +1,18 @@
-using System;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.State;
-using OpenTK;
 using SpaceTaxiGame;
 
 namespace SpaceTaxi_2.SpaceTaxiStates {
     public class GameLevelPicker : IGameState {
         private static GameLevelPicker instance;
-
-        //Colors
         private Vec3F active;
-
         private Entity backGroundImage;
         private Vec3F inactive;
         private Text[] menuButtons;
-
         private int selectedMenu;
 
         public GameLevelPicker() {
@@ -35,33 +29,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             }
         }
 
-        private void SetActiveMenu() {
-            foreach (var button in menuButtons) {
-                button.SetColor(inactive);
-                button.SetFontSize(50);
-            }
-            menuButtons[selectedMenu].SetColor(active);
-            menuButtons[selectedMenu].SetFontSize(70);
-        }
-
-        private void UpMenu() {
-            if (selectedMenu + 1 < menuButtons.Length) {
-                selectedMenu++;
-            } else {
-                selectedMenu = menuButtons.Length -1 ;
-            }
-            SetActiveMenu();
-        }
-
-        private void DownMenu() {
-            if (selectedMenu - 1 > 0) {
-                selectedMenu--;
-            } else {
-                selectedMenu = 0;
-            }
-            SetActiveMenu();
-        }
-
         public void HandleKeyEvent(string keyValue, string keyAction) {
             if (keyAction == "KEY_PRESS") {
                 switch (keyValue) {
@@ -75,7 +42,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
 
                 case "KEY_ENTER":
                     switch (selectedMenu) {
-                    //If Main Menu is chosen we return to main menu
                     case 0: // Main menu
                         SpaceTaxiBus.GetBus().RegisterEvent(
                             GameEventFactory<object>.CreateGameEventForAllProcessors(
@@ -84,7 +50,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                                 "CHANGE_STATE",
                                 "MAIN_MENU", "wut"));
                         break;
-                    
+
                     case 1: // Level 1
                         SpaceTaxiBus.GetBus().RegisterEvent(
                             GameEventFactory<object>.CreateGameEventForAllProcessors(
@@ -108,7 +74,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             }
         }
 
-        //Not used
         public void GameLoop() { }
 
         public void InitializeGameState() {
@@ -143,10 +108,53 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             menuButtons[selectedMenu].SetFontSize(70);
         }
 
-        //Not used
         public void UpdateGameLogic() { }
 
-        //Return an instance, or creates a new one
+        /// <summary>
+        /// Sets the selectedMenu to the active menu,
+        /// with color and font size
+        /// </summary>
+        private void SetActiveMenu() {
+            foreach (var button in menuButtons) {
+                button.SetColor(inactive);
+                button.SetFontSize(50);
+            }
+
+            menuButtons[selectedMenu].SetColor(active);
+            menuButtons[selectedMenu].SetFontSize(70);
+        }
+
+        /// <summary>
+        /// Selects the next button up, if we are on top,
+        /// select the same again
+        /// </summary>
+        private void UpMenu() {
+            if (selectedMenu + 1 < menuButtons.Length) {
+                selectedMenu++;
+            } else {
+                selectedMenu = menuButtons.Length - 1;
+            }
+
+            SetActiveMenu();
+        }
+
+        /// <summary>
+        /// Selects the next button down, if we are on the buttom,
+        /// select the same again
+        /// </summary>
+        private void DownMenu() {
+            if (selectedMenu - 1 > 0) {
+                selectedMenu--;
+            } else {
+                selectedMenu = 0;
+            }
+
+            SetActiveMenu();
+        }
+
+        /// <summary>
+        /// Return an instance, or creates a new one
+        /// </summary>
         public static GameLevelPicker GetInstance() {
             return GameLevelPicker.instance ?? (GameLevelPicker.instance = new GameLevelPicker());
         }

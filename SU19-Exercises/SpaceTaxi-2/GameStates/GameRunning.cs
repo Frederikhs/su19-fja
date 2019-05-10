@@ -16,7 +16,6 @@ using SpaceTaxiGame;
 namespace SpaceTaxi_2.SpaceTaxiStates {
     public class GameRunning : IGameState {
         public static GameRunning instance;
-        public static int InstancesRunning = 1;
         private Entity backGroundImage;
         private GameTimer gameTimer;
         public Player player;
@@ -25,20 +24,16 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public EntityContainer<pixel> pixel_container;
         private StateMachine stateMachine;
         private Game game;
-        public string CurrentLevel;
+        public static string CurrentLevel;
         private Collisions collisions;
-        
-        
         private AnimationContainer explosions;
         private int explosionLength = 500;
-        private Score score;
         private int explosionCount;
         
         public GameRunning(string level) { 
             InitializeGameState();
             PickLevel(level);
             GameRunning.instance = this;
-           
             explosions = new AnimationContainer(10);
         }
 
@@ -51,12 +46,15 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             }
         }
 
+        /// <summary>
+        /// Loads the chosen level info pixel_container
+        /// </summary>
         private void PickLevel(string level) {
             loader = new TextLoader(level);
             grafgen = new GraphicsGenerator(new LvlLegends(loader),
                 new LvlStructures(loader), 500, game, player);
             pixel_container = grafgen.AllGraphics;
-            CurrentLevel = level;
+            GameRunning.CurrentLevel = level;
             collisions = new Collisions(pixel_container,player);
         }
 
@@ -76,6 +74,9 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
 
         public void GameLoop() { }
 
+        /// <summary>
+        /// Render the background, explosions, background image.
+        /// </summary>
         public void RenderState() {
             backGroundImage.RenderEntity();
             pixel_container.RenderEntities();
@@ -91,10 +92,14 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             
         }
 
+        /// <summary>
+        /// GameRunning return a new instance of null, else a new
+        /// depending on a change of level
+        /// </summary>
         public static GameRunning GetInstance(string level) {
             var running = GameRunning.instance;
             if (running != null) {
-                if (running.CurrentLevel != level) {
+                if (GameRunning.CurrentLevel != level) {
                     Console.WriteLine("GameRunning was not the same, we change level");
                     return new GameRunning(level);
                 } else {
@@ -107,6 +112,9 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             }
         }
         
+        /// <summary>
+        /// Creates an explosion at x,y
+        /// </summary>
         private void AddExplosion(float posX, float posY,
             float extentX, float extentY) {
             explosions.AddAnimation(
@@ -114,6 +122,9 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 collisions.playerDead);
         }
 
+        /// <summary>
+        /// Sends to user to the GameOver state
+        /// </summary>
         private void GameOver() {
             SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
@@ -185,7 +196,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                         GameEventFactory<object>.CreateGameEventForAllProcessors(
                             GameEventType.PlayerEvent, this, "BOOSTER_TO_RIGHT", "", ""));
                     break;
-                            }
+                }
         }
 
         public void KeyRelease(string key) {

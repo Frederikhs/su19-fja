@@ -10,14 +10,10 @@ using SpaceTaxiGame;
 namespace SpaceTaxi_2.SpaceTaxiStates {
     public class MainMenu : IGameState {
         private static MainMenu instance;
-
-        //Colors
         private Vec3F active;
-        private int activeMenuButton;
-
+        private int selectedMenu;
         private Entity backGroundImage;
         private Vec3F inactive;
-        private int maxMenuButtons;
         private Text[] menuButtons;
 
         public MainMenu() {
@@ -33,34 +29,62 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 aButton.RenderText();
             }
         }
+        
+        /// <summary>
+        /// Sets the selectedMenu to the active menu,
+        /// with color and font size
+        /// </summary>
+        private void SetActiveMenu() {
+            foreach (var button in menuButtons) {
+                button.SetColor(inactive);
+                button.SetFontSize(50);
+            }
+
+            menuButtons[selectedMenu].SetColor(active);
+            menuButtons[selectedMenu].SetFontSize(70);
+        }
+
+        /// <summary>
+        /// Selects the next button up, if we are on top,
+        /// select the same again
+        /// </summary>
+        private void UpMenu() {
+            if (selectedMenu + 1 < menuButtons.Length) {
+                selectedMenu++;
+            } else {
+                selectedMenu = menuButtons.Length - 1;
+            }
+
+            SetActiveMenu();
+        }
+
+        /// <summary>
+        /// Selects the next button down, if we are on the buttom,
+        /// select the same again
+        /// </summary>
+        private void DownMenu() {
+            if (selectedMenu - 1 > 0) {
+                selectedMenu--;
+            } else {
+                selectedMenu = 0;
+            }
+
+            SetActiveMenu();
+        }
 
         public void HandleKeyEvent(string keyValue, string keyAction) {
             if (keyAction == "KEY_PRESS") {
                 switch (keyValue) {
                 case "KEY_UP":
-                    //Setting inactive
-                    menuButtons[1].SetColor(inactive);
-                    menuButtons[1].SetFontSize(50);
-
-                    //setting active
-                    menuButtons[0].SetColor(active);
-                    menuButtons[0].SetFontSize(70);
-                    activeMenuButton = 0;
+                    UpMenu();
                     break;
 
                 case "KEY_DOWN":
-                    //Setting inactive
-                    menuButtons[0].SetColor(inactive);
-                    menuButtons[0].SetFontSize(50);
-
-                    //setting active
-                    menuButtons[1].SetColor(active);
-                    menuButtons[1].SetFontSize(70);
-                    activeMenuButton = 1;
+                    DownMenu();
                     break;
 
                 case "KEY_ENTER":
-                    switch (activeMenuButton) {
+                    switch (selectedMenu) {
                     //If New Game is chosen, we change the state
                     case 0:
                         SpaceTaxiBus.GetBus().RegisterEvent(
@@ -85,8 +109,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 }
             }
         }
-
-        //Not used
+        
         public void GameLoop() { }
 
         public void InitializeGameState() {
@@ -107,8 +130,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             };
 
             //Setting button vars
-            maxMenuButtons = menuButtons.Length;
-            activeMenuButton = 1;
+            selectedMenu = 0;
 
             //Iterating over buttons and setting their default color and size
             foreach (var button in menuButtons) {
@@ -117,8 +139,8 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             }
 
             //Setting color and font size of active button
-            menuButtons[activeMenuButton].SetColor(active);
-            menuButtons[activeMenuButton].SetFontSize(70);
+            menuButtons[selectedMenu].SetColor(active);
+            menuButtons[selectedMenu].SetFontSize(70);
         }
 
         //Not used
@@ -126,7 +148,11 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             SpaceTaxiBus.GetBus().ProcessEvents();
         }
 
-        //Return an instance, or creates a new one
+        /// <summary>
+        /// If Main Menu is called with delete game,
+        /// it will delete the running game, else just
+        /// return new MainMenu.
+        /// </summary>
         public static MainMenu GetInstance(string param2) {
             var running = MainMenu.instance;
             if (param2 == "DELETE_GAME") {

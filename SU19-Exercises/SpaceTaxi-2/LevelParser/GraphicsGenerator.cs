@@ -66,13 +66,17 @@ namespace SpaceTaxi_2
                         returnContainer.AddStationaryEntity(
                             new pixel(game,
                                 new DynamicShape(
-                                    new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,isDangerous));
+                                    new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,isDangerous, false));
                     }
                     else {
                         switch (someChar)
                         {
                             case '^':
-                                //Empty for passage way
+                                var image = new Image(Path.Combine("Assets", "Images", "aspargus-passage1.png"));
+                                returnContainer.AddStationaryEntity(
+                                    new pixel(game,
+                                        new DynamicShape(
+                                            new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,false, true));
                                 break;
                             case '>':
                                 //This is the player. We set the position

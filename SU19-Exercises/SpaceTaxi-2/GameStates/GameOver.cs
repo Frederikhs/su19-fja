@@ -11,16 +11,11 @@ using SpaceTaxiGame;
 namespace SpaceTaxi_2.SpaceTaxiStates {
     public class GameOver : IGameState {
         private static GameOver instance;
-
-        //Colors
         private Vec3F active;
-
         private Entity backGroundImage;
         private Vec3F inactive;
         private Text[] menuButtons;
-
         private int selectedMenu;
-        private Score score;
 
         public GameOver() {
             InitializeGameState();
@@ -34,33 +29,48 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             foreach (var aButton in menuButtons) {
                 aButton.RenderText();
             }
-            score.GameOver();
         }
 
+        
+        /// <summary>
+        /// Sets the selectedMenu to the active menu,
+        /// with color and font size
+        /// </summary>
         private void SetActiveMenu() {
             foreach (var button in menuButtons) {
                 button.SetColor(inactive);
                 button.SetFontSize(50);
             }
+
             menuButtons[selectedMenu].SetColor(active);
             menuButtons[selectedMenu].SetFontSize(70);
         }
 
+        /// <summary>
+        /// Selects the next button up, if we are on top,
+        /// select the same again
+        /// </summary>
         private void UpMenu() {
             if (selectedMenu + 1 < menuButtons.Length) {
                 selectedMenu++;
             } else {
-                selectedMenu = menuButtons.Length -1 ;
+                selectedMenu = menuButtons.Length - 1;
             }
+
             SetActiveMenu();
         }
 
+        /// <summary>
+        /// Selects the next button down, if we are on the buttom,
+        /// select the same again
+        /// </summary>
         private void DownMenu() {
             if (selectedMenu - 1 > 0) {
                 selectedMenu--;
             } else {
                 selectedMenu = 0;
             }
+
             SetActiveMenu();
         }
 
@@ -93,7 +103,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             }
         }
 
-        //Not used
         public void GameLoop() { }
 
         public void InitializeGameState() {
@@ -125,13 +134,13 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             menuButtons[selectedMenu].SetColor(active);
             menuButtons[selectedMenu].SetFontSize(70);
 
-            score = new Score(new Vec2F(0.3f,-0.12f), new Vec2F(0.5f,0.5f));
         }
 
-        //Not used
         public void UpdateGameLogic() { }
 
-        //Return an instance, or creates a new one
+        /// <summary>
+        /// Return an instance, or creates a new one
+        /// </summary>
         public static GameOver GetInstance() {
             return GameOver.instance ?? (GameOver.instance = new GameOver());
         }

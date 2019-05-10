@@ -20,21 +20,16 @@ namespace SpaceTaxi_2 {
         private readonly ImageStride taxiBoosterOnImageUpLeft;
         private readonly ImageStride taxiBoosterOffImageUpLeft;
         private readonly ImageStride taxiBoosterOffImageUpRight;
-        
-        
         private List<Image> OnRightStrides;
         private List<Image> OnUpRightStrides;
         private List<Image> OnLeftStrides;
         private List<Image> OnUpLeftStrides;
         private List<Image> OffUpLeftStrides;
         private List<Image> OffUpRightStrides;
-        
-
-
+        public Entity Entity { get; }
         private DynamicShape shape;
         private Orientation taxiOrientation;
         private Gravity gravity;
-
         private bool Trusting;
         private bool tSideways;
         private bool leftDir;
@@ -74,8 +69,7 @@ namespace SpaceTaxi_2 {
                 new ImageStride(80,OnUpRightStrides);
             taxiBoosterOnImageUpLeft =
                 new ImageStride(80,OnUpLeftStrides);
-           
-
+            
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
             gravity = new Gravity(this);
@@ -84,55 +78,50 @@ namespace SpaceTaxi_2 {
             leftDir = true;
             platform = false;
             tooFast = false;
-            maxSpeed = -0.0f;
-
         }
 
-        public Entity Entity { get; }
 
+        /// <summary>
+        /// Sets the players position to x,y
+        /// </summary>
         public void SetPosition(float x, float y) {
             shape.Position.X = x;
             shape.Position.Y = y;
         }
 
+        /// <summary>
+        /// Sets the size of the player image to width,height
+        /// </summary>
         public void SetExtent(float width, float height) {
             shape.Extent.X = width;
             shape.Extent.Y = height;
         }
 
         public void RenderPlayer() {
-            //TODO: Next version needs animation. Skipped for clarity.
-            //Entity.Image = taxiOrientation == Orientation.Left
-            //    ? taxiBoosterOffImageLeft
-            //    : taxiBoosterOffImageRight; 
-            if (taxiOrientation == Orientation.Left && !tSideways) {
-                Entity.Image = taxiBoosterOffImageLeft;
-
-            } else if (taxiOrientation == Orientation.Right && !tSideways) {
-                Entity.Image = taxiBoosterOffImageRight;
+            switch (taxiOrientation) {
+                case Orientation.Left when !tSideways:
+                    Entity.Image = taxiBoosterOffImageLeft;
+                    break;
+                case Orientation.Right when !tSideways:
+                    Entity.Image = taxiBoosterOffImageRight;
+                    break;
+                case Orientation.Left when tSideways:
+                    Entity.Image = taxiBoosterOffImageUpLeft;
+                    break;
+                case Orientation.Right when tSideways:
+                    Entity.Image = taxiBoosterOffImageUpRight;
+                    break;
+                case Orientation.LeftT when !tSideways:
+                    Entity.Image = taxiBoosterOnImageLeft;
+                    break;
+                case Orientation.RightT when !tSideways:
+                    Entity.Image = taxiBoosterOnImageRight;
+                    break;
+                case Orientation.LeftT when tSideways:
+                case Orientation.RightT when tSideways:
+                    Entity.Image = taxiBoosterOnImageUpRight;
+                    break;
             }
-            else if (taxiOrientation == Orientation.Left && tSideways) {
-                Entity.Image = taxiBoosterOffImageUpLeft;
-            }
-            else if (taxiOrientation == Orientation.Right && tSideways) {
-                Entity.Image = taxiBoosterOffImageUpRight;
-            }
-            
-            else if (taxiOrientation == Orientation.LeftT && !tSideways) {
-                Entity.Image = taxiBoosterOnImageLeft;
-            }
-            else if (taxiOrientation == Orientation.RightT && !tSideways) {
-                Entity.Image = taxiBoosterOnImageRight;
-            }
-            else if (taxiOrientation == Orientation.LeftT && tSideways) {
-                Entity.Image = taxiBoosterOnImageUpRight;
-            }
-            else if (taxiOrientation == Orientation.RightT && tSideways) {
-                Entity.Image = taxiBoosterOnImageUpRight;
-            }
-            
-
-            
             Entity.RenderEntity();
         }
         
@@ -151,28 +140,9 @@ namespace SpaceTaxi_2 {
             
             if (Trusting) {
                 var dir = gravity.NextVel(0.0001f,platform);
-               
-               
-                if (dir < maxSpeed && !platform) {
-                    Console.WriteLine(dir);
-                    tooFast = true;
-                } else if (dir > maxSpeed && !platform) {
-                    Console.WriteLine(dir);
-                    tooFast = false;  
-                }
                 Direction(new Vec2F(x,dir));
             } else {
-                
                 var dir = gravity.NextVel(0f,platform);
-                
-                if (dir < maxSpeed && !platform) {
-                    Console.WriteLine(dir);
-                    tooFast = true;
-                } else if (dir > maxSpeed && !platform) {
-                    Console.WriteLine(dir);
-                    tooFast = false;  
-                }
-
                 Direction(new Vec2F(x,dir));
                 
             }
@@ -185,46 +155,34 @@ namespace SpaceTaxi_2 {
         public void Direction(Vec2F directionVector) {
             Entity.Shape.AsDynamicShape().ChangeDirection(directionVector);
         }
-        
-        
 
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.PlayerEvent) {
                 switch (gameEvent.Message) {
                     case "BOOSTER_TO_RIGHT":
-                        Console.WriteLine("Moving right");
                         Direction(new Vec2F(0.01f, 0.0f));
                         taxiOrientation = Orientation.RightT;
                         leftDir = false;
-                        
                         break;
                     
                     case "BOOSTER_TO_LEFT":
-                        Console.WriteLine("Moving left");
                         Direction(new Vec2F(-0.01f, 0.0f));
                         taxiOrientation = Orientation.LeftT;
                         leftDir = true;
-                        
                         break;
                     
                     case "BOOSTER_UPWARDS":
-                        Console.WriteLine("Moving up");
                         if (!Trusting) {
                             Trusting = true;
                             tSideways = true;
-                            //taxiOrientation = Orientation.Up;
                             platform = false;
-
                         }
-                        
                         break;
                     
                     case "STOP_ACCELERATE_UP":
-                        Console.WriteLine("stopped moving up");
                         if (Trusting) {
                             Trusting = false;
                             tSideways = false;
-                            
                         }
                         break;
 
@@ -232,18 +190,14 @@ namespace SpaceTaxi_2 {
                         if (taxiOrientation == Orientation.RightT) {
                             Direction(new Vec2F(0.0f, 0.0f));
                             taxiOrientation = Orientation.Right;
-                            
                         }
                         break;
                     case "STOP_ACCELERATE_LEFT":
                         if (taxiOrientation == Orientation.LeftT) {
                             Direction(new Vec2F(0.0f, 0.0f));
                             taxiOrientation = Orientation.Left;
-                            
                         }
                         break;
-                    
-
                 }
             }
         }

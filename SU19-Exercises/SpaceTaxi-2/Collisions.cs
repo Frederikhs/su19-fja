@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using DIKUArcade.Entities;
+using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Physics;
 using SpaceTaxi_2.SpaceTaxiState;
 using SpaceTaxi_2.SpaceTaxiStates;
+using SpaceTaxiGame;
 
 namespace SpaceTaxi_2 {
     public class Collisions {
@@ -28,28 +30,53 @@ namespace SpaceTaxi_2 {
             platform = false;
         }
 
+        /// <summary>
+        /// Check if the player shape collides with pixel. If the pixel
+        /// is dangerous, we die, else we may change level or sit on the platform
+        /// </summary>
         public bool CollisionCheck() {
             foreach (pixel pixel in pixels) {
-                if (CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), pixel.Shape.AsDynamicShape()).Collision && pixel.danger) {
-                    
+                bool isCollision = CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(),
+                    pixel.Shape.AsDynamicShape()).Collision;
+                
+                if (isCollision && pixel.danger) {
+                    Console.WriteLine("A");
                     hasCollided = true;
                     return true;
-                } else if (CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), pixel.Shape.AsDynamicShape()).Collision && !pixel.danger) {
+                } else if (isCollision && pixel.portal) {
+                    Console.WriteLine("PORTAL HIT");
+                    if (GameRunning.CurrentLevel == "the-beach") {
+                        SpaceTaxiBus.GetBus().RegisterEvent(
+                            GameEventFactory<object>.CreateGameEventForAllProcessors(
+                                GameEventType.GameStateEvent,
+                                this,
+                                "CHANGE_STATE",
+                                "GAME_RUNNING", "short-n-sweet"));
+                    } else if (GameRunning.CurrentLevel == "short-n-sweet") {
+                        SpaceTaxiBus.GetBus().RegisterEvent(
+                            GameEventFactory<object>.CreateGameEventForAllProcessors(
+                                GameEventType.GameStateEvent,
+                                this,
+                                "CHANGE_STATE",
+                                "GAME_RUNNING", "the-beach"));
+                    }
+                    return false;
+                    
+                } else if (isCollision && !pixel.danger) {
+                    Console.WriteLine("B");
                     if (player.tooFast) {
                         player.SetPosition(pixel.Shape.Position.X,pixel.Shape.Extent.Y);
                         player.platform = true;
-                        return true;
+                        Console.WriteLine("C");
+                        return false;
 
                     } else {
                         player.SetPosition(pixel.Shape.Position.X,pixel.Shape.Extent.Y);
                         player.platform = true;
+                        Console.WriteLine("D");
                         return false;
                     }
-
-                    
                 }
-
-                
             }
 
             return false;

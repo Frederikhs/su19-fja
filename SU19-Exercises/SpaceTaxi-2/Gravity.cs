@@ -7,7 +7,7 @@ namespace SpaceTaxi_2 {
         private float gravityForce;
         private float Maxgravity;
         private float vCurrent;
-        private float MaxSpeed;
+        public float MaxSpeed;
         private Player player;
         public bool platform;
 
@@ -15,11 +15,14 @@ namespace SpaceTaxi_2 {
             gravityForce = -0.000001f;
             Maxgravity = -0.01f;
             vCurrent = 0;
-            MaxSpeed = 0.00002f;
+            MaxSpeed = 0.001f;
             this.player = player;
-
         }
 
+        /// <summary>
+        /// Calculates next velocity y vector based on the truster value,
+        /// and the current velocity.
+        /// </summary>
         public float NextVel(float truster, bool platform) {
             if (!platform) {
                 var DeltaT = 60.0f;
