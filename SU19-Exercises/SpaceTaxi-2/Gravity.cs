@@ -8,15 +8,13 @@ namespace SpaceTaxi_2 {
         private float Maxgravity;
         private float vCurrent;
         public float MaxSpeed;
-        private Player player;
         public bool platform;
 
-        public Gravity(Player player) {
+        public Gravity() {
             gravityForce = -0.000001f;
             Maxgravity = -0.01f;
             vCurrent = 0;
             MaxSpeed = 0.001f;
-            this.player = player;
         }
 
         /// <summary>

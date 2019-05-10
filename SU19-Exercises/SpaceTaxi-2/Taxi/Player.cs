@@ -72,7 +72,7 @@ namespace SpaceTaxi_2 {
             
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
-            gravity = new Gravity(this);
+            gravity = new Gravity();
             Trusting = false;
             tSideways = false;
             leftDir = true;
