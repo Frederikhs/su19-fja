@@ -11,7 +11,7 @@ namespace SpaceTaxi_2.SpaceTaxiState {
         public StateMachine() {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.InputEvent, this);
-            ActiveState = MainMenu.GetInstance();
+            ActiveState = MainMenu.GetInstance("");
             Console.WriteLine("Statemachine created, we are now in Main Menu");
         }
 
@@ -27,15 +27,15 @@ namespace SpaceTaxi_2.SpaceTaxiState {
             }
         }
 
-        private void SwitchState(GameStateType.EnumGameStateType stateType, string level) {
+        private void SwitchState(GameStateType.EnumGameStateType stateType, string param2) {
             switch (stateType) {
             case GameStateType.EnumGameStateType.GameRunning:
                 Console.WriteLine("Game is now running");
-                ActiveState = GameRunning.GetInstance(level);
+                ActiveState = GameRunning.GetInstance(param2);
                 break;
             case GameStateType.EnumGameStateType.GamePaused:
-                Console.WriteLine("STATEMACHINE: Game is now paused ("+level+")");
-                ActiveState = GamePaused.GetInstance(level);
+                Console.WriteLine("STATEMACHINE: Game is now paused ("+param2+")");
+                ActiveState = GamePaused.GetInstance(param2);
                 break;
             case GameStateType.EnumGameStateType.GameLevelPicker:
                 Console.WriteLine("Game is now in Level Picker");
@@ -43,7 +43,7 @@ namespace SpaceTaxi_2.SpaceTaxiState {
                 break;
             case GameStateType.EnumGameStateType.MainMenu:
                 Console.WriteLine("Game is now in Main Menu");
-                ActiveState = MainMenu.GetInstance();
+                ActiveState = MainMenu.GetInstance(param2);
                 break;
             }
         }

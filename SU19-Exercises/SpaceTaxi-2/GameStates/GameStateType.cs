@@ -6,7 +6,8 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             GameRunning,
             GamePaused,
             GameLevelPicker,
-            MainMenu
+            MainMenu,
+            GameOver
         }
 
         public static EnumGameStateType TransformStringToState(string state) {
@@ -19,6 +20,8 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 return EnumGameStateType.GameLevelPicker;
             case "MAIN_MENU":
                 return EnumGameStateType.MainMenu;
+            case "GAME_OVER":
+                return EnumGameStateType.GameOver;
             default:
                 throw new ArgumentException("Wrong key you idiot!");
             }
@@ -34,6 +37,8 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 return "GAME_LEVEL_PICKER";
             case EnumGameStateType.MainMenu:
                 return "MAIN_MENU";
+            case EnumGameStateType.GameOver:
+                return "GAME_OVER";
             default:
                 throw new ArgumentException("Wrong key you idiot!");
             }

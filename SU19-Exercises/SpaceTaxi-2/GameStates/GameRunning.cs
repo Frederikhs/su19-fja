@@ -15,7 +15,7 @@ using SpaceTaxiGame;
 
 namespace SpaceTaxi_2.SpaceTaxiStates {
     public class GameRunning : IGameState {
-        private static GameRunning instance;
+        public static GameRunning instance;
         public static int InstancesRunning = 1;
         private Entity backGroundImage;
         private GameTimer gameTimer;
@@ -34,31 +34,21 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         private Score score;
         private int explosionCount;
         
-        
-
-
         public GameRunning(string level) { 
             InitializeGameState();
             PickLevel(level);
             GameRunning.instance = this;
            
             explosions = new AnimationContainer(10);
-            
         }
 
         public void UpdateGameLogic() {
-            
             if (collisions.CollisionCheck()) {
-                
-                //Console.WriteLine("hej");
                AddExplosion(player.Entity.Shape.Position.X,player.Entity.Shape.Position.Y,0.1f,0.1f);
-               
+               GameOver();
             } else {
                 player.Move();
             }
-            
-
-
         }
 
         private void PickLevel(string level) {
@@ -81,18 +71,10 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             // game entities
             player = new Player();
             player.SetExtent(0.1f, 0.1f);
-            score = new Score(new Vec2F(0.3f,-0.12f), new Vec2F(0.5f,0.5f));
             explosionCount = 0;
-            
-
-
         }
 
-        public void GameLoop() {
-           
-            
-
-        }
+        public void GameLoop() { }
 
         public void RenderState() {
             backGroundImage.RenderEntity();
@@ -101,25 +83,13 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 explosions.RenderAnimations();
                 
             }
-
-            
             if (!collisions.hasCollided) {
                 player.RenderPlayer();    
             } else {
-                
-                
-                score.GameOver();
                 explosionCount++;
-                
-                
             }
             
-
-            
-            
-            
         }
-
 
         public static GameRunning GetInstance(string level) {
             var running = GameRunning.instance;
@@ -135,7 +105,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 Console.WriteLine("No GameRunning active, creating new");
                 return new GameRunning(level);
             }
-
         }
         
         private void AddExplosion(float posX, float posY,
@@ -145,20 +114,13 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 collisions.playerDead);
         }
 
-        private void GameOverMainMenu(string key) {
-            switch (key) {
-            case "GAME_OVER":
-           
-                SpaceTaxiBus.GetBus().RegisterEvent(
+        private void GameOver() {
+            SpaceTaxiBus.GetBus().RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.GameStateEvent,
                         this,
                         "CHANGE_STATE",
-                        "MAIN_MENU", "wut"));
-                break;
-            
-                
-            }
+                        "MAIN_MENU", "DELETE_GAME"));
         }
         
         

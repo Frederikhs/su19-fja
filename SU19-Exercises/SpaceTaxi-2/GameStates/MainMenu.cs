@@ -127,8 +127,20 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         }
 
         //Return an instance, or creates a new one
-        public static MainMenu GetInstance() {
-            return MainMenu.instance ?? (MainMenu.instance = new MainMenu());
+        public static MainMenu GetInstance(string param2) {
+            var running = MainMenu.instance;
+            if (param2 == "DELETE_GAME") {
+                if (running != null) {
+                    GameRunning.instance = null;
+                    Console.WriteLine("Player collided with obstacle and died!");
+                    return running;
+                } else {
+                    MainMenu.instance = new MainMenu();
+                    return MainMenu.instance;
+                }
+            }
+            MainMenu.instance = new MainMenu();
+            return MainMenu.instance;
         }
     }
 }
