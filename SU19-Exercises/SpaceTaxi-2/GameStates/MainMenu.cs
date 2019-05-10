@@ -125,8 +125,8 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
 
             //Creating new array and adding buttons to it.
             menuButtons = new[] {
-                new Text("New Game", new Vec2F(0.2f, 0.2f), new Vec2F(0.5f, 0.3f)),
-                new Text("Quit", new Vec2F(0.2f, 0.1f), new Vec2F(0.3f, 0.3f))
+                new Text("New Game", new Vec2F(0.2f, 0.1f), new Vec2F(0.5f, 0.3f)),
+                new Text("Quit", new Vec2F(0.2f, 0.2f), new Vec2F(0.3f, 0.3f))
             };
 
             //Setting button vars

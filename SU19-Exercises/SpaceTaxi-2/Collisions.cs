@@ -40,11 +40,9 @@ namespace SpaceTaxi_2 {
                     pixel.Shape.AsDynamicShape()).Collision;
                 
                 if (isCollision && pixel.danger) {
-                    Console.WriteLine("A");
                     hasCollided = true;
                     return true;
                 } else if (isCollision && pixel.portal) {
-                    Console.WriteLine("PORTAL HIT");
                     if (GameRunning.CurrentLevel == "the-beach") {
                         SpaceTaxiBus.GetBus().RegisterEvent(
                             GameEventFactory<object>.CreateGameEventForAllProcessors(
@@ -63,17 +61,14 @@ namespace SpaceTaxi_2 {
                     return false;
                     
                 } else if (isCollision && !pixel.danger) {
-                    Console.WriteLine("B");
                     if (player.tooFast) {
                         player.SetPosition(pixel.Shape.Position.X,pixel.Shape.Extent.Y);
                         player.platform = true;
-                        Console.WriteLine("C");
                         return false;
 
                     } else {
                         player.SetPosition(pixel.Shape.Position.X,pixel.Shape.Extent.Y);
                         player.platform = true;
-                        Console.WriteLine("D");
                         return false;
                     }
                 }
