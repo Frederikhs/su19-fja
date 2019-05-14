@@ -51,21 +51,26 @@ namespace SpaceTaxi_2 {
                     
                     //The collision should not end the game, so we return false
                     return false;
-                    
                 }
-                
-                //TODO: Check player speed, and let it sit on a platform is not too fast
-                if (collision && !pixel.danger) {
-                    if (player.tooFast) {
-                        player.SetPosition(pixel.Shape.Position.X,pixel.Shape.Extent.Y);
-                        player.platform = true;
-                        return false;
 
+                //TODO: Check player speed, and let it sit on a platform is not too fast
+                if (collision && pixel.IsPlatform) {
+                    if (player.currentSpeed() > 0.005f) {
+                        //Player was too fast, Game Over
+                        Console.WriteLine("Player was too fast");
+                        player.platform = false;
+                        CollisionEvents(GameEventType.GameStateEvent, "CHANGE_STATE",
+                            "GAME_OVER", "");
                     } else {
-                        player.SetPosition(pixel.Shape.Position.X,pixel.Shape.Extent.Y);
+                        //Player was not too fast, and can land on platform
+                        Console.WriteLine("Player had good speed");
+                        var yPos = player.Entity.Shape.Position.Y;
+                        player.SetPosition(pixel.Shape.Position.X, yPos);
                         player.platform = true;
                         return false;
                     }
+                } else {
+                    player.platform = false;
                 }
             }
 

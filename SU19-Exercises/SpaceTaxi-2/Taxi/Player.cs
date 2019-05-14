@@ -145,7 +145,7 @@ namespace SpaceTaxi_2 {
             if (Trusting && !platform) {
                 var dir = gravity.NextVel(0.000012f, platform);
                 if (Trusting) {
-                    dir = gravity.NextVel(0.000015f, platform);
+                    dir = gravity.NextVel(0.000012f, platform);
                     Direction(new Vec2F(x, dir) + Entity.Shape.AsDynamicShape().Direction);
                 } else if (!Trusting && !platform) {
                     dir = gravity.NextVel(0f, platform);
@@ -158,13 +158,15 @@ namespace SpaceTaxi_2 {
                     dir = gravity.NextVel(0f, platform);
                     Direction(new Vec2F(x, dir));
                 }
-
-                shape.Move();
+            } else {
+                var dir = gravity.NextVel(0f,platform);
+                Direction(new Vec2F(x,dir) + Entity.Shape.AsDynamicShape().Direction);
             }
+            shape.Move();
         }
 
-        public float currentSpeed() {
-            return gravity.vCurrent;
+        public double currentSpeed() {
+            return Entity.Shape.AsDynamicShape().Direction.Length();
         }
         
 

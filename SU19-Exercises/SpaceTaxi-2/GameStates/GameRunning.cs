@@ -39,6 +39,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             } else {
                 player.Move();
             }
+//            Console.WriteLine("Speed:"+player.Entity.Shape.AsDynamicShape().Direction.Length());
         }
 
         /// <summary>

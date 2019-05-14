@@ -59,14 +59,16 @@ namespace SpaceTaxi_2
                 line = elem.ToCharArray();
                 foreach (char someChar in line) {
                     if (Legends.LegendsDic.ContainsKey(someChar)) {
+                        var isPlatform = false;
                         if (Legends.LegendsDic[someChar] == "neptune-square.png" || Legends.LegendsDic[someChar] == "white-square.png" || Legends.LegendsDic[someChar] == "ironstone-square.png") {
                             isDangerous = false;
+                            isPlatform = true;
                         }
                         var image = new Image(Path.Combine("Assets", "Images", Legends.LegendsDic[someChar]));
                         returnContainer.AddStationaryEntity(
                             new pixel(game,
                                 new DynamicShape(
-                                    new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,isDangerous, false));
+                                    new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,isDangerous, false, isPlatform));
                     }
                     else {
                         switch (someChar)
@@ -76,7 +78,7 @@ namespace SpaceTaxi_2
                                 returnContainer.AddStationaryEntity(
                                     new pixel(game,
                                         new DynamicShape(
-                                            new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,false, true));
+                                            new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,false, true,  false));
                                 break;
                             case '>':
                                 //This is the player. We set the position
