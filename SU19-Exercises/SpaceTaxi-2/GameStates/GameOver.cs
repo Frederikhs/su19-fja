@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -16,6 +17,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         private Vec3F inactive;
         private Text[] menuButtons;
         private int selectedMenu;
+        private Text title;
 
         public GameOver() {
             InitializeGameState();
@@ -29,6 +31,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             foreach (var aButton in menuButtons) {
                 aButton.RenderText();
             }
+            title.RenderText();
         }
 
         
@@ -94,7 +97,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                                 GameEventType.GameStateEvent,
                                 this,
                                 "CHANGE_STATE",
-                                "MAIN_MENU", ""));
+                                "MAIN_MENU", "DELETE_GAME"));
                         break;
                     }
 
@@ -133,6 +136,11 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             //Setting color and font size of active button
             menuButtons[selectedMenu].SetColor(active);
             menuButtons[selectedMenu].SetFontSize(70);
+            
+            //Game over display
+            title = new Text("Game Over", new Vec2F(0.2f, 0.3f), new Vec2F(0.5f, 0.5f));
+            title.SetColor(inactive);
+            title.SetFontSize(70);
 
         }
 
@@ -144,5 +152,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public static GameOver GetInstance() {
             return GameOver.instance ?? (GameOver.instance = new GameOver());
         }
+
     }
 }

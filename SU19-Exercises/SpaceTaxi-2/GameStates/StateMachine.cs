@@ -44,6 +44,10 @@ namespace SpaceTaxi_2.SpaceTaxiState {
                 Console.WriteLine("Game is now in Main Menu");
                 ActiveState = MainMenu.GetInstance(param2);
                 break;
+            case GameStateType.EnumGameStateType.GameOver:
+                Console.WriteLine("Game is now in Game Over");
+                ActiveState = GameOver.GetInstance();
+                break;
             }
         }
     }
