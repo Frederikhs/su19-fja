@@ -82,6 +82,15 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 case "KEY_UP":
                     UpMenu();
                     break;
+                
+                case "KEY_ESCAPE":
+                    SpaceTaxiBus.GetBus().RegisterEvent(
+                        GameEventFactory<object>.CreateGameEventForAllProcessors(
+                            GameEventType.WindowEvent,
+                            this,
+                            "CLOSE_WINDOW",
+                            "", ""));
+                    break;
 
                 case "KEY_DOWN":
                     DownMenu();

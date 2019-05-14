@@ -152,6 +152,10 @@ namespace SpaceTaxi_2 {
             }
             shape.Move();
         }
+
+        public float currentSpeed() {
+            return gravity.vCurrent;
+        }
         
 
         /// <summary>

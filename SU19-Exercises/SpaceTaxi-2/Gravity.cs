@@ -6,7 +6,7 @@ namespace SpaceTaxi_2 {
 
         private float gravityForce;
         private float Maxgravity;
-        private float vCurrent;
+        public float vCurrent { get; private set; }
         public float MaxSpeed;
         public bool platform;
 
