@@ -128,7 +128,7 @@ namespace SpaceTaxi_2 {
             }
             Entity.RenderEntity();
         }
-        
+
         /// <summary>
         /// Moved the player in the direction of the direction vector,
         /// if the player is inside bounding box of map.
@@ -137,30 +137,30 @@ namespace SpaceTaxi_2 {
             var x = 0f;
             if (taxiOrientation == Orientation.RightT) {
                 x = 0.00008f;
-                
+
             } else if (taxiOrientation == Orientation.LeftT) {
                 x = -0.00008f;
             }
-            
+
             if (Trusting && !platform) {
-                var dir = gravity.NextVel(0.000012f,platform);
-            if (Trusting) {
-                var dir = gravity.NextVel(0.000015f,platform);
-                Direction(new Vec2F(x,dir) + Entity.Shape.AsDynamicShape().Direction);
-            } else if (!Trusting && !platform){
-                var dir = gravity.NextVel(0f,platform);
-                Direction(new Vec2F(x,dir) + Entity.Shape.AsDynamicShape().Direction);
-               
-            } else if (Trusting && platform) {
-                var dir = gravity.NextVel(0f,platform);
-                Direction(new Vec2F(x, dir));
-            } 
-            else if (!Trusting && platform) {
-                var dir = gravity.NextVel(0f,platform);
-                Direction(new Vec2F(x, dir));
-            } 
-            
-            shape.Move();
+                var dir = gravity.NextVel(0.000012f, platform);
+                if (Trusting) {
+                    dir = gravity.NextVel(0.000015f, platform);
+                    Direction(new Vec2F(x, dir) + Entity.Shape.AsDynamicShape().Direction);
+                } else if (!Trusting && !platform) {
+                    dir = gravity.NextVel(0f, platform);
+                    Direction(new Vec2F(x, dir) + Entity.Shape.AsDynamicShape().Direction);
+
+                } else if (Trusting && platform) {
+                    dir = gravity.NextVel(0f, platform);
+                    Direction(new Vec2F(x, dir));
+                } else if (!Trusting && platform) {
+                    dir = gravity.NextVel(0f, platform);
+                    Direction(new Vec2F(x, dir));
+                }
+
+                shape.Move();
+            }
         }
 
         public float currentSpeed() {
