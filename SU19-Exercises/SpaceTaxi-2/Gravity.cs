@@ -11,10 +11,10 @@ namespace SpaceTaxi_2 {
         public bool platform;
 
         public Gravity() {
-            gravityForce = -0.00001f;
-            Maxgravity = -0.0001f;
+            gravityForce = -0.000004f;
+            Maxgravity = -0.00015f;
             vCurrent = 0;
-            MaxSpeed = 0.0002f;
+            MaxSpeed = 0.00002f;
         }
 
         /// <summary>

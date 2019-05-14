@@ -144,6 +144,8 @@ namespace SpaceTaxi_2 {
             
             if (Trusting && !platform) {
                 var dir = gravity.NextVel(0.000012f,platform);
+            if (Trusting) {
+                var dir = gravity.NextVel(0.000015f,platform);
                 Direction(new Vec2F(x,dir) + Entity.Shape.AsDynamicShape().Direction);
             } else if (!Trusting && !platform){
                 var dir = gravity.NextVel(0f,platform);
