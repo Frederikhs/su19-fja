@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -96,6 +97,7 @@ namespace SpaceTaxi_2 {
             shape.Extent.X = width;
             shape.Extent.Y = height;
         }
+        
 
         public void RenderPlayer() {
             switch (taxiOrientation) {
@@ -118,6 +120,8 @@ namespace SpaceTaxi_2 {
                     Entity.Image = taxiBoosterOnImageRight;
                     break;
                 case Orientation.LeftT when tSideways:
+                    Entity.Image = taxiBoosterOnImageLeft;
+                    break;
                 case Orientation.RightT when tSideways:
                     Entity.Image = taxiBoosterOnImageUpRight;
                     break;
@@ -132,22 +136,23 @@ namespace SpaceTaxi_2 {
         public void Move() {
             var x = 0f;
             if (taxiOrientation == Orientation.RightT) {
-                x = 0.003f;
+                x = 0.00008f;
                 
             } else if (taxiOrientation == Orientation.LeftT) {
-                x = -0.003f;
+                x = -0.00008f;
             }
             
             if (Trusting) {
-                var dir = gravity.NextVel(0.0001f,platform);
-                Direction(new Vec2F(x,dir));
+                var dir = gravity.NextVel(0.000012f,platform);
+                Direction(new Vec2F(x,dir) + Entity.Shape.AsDynamicShape().Direction);
             } else {
                 var dir = gravity.NextVel(0f,platform);
-                Direction(new Vec2F(x,dir));
+                Direction(new Vec2F(x,dir) + Entity.Shape.AsDynamicShape().Direction);
                 
             }
             shape.Move();
         }
+        
 
         /// <summary>
         /// Changes the Player direction to the supplied directionVector
@@ -160,13 +165,11 @@ namespace SpaceTaxi_2 {
             if (eventType == GameEventType.PlayerEvent) {
                 switch (gameEvent.Message) {
                     case "BOOSTER_TO_RIGHT":
-                        Direction(new Vec2F(0.01f, 0.0f));
                         taxiOrientation = Orientation.RightT;
                         leftDir = false;
                         break;
                     
                     case "BOOSTER_TO_LEFT":
-                        Direction(new Vec2F(-0.01f, 0.0f));
                         taxiOrientation = Orientation.LeftT;
                         leftDir = true;
                         break;
@@ -188,13 +191,11 @@ namespace SpaceTaxi_2 {
 
                     case "STOP_ACCELERATE_RIGHT":
                         if (taxiOrientation == Orientation.RightT) {
-                            Direction(new Vec2F(0.0f, 0.0f));
                             taxiOrientation = Orientation.Right;
                         }
                         break;
                     case "STOP_ACCELERATE_LEFT":
                         if (taxiOrientation == Orientation.LeftT) {
-                            Direction(new Vec2F(0.0f, 0.0f));
                             taxiOrientation = Orientation.Left;
                         }
                         break;
