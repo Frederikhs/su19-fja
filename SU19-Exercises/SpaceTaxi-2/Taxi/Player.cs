@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -144,23 +145,23 @@ namespace SpaceTaxi_2 {
 
             if (Trusting && !platform) {
                 var dir = gravity.NextVel(0.000012f, platform);
-                if (Trusting) {
-                    dir = gravity.NextVel(0.000015f, platform);
-                    Direction(new Vec2F(x, dir) + Entity.Shape.AsDynamicShape().Direction);
-                } else if (!Trusting && !platform) {
-                    dir = gravity.NextVel(0f, platform);
+                Direction(new Vec2F(x, dir) + Entity.Shape.AsDynamicShape().Direction);
+            } else if (!Trusting && !platform) {
+                    var dir = gravity.NextVel(0f, platform);
                     Direction(new Vec2F(x, dir) + Entity.Shape.AsDynamicShape().Direction);
 
-                } else if (Trusting && platform) {
-                    dir = gravity.NextVel(0f, platform);
+            } else if (Trusting && platform) {
+                var dir = gravity.NextVel(0f, platform);
                     Direction(new Vec2F(x, dir));
-                } else if (!Trusting && platform) {
-                    dir = gravity.NextVel(0f, platform);
-                    Direction(new Vec2F(x, dir));
-                }
-
-                shape.Move();
+            } else if (!Trusting && platform) {
+                var dir = gravity.NextVel(0f, platform);
+                Direction(new Vec2F(x, dir));
+            } else {
+                Direction(new Vec2F(x, 0.0f));
             }
+
+            shape.Move();
+            
         }
 
         public float currentSpeed() {
