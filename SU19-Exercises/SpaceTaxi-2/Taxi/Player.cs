@@ -100,30 +100,38 @@ namespace SpaceTaxi_2 {
         
 
         public void RenderPlayer() {
-            switch (taxiOrientation) {
-                case Orientation.Left when !tSideways:
-                    Entity.Image = taxiBoosterOffImageLeft;
+            switch (platform) {
+                case true:
+                    Entity.Image = Entity.Image;
                     break;
-                case Orientation.Right when !tSideways:
-                    Entity.Image = taxiBoosterOffImageRight;
-                    break;
-                case Orientation.Left when tSideways:
-                    Entity.Image = taxiBoosterOffImageUpLeft;
-                    break;
-                case Orientation.Right when tSideways:
-                    Entity.Image = taxiBoosterOffImageUpRight;
-                    break;
-                case Orientation.LeftT when !tSideways:
-                    Entity.Image = taxiBoosterOnImageLeft;
-                    break;
-                case Orientation.RightT when !tSideways:
-                    Entity.Image = taxiBoosterOnImageRight;
-                    break;
-                case Orientation.LeftT when tSideways:
-                    Entity.Image = taxiBoosterOnImageLeft;
-                    break;
-                case Orientation.RightT when tSideways:
-                    Entity.Image = taxiBoosterOnImageUpRight;
+                case false:
+                    switch (taxiOrientation) {
+                    case Orientation.Left when !tSideways:
+                        Entity.Image = taxiBoosterOffImageLeft;
+                        break;
+                    case Orientation.Right when !tSideways:
+                        Entity.Image = taxiBoosterOffImageRight;
+                        break;
+                    case Orientation.Left when tSideways:
+                        Entity.Image = taxiBoosterOffImageUpLeft;
+                        break;
+                    case Orientation.Right when tSideways:
+                        Entity.Image = taxiBoosterOffImageUpRight;
+                        break;
+                    case Orientation.LeftT when !tSideways:
+                        Entity.Image = taxiBoosterOnImageLeft;
+                        break;
+                    case Orientation.RightT when !tSideways:
+                        Entity.Image = taxiBoosterOnImageRight;
+                        break;
+                    case Orientation.LeftT when tSideways:
+                        Entity.Image = taxiBoosterOnImageLeft;
+                        break;
+                    case Orientation.RightT when tSideways:
+                        Entity.Image = taxiBoosterOnImageUpRight;
+                        break;
+                    }
+
                     break;
             }
             Entity.RenderEntity();
@@ -135,11 +143,13 @@ namespace SpaceTaxi_2 {
         /// </summary>
         public void Move() {
             var x = 0f;
-            if (taxiOrientation == Orientation.RightT) {
+            switch (taxiOrientation) {
+            case Orientation.RightT:
                 x = 0.00008f;
-
-            } else if (taxiOrientation == Orientation.LeftT) {
+                break;
+            case Orientation.LeftT:
                 x = -0.00008f;
+                break;
             }
 
             if (Trusting && !platform) {
