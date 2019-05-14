@@ -65,7 +65,7 @@ namespace SpaceTaxi_2 {
                         //Player was not too fast, and can land on platform
                         Console.WriteLine("Player had good speed");
                         var yPos = player.Entity.Shape.Position.Y;
-                        player.SetPosition(pixel.Shape.Position.X, yPos);
+//                        player.SetPosition(pixel.Shape.Position.X, yPos);
                         player.platform = true;
                         return false;
                     }
