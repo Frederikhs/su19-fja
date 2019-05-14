@@ -15,6 +15,7 @@ namespace SpaceTaxi_2 {
             foreach (var elem in infoString) {
                 string[] split = Regex.Split(elem, ": ");
                 InfoDic.Add(split[0], split[1]);
+                
             }
         }
         
