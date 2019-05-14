@@ -24,6 +24,7 @@ namespace SpaceTaxi_2 {
         /// is dangerous, we die, else we may change level or sit on the platform
         /// </summary>
         public bool CollisionCheck() {
+            
             foreach (pixel pixel in pixels) {
                 
                 //Bool for if the player collides with an object

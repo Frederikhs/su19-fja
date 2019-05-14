@@ -142,14 +142,22 @@ namespace SpaceTaxi_2 {
                 x = -0.00008f;
             }
             
-            if (Trusting) {
+            if (Trusting && !platform) {
                 var dir = gravity.NextVel(0.000012f,platform);
                 Direction(new Vec2F(x,dir) + Entity.Shape.AsDynamicShape().Direction);
-            } else {
+            } else if (!Trusting && !platform){
                 var dir = gravity.NextVel(0f,platform);
                 Direction(new Vec2F(x,dir) + Entity.Shape.AsDynamicShape().Direction);
-                
-            }
+               
+            } else if (Trusting && platform) {
+                var dir = gravity.NextVel(0f,platform);
+                Direction(new Vec2F(x, dir));
+            } 
+            else if (!Trusting && platform) {
+                var dir = gravity.NextVel(0f,platform);
+                Direction(new Vec2F(x, dir));
+            } 
+            
             shape.Move();
         }
 
