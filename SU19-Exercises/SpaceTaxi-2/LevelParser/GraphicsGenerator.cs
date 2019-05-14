@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
@@ -13,6 +15,8 @@ namespace SpaceTaxi_2
         private LvlLegends Legends;
         private LvlStructures Structure;
         public List<Entity> elements;
+        private LvlInfo lvlinfo;
+        private string[] lvlPlatforms;
         private Game game;
         public float width;
         public Player player;
@@ -20,15 +24,22 @@ namespace SpaceTaxi_2
 
         public EntityContainer<pixel> AllGraphics;
 
-        public GraphicsGenerator(LvlLegends legends, LvlStructures structures, int width, Game game, Player player) {
+        public GraphicsGenerator(LvlLegends legends, LvlStructures structures, LvlInfo lvlinfo, int width, Game game, Player player) {
             //We gather all level info required to produce graphics
             this.Legends = legends;
             this.Structure = structures;
+            this.lvlinfo = lvlinfo;
+            FindPlatformChars();
+
             this.game = game;
             this.player = player;
             this.width = width;
             this.AllGraphics = GenerateImages();
             this.isDangerous = true;
+        }
+
+        private void FindPlatformChars() {
+            lvlPlatforms = Regex.Split(lvlinfo.InfoDic["Platforms"], ", ");
         }
 
         /// <summary>
@@ -59,8 +70,9 @@ namespace SpaceTaxi_2
                 line = elem.ToCharArray();
                 foreach (char someChar in line) {
                     if (Legends.LegendsDic.ContainsKey(someChar)) {
+
                         var isPlatform = false;
-                        if (Legends.LegendsDic[someChar] == "neptune-square.png" || Legends.LegendsDic[someChar] == "white-square.png" || Legends.LegendsDic[someChar] == "ironstone-square.png") {
+                        if (lvlPlatforms.Contains(someChar.ToString())) {
                             isDangerous = false;
                             isPlatform = true;
                         }

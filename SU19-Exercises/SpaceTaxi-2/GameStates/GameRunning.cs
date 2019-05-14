@@ -47,7 +47,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         private void PickLevel(string level) {
             loader = new TextLoader(level);
             grafgen = new GraphicsGenerator(new LvlLegends(loader),
-                new LvlStructures(loader), 500, game, player);
+                new LvlStructures(loader), new LvlInfo(loader), 500, game, player);
             pixel_container = grafgen.AllGraphics;
             GameRunning.CurrentLevel = level;
             collisions = new Collisions(pixel_container,player);
