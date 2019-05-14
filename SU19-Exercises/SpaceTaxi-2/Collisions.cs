@@ -11,23 +11,12 @@ using SpaceTaxiGame;
 
 namespace SpaceTaxi_2 {
     public class Collisions {
-        //public DynamicShape actor;
         public EntityContainer<pixel> pixels;
-        public readonly ImageStride playerDead;
-        public List<Image> playerDeadStrides;
         public Player player;
-        public bool hasCollided;
-        public bool platform;
-        
 
         public Collisions(EntityContainer<pixel> pixels, Player player) {
             this.player = player;
             this.pixels = pixels;
-            
-            this.playerDeadStrides = ImageStride.CreateStrides(8, Path.Combine("Assets", "Images", "Explosion.png" ));
-            this.playerDead = new ImageStride(5000, playerDeadStrides);
-            hasCollided = false;
-            platform = false;
         }
 
         /// <summary>
@@ -36,31 +25,36 @@ namespace SpaceTaxi_2 {
         /// </summary>
         public bool CollisionCheck() {
             foreach (pixel pixel in pixels) {
-                bool isCollision = CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(),
+                
+                //Bool for if the player collides with an object
+                bool collision = CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(),
                     pixel.Shape.AsDynamicShape()).Collision;
                 
-                if (isCollision && pixel.danger) {
-                    hasCollided = true;
+                //If there is a collision, and the pixel is dangerous, we return true 
+                if (collision && pixel.danger) {
                     return true;
-                } else if (isCollision && pixel.portal) {
-                    if (GameRunning.CurrentLevel == "the-beach") {
-                        SpaceTaxiBus.GetBus().RegisterEvent(
-                            GameEventFactory<object>.CreateGameEventForAllProcessors(
-                                GameEventType.GameStateEvent,
-                                this,
-                                "CHANGE_STATE",
-                                "GAME_RUNNING", "short-n-sweet"));
-                    } else if (GameRunning.CurrentLevel == "short-n-sweet") {
-                        SpaceTaxiBus.GetBus().RegisterEvent(
-                            GameEventFactory<object>.CreateGameEventForAllProcessors(
-                                GameEventType.GameStateEvent,
-                                this,
-                                "CHANGE_STATE",
-                                "GAME_RUNNING", "the-beach"));
+                }
+                
+                //If there is a collision, and the pixel is a portal, we change level
+                if (collision && pixel.IsPortal) {
+                    switch (GameRunning.CurrentLevel) {
+                        case "the-beach":
+                            CollisionEvents(GameEventType.GameStateEvent, "CHANGE_STATE",
+                                "GAME_RUNNING", "short-n-sweet");
+                            break;
+                        case "short-n-sweet":
+                            CollisionEvents(GameEventType.GameStateEvent, "CHANGE_STATE",
+                                "GAME_RUNNING", "the-beach");
+                            break;
                     }
+                    
+                    //The collision should not end the game, so we return false
                     return false;
                     
-                } else if (isCollision && !pixel.danger) {
+                }
+                
+                //TODO: Check player speed, and let it sit on a platform is not too fast
+                if (collision && !pixel.danger) {
                     if (player.tooFast) {
                         player.SetPosition(pixel.Shape.Position.X,pixel.Shape.Extent.Y);
                         player.platform = true;
@@ -76,6 +70,13 @@ namespace SpaceTaxi_2 {
 
             return false;
         }
+
+        public void CollisionEvents(GameEventType eventType, string message, string param1, string param2) {
+            SpaceTaxiBus.GetBus().RegisterEvent(
+                GameEventFactory<object>.CreateGameEventForAllProcessors(
+                    eventType,
+                    this, message,
+                    param1, param2));
+        }
     }
 }
-        

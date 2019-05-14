@@ -26,20 +26,15 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         private Game game;
         public static string CurrentLevel;
         private Collisions collisions;
-        private AnimationContainer explosions;
-        private int explosionLength = 500;
-        private int explosionCount;
-        
+
         public GameRunning(string level) { 
             InitializeGameState();
             PickLevel(level);
             GameRunning.instance = this;
-            explosions = new AnimationContainer(10);
         }
 
         public void UpdateGameLogic() {
             if (collisions.CollisionCheck()) {
-               AddExplosion(player.Entity.Shape.Position.X,player.Entity.Shape.Position.Y,0.1f,0.1f);
                GameOver();
             } else {
                 player.Move();
@@ -69,7 +64,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             // game entities
             player = new Player();
             player.SetExtent(0.1f, 0.1f);
-            explosionCount = 0;
         }
 
         public void GameLoop() { }
@@ -80,15 +74,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public void RenderState() {
             backGroundImage.RenderEntity();
             pixel_container.RenderEntities();
-            if (explosionCount >= 1 && explosionCount <= 2) {
-                explosions.RenderAnimations();
-                
-            }
-            if (!collisions.hasCollided) {
-                player.RenderPlayer();    
-            } else {
-                explosionCount++;
-            }
+            player.RenderPlayer();    
             
         }
 
@@ -111,16 +97,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 return new GameRunning(level);
             }
         }
-        
-        /// <summary>
-        /// Creates an explosion at x,y
-        /// </summary>
-        private void AddExplosion(float posX, float posY,
-            float extentX, float extentY) {
-            explosions.AddAnimation(
-                new StationaryShape(posX, posY, extentX, extentY), explosionLength,
-                collisions.playerDead);
-        }
 
         /// <summary>
         /// Sends to user to the GameOver state
@@ -131,7 +107,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                         GameEventType.GameStateEvent,
                         this,
                         "CHANGE_STATE",
-                        "MAIN_MENU", "DELETE_GAME"));
+                        "GAME_OVER", "DELETE_GAME"));
         }
         
         
