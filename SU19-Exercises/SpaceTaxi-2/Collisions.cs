@@ -69,8 +69,6 @@ namespace SpaceTaxi_2 {
                         player.platform = true;
                         return false;
                     }
-                } else {
-                    player.platform = false;
                 }
             }
 
