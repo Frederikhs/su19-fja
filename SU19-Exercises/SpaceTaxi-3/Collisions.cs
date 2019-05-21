@@ -84,6 +84,17 @@ namespace SpaceTaxi_2 {
                         return false;
                     }
                 }
+
+                // TODO: Work in progress
+                foreach (var customer in customers) {
+                    if (pixel.Shape.Position.X + pixel.Shape.Extent.Y ==
+                        customer.entity.Shape.Position.X) {
+                        customer.OnPath = true;
+                    }
+                }
+                
+                
+                
             }
 
             foreach (var customer in customers) {

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -23,9 +24,14 @@ namespace SpaceTaxi_2.Customer {
         private Image imageStandLeft;
         private Image imageStandRight;
 
+        public bool OnPath;
+        private Direction walkingDirection;
+
         private enum Direction {
             StandLeft,
-            StandRight
+            StandRight,
+            WalkLeft,
+            WalkRight
         }
 
         public Entity entity { get; private set; }
@@ -39,6 +45,7 @@ namespace SpaceTaxi_2.Customer {
             this.destinationPlatform = destinationPlatform;
             this.taxiDuration = taxiDuration;
             this.points = points;
+            this.walkingDirection = Direction.WalkRight;
 
             this.visible = false;
             this.HasTravled = false;
@@ -57,7 +64,30 @@ namespace SpaceTaxi_2.Customer {
             this.entity = new Entity(shape, imageStandLeft);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.TimedEvent, this);
         }
-
+        
+        
+        public void WalkCustomer() {
+            if (!OnPath) {
+                switch (walkingDirection) {
+                case Direction.WalkRight:
+                    shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0005f, 0.0f));
+                    walkingDirection = Direction.WalkLeft;
+                    Console.WriteLine("moving left");
+                    break;
+                case Direction.WalkLeft:
+                    shape.AsDynamicShape().ChangeDirection(new Vec2F(-0.0005f, 0.0f));
+                    walkingDirection = Direction.WalkRight;
+                    Console.WriteLine("moving right");
+                    break;
+                }
+                
+            }
+            shape.Move();
+        }
+            
+            
+        
+        
         public void Hide() {
             this.visible = false;
             entity.Shape.Extent = new Vec2F(0f, 0f);

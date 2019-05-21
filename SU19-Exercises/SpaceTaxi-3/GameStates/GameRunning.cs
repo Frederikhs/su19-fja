@@ -39,6 +39,9 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                GameOver();
             } else {
                 player.Move();
+                foreach (var customer in CustomerContainer) {
+                    customer.WalkCustomer();
+                }
             }
         }
 

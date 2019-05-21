@@ -101,7 +101,7 @@ namespace SpaceTaxi_2
                                     customerValues["generated"] = "true";
 
                                     temp.visible = true;
-                                    temp.SetPos(new Vec2F(posX,posY+image_height));
+                                    temp.SetPos(new Vec2F(posX,posY+image_height-0.000001f));
 
                                     Console.WriteLine("Spawned customer");
                                     AllCustomersInGame.Add(temp);
