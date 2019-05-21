@@ -9,19 +9,24 @@ namespace SpaceTaxi_2
     {
         private Game game;
         private Shape shape;
-        public bool danger;
-        public bool IsPortal;
-        public bool IsPlatform;
+        public pixelTypes type;
+        public char pixelChar;
+
+        public enum pixelTypes {
+            dangerus,
+            portal,
+            platform,
+            neutral
+        }
 
         /// <summary>
         /// Creates what we define as a pixel. The pixel has an image and resides in a game class
         /// </summary>
-        public pixel(Game game, Shape shape, IBaseImage image, bool danger, bool isPortal, bool isPlatofrm) : base(shape, image) {
+        public pixel(Game game, Shape shape, IBaseImage image, pixelTypes type, char pixelChar) : base(shape, image) {
             this.game = game;
             this.shape = shape;
-            this.danger = danger;
-            this.IsPortal = isPortal;
-            this.IsPlatform = isPlatofrm;
+            this.type = type;
+            this.pixelChar = pixelChar;
         }
     }
 }

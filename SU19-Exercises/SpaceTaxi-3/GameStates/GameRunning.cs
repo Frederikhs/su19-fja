@@ -22,6 +22,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         private TextLoader loader;
         private GraphicsGenerator grafgen;
         public EntityContainer<pixel> pixel_container;
+        public List<Customer.Customer> CustomerContainer;
         private StateMachine stateMachine;
         private Game game;
         public static string CurrentLevel;
@@ -47,10 +48,11 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         private void PickLevel(string level) {
             loader = new TextLoader(level);
             grafgen = new GraphicsGenerator(new LvlLegends(loader),
-                new LvlStructures(loader), new LvlInfo(loader), 500, game, player);
+                new LvlStructures(loader), new LvlInfo(loader), new LvlCustomer(loader), 500, game, player);
             pixel_container = grafgen.AllGraphics;
+            CustomerContainer = grafgen.AllCustomersInGame;
             GameRunning.CurrentLevel = level;
-            collisions = new Collisions(pixel_container,player);
+            collisions = new Collisions(pixel_container,CustomerContainer,player);
         }
 
         public void InitializeGameState() {
@@ -74,7 +76,11 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public void RenderState() {
             backGroundImage.RenderEntity();
             pixel_container.RenderEntities();
-            player.RenderPlayer();    
+            player.RenderPlayer();
+
+            foreach (var someCustomer in CustomerContainer) {
+                someCustomer.RenderCustomer();
+            }
             
         }
 

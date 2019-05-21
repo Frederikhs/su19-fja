@@ -14,6 +14,8 @@ namespace SpaceTaxi_2
     public class GraphicsGenerator {
         private LvlLegends Legends;
         private LvlStructures Structure;
+        private LvlCustomer Customer;
+        
         public List<Entity> elements;
         private LvlInfo lvlinfo;
         private string[] lvlPlatforms;
@@ -24,12 +26,18 @@ namespace SpaceTaxi_2
 
         public EntityContainer<pixel> AllGraphics;
 
-        public GraphicsGenerator(LvlLegends legends, LvlStructures structures, LvlInfo lvlinfo, int width, Game game, Player player) {
+        public List<Customer.Customer> AllCustomersInGame;
+
+        public GraphicsGenerator(LvlLegends legends, LvlStructures structures,
+            LvlInfo lvlinfo, LvlCustomer lvlcustomer, int width, Game game, Player player) {
             //We gather all level info required to produce graphics
             this.Legends = legends;
             this.Structure = structures;
             this.lvlinfo = lvlinfo;
+            this.Customer = lvlcustomer;
             FindPlatformChars();
+            
+            this.AllCustomersInGame = new List<Customer.Customer>();
 
             this.game = game;
             this.player = player;
@@ -70,17 +78,44 @@ namespace SpaceTaxi_2
                 line = elem.ToCharArray();
                 foreach (char someChar in line) {
                     if (Legends.LegendsDic.ContainsKey(someChar)) {
-
-                        var isPlatform = false;
+                        
+                        var type = pixel.pixelTypes.dangerus;
+                        
                         if (lvlPlatforms.Contains(someChar.ToString())) {
-                            isDangerous = false;
-                            isPlatform = true;
+                            
+                            type = pixel.pixelTypes.platform;
+                            
+                            //Placing customer
+                            foreach (var customerValues in Customer.AllCustomerDict) {
+                                if (customerValues["spawnPlatform"] == someChar.ToString() &&
+                                    customerValues["generated"] == "false") {
+                                    Customer.Customer temp = new Customer.Customer(
+                                        customerValues["name"],
+                                        Int32.Parse(customerValues["spawnAfter"]),
+                                        Char.Parse(customerValues["spawnPlatform"]),
+                                        customerValues["destinationPlatform"],
+                                        Int32.Parse(customerValues["taxiDuration"]),
+                                        Int32.Parse(customerValues["points"])
+                                    );
+
+                                    customerValues["generated"] = "true";
+
+                                    temp.visible = true;
+                                    temp.SetPos(new Vec2F(posX,posY+image_height));
+
+                                    Console.WriteLine("Spawned customer");
+                                    AllCustomersInGame.Add(temp);
+                                }
+
+                                ;
+                            }
+                            
                         }
                         var image = new Image(Path.Combine("Assets", "Images", Legends.LegendsDic[someChar]));
                         returnContainer.AddStationaryEntity(
                             new pixel(game,
                                 new DynamicShape(
-                                    new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,isDangerous, false, isPlatform));
+                                    new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image, type, someChar));
                     }
                     else {
                         switch (someChar)
@@ -90,7 +125,7 @@ namespace SpaceTaxi_2
                                 returnContainer.AddStationaryEntity(
                                     new pixel(game,
                                         new DynamicShape(
-                                            new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,false, true,  false));
+                                            new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,pixel.pixelTypes.portal, someChar));
                                 break;
                             case '>':
                                 //This is the player. We set the position

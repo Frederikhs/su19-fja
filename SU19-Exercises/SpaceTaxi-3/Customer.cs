@@ -17,6 +17,9 @@ namespace SpaceTaxi_2.Customer {
 
         public bool visible;
 
+        public bool IsInTransit;
+        public bool HasTravled;
+
         private Image imageStandLeft;
         private Image imageStandRight;
 
@@ -25,7 +28,7 @@ namespace SpaceTaxi_2.Customer {
             StandRight
         }
 
-        private Entity entity;
+        public Entity entity { get; private set; }
         private Shape shape;
 
         public Customer(string name, int spawnAfter, char spawnPlatform, string destinationPlatform,
@@ -38,6 +41,7 @@ namespace SpaceTaxi_2.Customer {
             this.points = points;
 
             this.visible = false;
+            this.HasTravled = false;
 
             GenerateImage();
         }
@@ -48,20 +52,32 @@ namespace SpaceTaxi_2.Customer {
             imageStandRight =
                 new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png"));
             
-            shape = new DynamicShape(new Vec2F(), new Vec2F());
+            shape = new DynamicShape(new Vec2F(), new Vec2F(0.05f,0.08f));
             
             this.entity = new Entity(shape, imageStandLeft);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.TimedEvent, this);
         }
+
+        public void Hide() {
+            this.visible = false;
+            entity.Shape.Extent = new Vec2F(0f, 0f);
+        }
+
+        public void Show() {
+            this.visible = true;
+            entity.Shape.Extent = new Vec2F(0.05f, 0.08f);
+        }
+
+        public void SetPos(Vec2F pos) {
+            shape.SetPosition(pos);
+        }
         
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
-            if (eventType == GameEventType.TimedEvent) {
-                switch (gameEvent.Message) {
-                case "Appear":
-                    // TODO: Implement
-                    break;
-                }
-            }
+            // TODO: Fill
+        }
+        
+        public void RenderCustomer() {
+            entity.RenderEntity();
         }
     }
 }
