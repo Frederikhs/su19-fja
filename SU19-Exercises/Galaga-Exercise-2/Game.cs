@@ -100,9 +100,9 @@ namespace Galaga_Exercise_2 {
 
         //For detecting if game is over, if game is over player flies up and game ends
         private bool IsGameOver() {
-            if (enemyFormation.Enemies.CountEntities() > 0) {List<Image>
+            if (enemyFormation.Enemies.CountEntities() > 0) {
                 return false;
-            } else {List<Image>
+            } else {
                 player.Direction(new Vec2F(0.00f, 0.01f));
                 return true;
             }    
