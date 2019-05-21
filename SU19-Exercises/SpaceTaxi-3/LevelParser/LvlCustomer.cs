@@ -12,6 +12,7 @@ namespace SpaceTaxi_2 {
         /// </summary>
         public LvlCustomer(TextLoader loader) {
             this.Customers = loader.GetCustomerInfo();
+            
         }
     }
 }
