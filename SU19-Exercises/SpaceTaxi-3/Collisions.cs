@@ -61,6 +61,7 @@ namespace SpaceTaxi_2 {
                         player.platform = false;
                         CollisionEvents(GameEventType.GameStateEvent, "CHANGE_STATE",
                             "GAME_OVER", "DELETE_GAME");
+                        break;
                     } else {
                         //Player was not too fast, and can land on platform
                         player.platform = true;
