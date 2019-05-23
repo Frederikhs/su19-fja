@@ -4,6 +4,9 @@ using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using DIKUArcade.Timers;
+using SpaceTaxi_2.SpaceTaxiState;
+using SpaceTaxi_2.SpaceTaxiStates;
 using SpaceTaxiGame;
 
 namespace SpaceTaxi_2.Customer {
@@ -13,8 +16,10 @@ namespace SpaceTaxi_2.Customer {
         public int spawnAfter; // Number of seconds that should pass in the level, before the customer appears (is spawned).
         public char spawnPlatform; // Determining on which platform the customer should be spawned.
         public string destinationPlatform; // Destination platform of the customer
+        public string PickedUpLevel; // What place to place down the customer
         public int taxiDuration; // Number of seconds you have to drop off the customer at the correct platform
         public int points; // Number of points a correct drop off of the customer is worth.
+        public bool WildCardPlatform;
 
         public bool visible;
 
@@ -52,10 +57,33 @@ namespace SpaceTaxi_2.Customer {
 
             this.visible = false;
             this.HasTravled = false;
+            this.WildCardPlatform = false;
 
             GenerateImage();
+            
 
             shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0005f, 0.0f));
+            
+            
+            Hide();
+            BroadCast();
+            FindPlatform(this.destinationPlatform);
+        }
+
+        private void FindPlatform(string platformWithHat) {
+            if (platformWithHat.Contains("^")) {
+                if (platformWithHat.Length > 1) {
+                    destinationPlatform = platformWithHat.Split('^')[1];
+                    this.PickedUpLevel = GameRunning.CurrentLevel;
+                } else {
+                    this.WildCardPlatform = true;
+                }
+            }
+        }
+
+        private void BroadCast() {
+            GameRunning.instance.customerEvents.AddTimedEvent(
+                TimeSpanType.Seconds, 1, "Show", "Customer", name);
         }
 
         private void GenerateImage() {
@@ -93,19 +121,6 @@ namespace SpaceTaxi_2.Customer {
 //            Console.WriteLine("Start: "+Platform.GetWidth(this.spawnPlatform)[0]);
 //            Console.WriteLine("End: "+Platform.GetWidth(this.spawnPlatform)[1]);
 //            Console.WriteLine("––––––––––––");
-//                switch (walkingDirection) {
-//                case Direction.WalkRight:
-//                    shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0005f, 0.0f));
-//                    walkingDirection = Direction.WalkLeft;
-////                    Console.WriteLine("moving left");
-//                    break;
-//                case Direction.WalkLeft:
-//                    shape.AsDynamicShape().ChangeDirection(new Vec2F(-0.0005f, 0.0f));
-//                    walkingDirection = Direction.WalkRight;
-////                    Console.WriteLine("moving right");
-//                    break;
-//                }
-                
 //            shape.Move();
         }
             
@@ -127,11 +142,26 @@ namespace SpaceTaxi_2.Customer {
         }
         
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
-            // TODO: Fill
+            if (eventType == GameEventType.TimedEvent) {
+                switch (gameEvent.Message) {
+                    case "Show":
+                        if (gameEvent.Parameter2 == name) {
+                            this.Show();
+                        }
+                        break;
+                    case "Hide":
+                        if (gameEvent.Parameter2 == name) {
+                            this.Hide();
+                        }
+                        break;
+                }
+            }
         }
         
         public void RenderCustomer() {
-            entity.RenderEntity();
+            if (!this.IsInTransit && !this.HasTravled) {
+                entity.RenderEntity();
+            }
         }
     }
 }

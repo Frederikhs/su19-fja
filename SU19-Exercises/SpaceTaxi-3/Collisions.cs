@@ -66,35 +66,20 @@ namespace SpaceTaxi_2 {
                         //Player was not too fast, and can land on platform
                         player.platform = true;
 
-                        foreach (var customer in customers) {
+                        //TODO:  &&
+                        //USE: customer.PickedUpLevel != GameRunning.CurrentLevel
+                        foreach (var customer in Player.CustomersInsidePlayer) {
                             if (customer.IsInTransit && customer.destinationPlatform ==
                                 pixel.pixelChar.ToString() && !customer.HasTravled) {
-                                //Placed down customer
-                                customer.SetPos(pixel.Shape.Position+pixel.Shape.Extent);
-                                customer.Show();
-                                Console.WriteLine("player placed down customer ("+customer.name+")");
-                                customer.HasTravled = true;
-                            }
 
-                            Console.WriteLine("Customer " + customer.name + " should lan on " +
-                                              customer.destinationPlatform + ")");
-                            Console.WriteLine("Current pixel is: "+pixel.pixelChar);
+                                player.PlaceDownCustomer(pixel,customer);
+                            }
                         }
                         
                         return false;
                     }
                 }
 
-                // TODO: Work in progress
-//                foreach (var customer in customers) {
-//                    if (pixel.Shape.Position.X + pixel.Shape.Extent.Y ==
-//                        customer.entity.Shape.Position.X) {
-//                        customer.OnPath = true;
-//                    }
-//                }
-                
-                
-                
             }
 
             foreach (var customer in customers) {
@@ -102,9 +87,7 @@ namespace SpaceTaxi_2 {
                     customer.entity.Shape.AsDynamicShape()).Collision;
 
                 if (collision && !customer.IsInTransit) {
-                    customer.Hide();
-                    customer.IsInTransit = true;
-                    Console.WriteLine("player picked up customer ("+customer.name+")");
+                    player.PickUpCustomer(customer);
                 }
             }
 

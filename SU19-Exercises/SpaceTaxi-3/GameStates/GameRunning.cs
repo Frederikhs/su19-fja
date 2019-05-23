@@ -28,10 +28,14 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         public static string CurrentLevel;
         private Collisions collisions;
 
+        public TimedEventContainer customerEvents;
+
         public GameRunning(string level) { 
-            InitializeGameState();
-            PickLevel(level);
             GameRunning.instance = this;
+            InitializeGameState();
+            customerEvents = new TimedEventContainer(10);
+            customerEvents.AttachEventBus(SpaceTaxiBus.GetBus());
+            PickLevel(level);
         }
 
         public void UpdateGameLogic() {
@@ -43,6 +47,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                     customer.WalkCustomer();
                 }
             }
+            customerEvents.ProcessTimedEvents();
         }
 
         /// <summary>
@@ -84,7 +89,13 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
             foreach (var someCustomer in CustomerContainer) {
                 someCustomer.RenderCustomer();
             }
-            
+
+            if (Player.CustomersInsidePlayer != null) {
+                foreach (var someCustomer in Player.CustomersInsidePlayer) {
+                    someCustomer.RenderCustomer();
+                }
+            }
+
         }
 
         /// <summary>

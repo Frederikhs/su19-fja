@@ -40,11 +40,11 @@ namespace SpaceTaxi_2 {
                 if (container.Count > 0) {
                     if (container[0].pixelChar == platformChar) {
                         WorkingContainer = container;
-                        Console.WriteLine("Found working contaner for:"+container[0].pixelChar);
-                        Console.WriteLine("Count platofrms:"+PlatformContainers.Count);
-                        foreach (var askdnasod in PlatformContainers) {
-                            Console.WriteLine("Container has: "+askdnasod[0].pixelChar);
-                        }
+//                        Console.WriteLine("Found working contaner for:"+container[0].pixelChar);
+//                        Console.WriteLine("Count platofrms:"+PlatformContainers.Count);
+//                        foreach (var askdnasod in PlatformContainers) {
+//                            Console.WriteLine("Container has: "+askdnasod[0].pixelChar);
+//                        }
                     }
                 }
             }

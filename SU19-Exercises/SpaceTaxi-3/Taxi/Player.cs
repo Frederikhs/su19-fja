@@ -38,6 +38,8 @@ namespace SpaceTaxi_2 {
         public bool tooFast;
         public float maxSpeed;
 
+        public static List<Customer.Customer> CustomersInsidePlayer;
+
         // A Player has a shape
         public Player() {
             shape = new DynamicShape(new Vec2F(), new Vec2F());
@@ -79,6 +81,28 @@ namespace SpaceTaxi_2 {
             leftDir = true;
             platform = false;
             tooFast = false;
+
+        }
+
+        public void PickUpCustomer(Customer.Customer someCustomer) {
+            if (Player.CustomersInsidePlayer == null) {
+                Player.CustomersInsidePlayer = new List<Customer.Customer>();
+            }
+            someCustomer.Hide();
+            someCustomer.IsInTransit = true;
+            Console.WriteLine("player picked up customer ("+someCustomer.name+")");
+            Player.CustomersInsidePlayer.Add(someCustomer);
+            Console.WriteLine("Added customer to static Customer List");
+        }
+
+        public void PlaceDownCustomer(pixel platformPixel,Customer.Customer someCustomer) {
+            //Placed down customer
+            someCustomer.SetPos(platformPixel.Shape.Position+platformPixel.Shape.Extent);
+            someCustomer.Show();
+            Console.WriteLine("player placed down customer ("+someCustomer.name+")");
+            Console.WriteLine("at: "+someCustomer.entity.Shape.Position.X);
+            someCustomer.HasTravled = true;
+            someCustomer.IsInTransit = false;
         }
 
 

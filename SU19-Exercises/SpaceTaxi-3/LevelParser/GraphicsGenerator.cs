@@ -8,6 +8,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using SpaceTaxi_2.SpaceTaxiStates;
 
 namespace SpaceTaxi_2
 {
@@ -106,7 +107,7 @@ namespace SpaceTaxi_2
                                         customerValues["destinationPlatform"],
                                         Int32.Parse(customerValues["taxiDuration"]),
                                         Int32.Parse(customerValues["points"])
-                                    );
+                                        );
 
                                     customerValues["generated"] = "true";
 
