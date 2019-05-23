@@ -63,6 +63,7 @@
     <Compile Include="LevelParser\pixel.cs" />
     <Compile Include="LevelParser\Platform.cs" />
     <Compile Include="LevelParser\TextLoader.cs" />
+    <Compile Include="Points.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Taxi\Orientation.cs" />

@@ -20,6 +20,8 @@ namespace SpaceTaxi_2.Customer {
         public int taxiDuration; // Number of seconds you have to drop off the customer at the correct platform
         public int points; // Number of points a correct drop off of the customer is worth.
         public bool WildCardPlatform;
+        public bool DroppedOnSameLevel;
+        public bool expiredCustomer;
 
         public bool visible;
 
@@ -58,6 +60,7 @@ namespace SpaceTaxi_2.Customer {
             this.visible = false;
             this.HasTravled = false;
             this.WildCardPlatform = false;
+            this.expiredCustomer = false;
 
             GenerateImage();
             
@@ -66,22 +69,31 @@ namespace SpaceTaxi_2.Customer {
             
             
             Hide();
-            BroadCast();
+            ShowAfter();
             FindPlatform(this.destinationPlatform);
+
+            Console.WriteLine("");
+            Console.WriteLine("Customer: " + name);
+            Console.WriteLine("Destplatform: " + this.destinationPlatform);
+            Console.WriteLine("WildCardPlatform: " + WildCardPlatform);
+            Console.WriteLine("PickedUpLevel: " + PickedUpLevel);
+            Console.WriteLine("");
         }
 
         private void FindPlatform(string platformWithHat) {
             if (platformWithHat.Contains("^")) {
                 if (platformWithHat.Length > 1) {
-                    destinationPlatform = platformWithHat.Split('^')[1];
+                    this.destinationPlatform = (platformWithHat.Split('^'))[1];
                     this.PickedUpLevel = GameRunning.CurrentLevel;
+                    this.DroppedOnSameLevel = false;
+
                 } else {
                     this.WildCardPlatform = true;
                 }
             }
         }
 
-        private void BroadCast() {
+        private void ShowAfter() {
             GameRunning.instance.customerEvents.AddTimedEvent(
                 TimeSpanType.Seconds, 1, "Show", "Customer", name);
         }
@@ -130,6 +142,10 @@ namespace SpaceTaxi_2.Customer {
         public void Hide() {
             this.visible = false;
             entity.Shape.Extent = new Vec2F(0f, 0f);
+            
+            //Customer got picked up, starting timer
+            GameRunning.instance.customerEvents.AddTimedEvent(
+                TimeSpanType.Seconds, taxiDuration, "Travel_Timer", "Customer", name);
         }
 
         public void Show() {
@@ -149,9 +165,16 @@ namespace SpaceTaxi_2.Customer {
                             this.Show();
                         }
                         break;
+                    
                     case "Hide":
                         if (gameEvent.Parameter2 == name) {
                             this.Hide();
+                        }
+                        break;
+                    
+                    case "Travel_Timer":
+                        if (gameEvent.Parameter2 == name) {
+                            this.expiredCustomer = true;
                         }
                         break;
                 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -66,16 +67,26 @@ namespace SpaceTaxi_2 {
                         //Player was not too fast, and can land on platform
                         player.platform = true;
 
-                        //TODO:  &&
-                        //USE: customer.PickedUpLevel != GameRunning.CurrentLevel
                         foreach (var customer in Player.CustomersInsidePlayer) {
                             if (customer.IsInTransit && customer.destinationPlatform ==
                                 pixel.pixelChar.ToString() && !customer.HasTravled) {
 
-                                player.PlaceDownCustomer(pixel,customer);
+                                if (customer.DroppedOnSameLevel && customer.PickedUpLevel ==
+                                    GameRunning.CurrentLevel && !customer.expiredCustomer) {
+                                    Console.WriteLine("Played down customer on the same level it got picked up");
+                                    player.PlaceDownCustomer(pixel, customer);
+                                } else if (!customer.DroppedOnSameLevel &&
+                                           customer.PickedUpLevel != GameRunning.CurrentLevel &&
+                                           !customer.expiredCustomer) {
+                                    Console.WriteLine("Played down customer on another level");
+                                    player.PlaceDownCustomer(pixel, customer);
+                                } else {
+                                    Console.WriteLine("Customer expired "+customer.name);
+                                }
+
                             }
                         }
-                        
+
                         return false;
                     }
                 }

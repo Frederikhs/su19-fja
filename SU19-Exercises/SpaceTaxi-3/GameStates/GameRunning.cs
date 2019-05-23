@@ -11,6 +11,7 @@ using DIKUArcade.State;
 using DIKUArcade.Timers;
 using OpenTK;
 using SpaceTaxi_2.SpaceTaxiState;
+using SpaceTaxi_3;
 using SpaceTaxiGame;
 
 namespace SpaceTaxi_2.SpaceTaxiStates {
@@ -27,15 +28,21 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         private Game game;
         public static string CurrentLevel;
         private Collisions collisions;
+        private Points points;
 
         public TimedEventContainer customerEvents;
 
-        public GameRunning(string level) { 
+        public GameRunning(string level) {
+            GameRunning.CurrentLevel = level;
             GameRunning.instance = this;
             InitializeGameState();
             customerEvents = new TimedEventContainer(10);
             customerEvents.AttachEventBus(SpaceTaxiBus.GetBus());
             PickLevel(level);
+            
+            //Create score
+            points = new Points(new Vec2F(0.45f, -0.12f), new Vec2F(0.2f, 0.2f));
+            
         }
 
         public void UpdateGameLogic() {
@@ -59,7 +66,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                 new LvlStructures(loader), new LvlInfo(loader), new LvlCustomer(loader), 500, game, player);
             pixel_container = grafgen.AllGraphics;
             CustomerContainer = grafgen.AllCustomersInGame;
-            GameRunning.CurrentLevel = level;
             collisions = new Collisions(pixel_container,CustomerContainer,player);
         }
 
@@ -95,6 +101,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                     someCustomer.RenderCustomer();
                 }
             }
+            points.RenderScore();
 
         }
 
@@ -166,17 +173,6 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         }
 
         public void KeyPress(string key) {
-
-//            foreach (var container in Platform.PlatformContainers) {
-//                Console.WriteLine("New container:");
-//                foreach (var pixel in container) {
-//                    Console.WriteLine("A pixel: "+pixel.pixelChar);
-//                }
-//            }
-
-            Console.WriteLine("Player pos: " + player.Entity.Shape.Position.X);
-            
-            
             switch (key) {
                 case "KEY_ESCAPE":
                     SpaceTaxiBus.GetBus().RegisterEvent(

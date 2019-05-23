@@ -8,6 +8,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using SpaceTaxi_2.SpaceTaxiState;
+using SpaceTaxi_3;
 using SpaceTaxiGame;
 
 namespace SpaceTaxi_2 {
@@ -103,6 +104,7 @@ namespace SpaceTaxi_2 {
             Console.WriteLine("at: "+someCustomer.entity.Shape.Position.X);
             someCustomer.HasTravled = true;
             someCustomer.IsInTransit = false;
+            Points.AddPoints(someCustomer.points);
         }
 
 
