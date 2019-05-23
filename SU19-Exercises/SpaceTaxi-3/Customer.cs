@@ -24,6 +24,9 @@ namespace SpaceTaxi_2.Customer {
         private Image imageStandLeft;
         private Image imageStandRight;
 
+        private float Start;
+        private float End;
+
         public bool OnPath;
         private Direction walkingDirection;
 
@@ -51,6 +54,8 @@ namespace SpaceTaxi_2.Customer {
             this.HasTravled = false;
 
             GenerateImage();
+
+            shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0005f, 0.0f));
         }
 
         private void GenerateImage() {
@@ -64,25 +69,44 @@ namespace SpaceTaxi_2.Customer {
             this.entity = new Entity(shape, imageStandLeft);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.TimedEvent, this);
         }
+
+        private float GetPosX() {
+            return this.entity.Shape.Position.X;
+        }
         
         
         public void WalkCustomer() {
-            if (!OnPath) {
-                switch (walkingDirection) {
-                case Direction.WalkRight:
-                    shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0005f, 0.0f));
-                    walkingDirection = Direction.WalkLeft;
-                    Console.WriteLine("moving left");
-                    break;
-                case Direction.WalkLeft:
-                    shape.AsDynamicShape().ChangeDirection(new Vec2F(-0.0005f, 0.0f));
-                    walkingDirection = Direction.WalkRight;
-                    Console.WriteLine("moving right");
-                    break;
-                }
-                
+            if (walkingDirection == Direction.WalkRight &&
+                GetPosX() >= Platform.GetWidth(this.spawnPlatform)[1]) {
+                Console.WriteLine("CHanging direction");
+                shape.AsDynamicShape().ChangeDirection(new Vec2F(-0.0005f, 0.0f));
+                this.walkingDirection = Direction.WalkLeft;
+            } else if (walkingDirection == Direction.WalkLeft &&
+                       GetPosX() <= Platform.GetWidth(this.spawnPlatform)[0]) {
+                shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0005f, 0.0f));
+                this.walkingDirection = Direction.WalkRight;
             }
-            shape.Move();
+
+//            Console.WriteLine("-----\nCustomer: "+name);
+//            Console.WriteLine("WalkingDirection: "+walkingDirection);
+//            Console.WriteLine("GetPos: "+GetPosX());
+//            Console.WriteLine("Start: "+Platform.GetWidth(this.spawnPlatform)[0]);
+//            Console.WriteLine("End: "+Platform.GetWidth(this.spawnPlatform)[1]);
+//            Console.WriteLine("––––––––––––");
+//                switch (walkingDirection) {
+//                case Direction.WalkRight:
+//                    shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0005f, 0.0f));
+//                    walkingDirection = Direction.WalkLeft;
+////                    Console.WriteLine("moving left");
+//                    break;
+//                case Direction.WalkLeft:
+//                    shape.AsDynamicShape().ChangeDirection(new Vec2F(-0.0005f, 0.0f));
+//                    walkingDirection = Direction.WalkRight;
+////                    Console.WriteLine("moving right");
+//                    break;
+//                }
+                
+//            shape.Move();
         }
             
             

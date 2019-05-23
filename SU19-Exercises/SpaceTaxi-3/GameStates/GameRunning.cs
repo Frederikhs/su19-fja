@@ -155,6 +155,17 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         }
 
         public void KeyPress(string key) {
+
+//            foreach (var container in Platform.PlatformContainers) {
+//                Console.WriteLine("New container:");
+//                foreach (var pixel in container) {
+//                    Console.WriteLine("A pixel: "+pixel.pixelChar);
+//                }
+//            }
+
+            Console.WriteLine("Player pos: " + player.Entity.Shape.Position.X);
+            
+            
             switch (key) {
                 case "KEY_ESCAPE":
                     SpaceTaxiBus.GetBus().RegisterEvent(

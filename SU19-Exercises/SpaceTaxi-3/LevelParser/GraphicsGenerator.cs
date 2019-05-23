@@ -19,6 +19,7 @@ namespace SpaceTaxi_2
         public List<Entity> elements;
         private LvlInfo lvlinfo;
         private string[] lvlPlatforms;
+        private List<char> lvlPlatformsChars;
         private Game game;
         public float width;
         public Player player;
@@ -35,6 +36,7 @@ namespace SpaceTaxi_2
             this.Structure = structures;
             this.lvlinfo = lvlinfo;
             this.Customer = lvlcustomer;
+            this.lvlPlatformsChars = new List<char>();
             FindPlatformChars();
             
             this.AllCustomersInGame = new List<Customer.Customer>();
@@ -42,12 +44,20 @@ namespace SpaceTaxi_2
             this.game = game;
             this.player = player;
             this.width = width;
-            this.AllGraphics = GenerateImages();
             this.isDangerous = true;
+
+            Platform.CreateContainers(this.lvlPlatformsChars);
+            this.AllGraphics = GenerateImages();
+
         }
 
         private void FindPlatformChars() {
             lvlPlatforms = Regex.Split(lvlinfo.InfoDic["Platforms"], ", ");
+
+            foreach (var stringChar in lvlPlatforms) {
+                this.lvlPlatformsChars.Add(Char.Parse(stringChar));
+            }
+            
         }
 
         /// <summary>
@@ -107,15 +117,21 @@ namespace SpaceTaxi_2
                                     AllCustomersInGame.Add(temp);
                                 }
 
-                                ;
                             }
                             
                         }
                         var image = new Image(Path.Combine("Assets", "Images", Legends.LegendsDic[someChar]));
-                        returnContainer.AddStationaryEntity(
-                            new pixel(game,
-                                new DynamicShape(
-                                    new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image, type, someChar));
+
+                        var somePixel = new pixel(game,
+                            new DynamicShape(
+                                new Vec2F(posX, posY), new Vec2F(image_width, image_height)), image,
+                            type, someChar);
+                        
+                        returnContainer.AddStationaryEntity(somePixel);
+                        if (lvlPlatforms.Contains(someChar.ToString())) {
+                            Platform.AddPixel(somePixel);
+                        }
+
                     }
                     else {
                         switch (someChar)

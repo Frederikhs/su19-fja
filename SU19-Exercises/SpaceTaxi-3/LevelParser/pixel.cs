@@ -8,7 +8,7 @@ namespace SpaceTaxi_2
     public class pixel : Entity
     {
         private Game game;
-        private Shape shape;
+        public Shape shape { get; private set; }
         public pixelTypes type;
         public char pixelChar;
 
@@ -28,5 +28,6 @@ namespace SpaceTaxi_2
             this.type = type;
             this.pixelChar = pixelChar;
         }
+        
     }
 }
