@@ -13,10 +13,10 @@ using SpaceTaxiGame;
 namespace SpaceTaxi_2 {
     public class Collisions {
         public EntityContainer<pixel> pixels;
-        public List<Customer.Customer> customers;
+        public List<Customer> customers;
         public Player player;
 
-        public Collisions(EntityContainer<pixel> pixels, List<Customer.Customer> customers, Player player) {
+        public Collisions(EntityContainer<pixel> pixels, List<Customer> customers, Player player) {
             this.player = player;
             this.pixels = pixels;
             this.customers = customers;

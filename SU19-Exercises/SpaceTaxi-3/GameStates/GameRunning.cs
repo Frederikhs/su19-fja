@@ -23,7 +23,7 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
         private TextLoader loader;
         private GraphicsGenerator grafgen;
         public EntityContainer<pixel> pixel_container;
-        public List<Customer.Customer> CustomerContainer;
+        public List<Customer> CustomerContainer;
         private StateMachine stateMachine;
         private Game game;
         public static string CurrentLevel;
@@ -50,9 +50,11 @@ namespace SpaceTaxi_2.SpaceTaxiStates {
                GameOver();
             } else {
                 player.Move();
-                foreach (var customer in CustomerContainer) {
-                    customer.WalkCustomer();
-                }
+                
+                //This features is not yet finished
+                //foreach (var customer in CustomerContainer) {
+                //    customer.WalkCustomer();
+                //}
             }
             customerEvents.ProcessTimedEvents();
         }

@@ -28,11 +28,10 @@ namespace SpaceTaxi_2
 
         public EntityContainer<pixel> AllGraphics;
 
-        public List<Customer.Customer> AllCustomersInGame;
+        public List<Customer> AllCustomersInGame;
 
         public GraphicsGenerator(LvlLegends legends, LvlStructures structures,
             LvlInfo lvlinfo, LvlCustomer lvlcustomer, int width, Game game, Player player) {
-            //We gather all level info required to produce graphics
             this.Legends = legends;
             this.Structure = structures;
             this.lvlinfo = lvlinfo;
@@ -40,7 +39,7 @@ namespace SpaceTaxi_2
             this.lvlPlatformsChars = new List<char>();
             FindPlatformChars();
             
-            this.AllCustomersInGame = new List<Customer.Customer>();
+            this.AllCustomersInGame = new List<Customer>();
 
             this.game = game;
             this.player = player;
@@ -52,6 +51,9 @@ namespace SpaceTaxi_2
 
         }
 
+        /// <summary>
+        /// Finds each platform chars
+        /// </summary>
         private void FindPlatformChars() {
             lvlPlatforms = Regex.Split(lvlinfo.InfoDic["Platforms"], ", ");
 
@@ -100,7 +102,7 @@ namespace SpaceTaxi_2
                             foreach (var customerValues in Customer.AllCustomerDict) {
                                 if (customerValues["spawnPlatform"] == someChar.ToString() &&
                                     customerValues["generated"] == "false") {
-                                    Customer.Customer temp = new Customer.Customer(
+                                    Customer temp = new Customer(
                                         customerValues["name"],
                                         Int32.Parse(customerValues["spawnAfter"]),
                                         Char.Parse(customerValues["spawnPlatform"]),

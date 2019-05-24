@@ -9,33 +9,33 @@ using SpaceTaxi_2.SpaceTaxiState;
 using SpaceTaxi_2.SpaceTaxiStates;
 using SpaceTaxiGame;
 
-namespace SpaceTaxi_2.Customer {
+namespace SpaceTaxi_2 {
     public class Customer : IGameEventProcessor<object> {
 
-        public string name; // Name of the costumer
+        public string name; // Name of the customer.
         public int spawnAfter; // Number of seconds that should pass in the level, before the customer appears (is spawned).
         public char spawnPlatform; // Determining on which platform the customer should be spawned.
-        public string destinationPlatform; // Destination platform of the customer
-        public string PickedUpLevel; // What place to place down the customer
-        public int taxiDuration; // Number of seconds you have to drop off the customer at the correct platform
+        public string destinationPlatform; // Destination platform of the customer.
+        public string PickedUpLevel; // What place to place down the customer.
+        public int taxiDuration; // Number of seconds you have to drop off the customer at the correct platform.
         public int points; // Number of points a correct drop off of the customer is worth.
-        public bool WildCardPlatform;
-        public bool DroppedOnSameLevel;
-        public bool expiredCustomer;
-
-        public bool visible;
-
-        public bool IsInTransit;
-        public bool HasTravled;
+        public bool WildCardPlatform; //If the customer can be dropped off on any platform.
+        public bool DroppedOnSameLevel; //If the customer should be dropped off on the same level.
+        public bool visible; //If the customer is visible on screen.
+        
+        //TODO: Refractor into enum CustState
+        public bool expiredCustomer; //If the customer is expired. e.g. the taxiDuration is expired.
+        public bool IsInTransit; //If the customer is in transit
+        public bool HasTravled; //If the customer has travelled to his/her destination
 
         private Image imageStandLeft;
         private Image imageStandRight;
 
-        private float Start;
-        private float End;
+        private float Start; //The start x position for the platform which the customer can walk.
+        private float End; //The end x position.
 
-        public bool OnPath;
-        private Direction walkingDirection;
+        public bool OnPath; //If the customer is on the right path (platform)
+        private Direction walkingDirection; //What direction the customer is facing
 
         private enum Direction {
             StandLeft,
@@ -56,30 +56,19 @@ namespace SpaceTaxi_2.Customer {
             this.taxiDuration = taxiDuration;
             this.points = points;
             this.walkingDirection = Direction.WalkRight;
-
             this.visible = false;
             this.HasTravled = false;
             this.WildCardPlatform = false;
             this.expiredCustomer = false;
-
             GenerateImage();
-            
-
-            shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0005f, 0.0f));
-            
-            
             Hide();
             ShowAfter();
             FindPlatform(this.destinationPlatform);
-
-            Console.WriteLine("");
-            Console.WriteLine("Customer: " + name);
-            Console.WriteLine("Destplatform: " + this.destinationPlatform);
-            Console.WriteLine("WildCardPlatform: " + WildCardPlatform);
-            Console.WriteLine("PickedUpLevel: " + PickedUpLevel);
-            Console.WriteLine("");
         }
 
+        /// <summary>
+        /// Sets the class variables depending on what platform the customer should land on
+        /// </summary>
         private void FindPlatform(string platformWithHat) {
             if (platformWithHat.Contains("^")) {
                 if (platformWithHat.Length > 1) {
@@ -92,12 +81,19 @@ namespace SpaceTaxi_2.Customer {
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Creates a TimedEvent for the customer to spawn. When the timed event is broadcasted
+        /// the customer will appear with the Show method.
+        /// </summary>
         private void ShowAfter() {
             GameRunning.instance.customerEvents.AddTimedEvent(
-                TimeSpanType.Seconds, 1, "Show", "Customer", name);
+                TimeSpanType.Seconds, spawnAfter, "Show", "Customer", name);
         }
 
+        /// <summary>
+        /// Generates the necessary images for the customer.
+        /// </summary>
         private void GenerateImage() {
             imageStandLeft =
                 new Image(Path.Combine("Assets", "Images", "CustomerStandLeft.png"));
@@ -110,11 +106,18 @@ namespace SpaceTaxi_2.Customer {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.TimedEvent, this);
         }
 
+        /// <summary>
+        /// Returns the x position in the game.
+        /// </summary>
         private float GetPosX() {
             return this.entity.Shape.Position.X;
         }
         
         
+        /// <summary>
+        /// Moves the customer in the direction its going, if it reached the end of the platform
+        /// its walking on, we change direction.
+        /// </summary>
         public void WalkCustomer() {
             if (walkingDirection == Direction.WalkRight &&
                 GetPosX() >= Platform.GetWidth(this.spawnPlatform)[1]) {
@@ -126,19 +129,13 @@ namespace SpaceTaxi_2.Customer {
                 shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0005f, 0.0f));
                 this.walkingDirection = Direction.WalkRight;
             }
-
-//            Console.WriteLine("-----\nCustomer: "+name);
-//            Console.WriteLine("WalkingDirection: "+walkingDirection);
-//            Console.WriteLine("GetPos: "+GetPosX());
-//            Console.WriteLine("Start: "+Platform.GetWidth(this.spawnPlatform)[0]);
-//            Console.WriteLine("End: "+Platform.GetWidth(this.spawnPlatform)[1]);
-//            Console.WriteLine("––––––––––––");
-//            shape.Move();
+            shape.Move();
         }
-            
-            
-        
-        
+
+        /// <summary>
+        /// Hides the customer, this is used when the customer is picked up by a taxi. This method
+        /// also starts the timer for the taxiDuration.
+        /// </summary>
         public void Hide() {
             this.visible = false;
             entity.Shape.Extent = new Vec2F(0f, 0f);
@@ -148,15 +145,24 @@ namespace SpaceTaxi_2.Customer {
                 TimeSpanType.Seconds, taxiDuration, "Travel_Timer", "Customer", name);
         }
 
+        /// <summary>
+        /// Shows the customer on the screen.
+        /// </summary>
         public void Show() {
             this.visible = true;
             entity.Shape.Extent = new Vec2F(0.05f, 0.08f);
         }
 
+        /// <summary>
+        /// Sets the position of the customer.
+        /// </summary>
         public void SetPos(Vec2F pos) {
             shape.SetPosition(pos);
         }
         
+        /// <summary>
+        /// Listens for events and invokes methods if message and name matches this customer.
+        /// </summary>
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.TimedEvent) {
                 switch (gameEvent.Message) {
@@ -181,6 +187,9 @@ namespace SpaceTaxi_2.Customer {
             }
         }
         
+        /// <summary>
+        /// Render the customers entity if it is not in transit and hos not yet travelled.
+        /// </summary>
         public void RenderCustomer() {
             if (!this.IsInTransit && !this.HasTravled) {
                 entity.RenderEntity();

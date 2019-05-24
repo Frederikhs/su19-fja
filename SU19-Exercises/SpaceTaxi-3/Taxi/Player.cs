@@ -39,7 +39,7 @@ namespace SpaceTaxi_2 {
         public bool tooFast;
         public float maxSpeed;
 
-        public static List<Customer.Customer> CustomersInsidePlayer;
+        public static List<Customer> CustomersInsidePlayer;
 
         // A Player has a shape
         public Player() {
@@ -84,23 +84,29 @@ namespace SpaceTaxi_2 {
             tooFast = false;
 
         }
-
-        public void PickUpCustomer(Customer.Customer someCustomer) {
+        
+        /// <summary>
+        /// Player pick up, hides the customer and set it in transit. Adds customer to static list
+        /// </summary>
+        public void PickUpCustomer(Customer someCustomer) {
             if (Player.CustomersInsidePlayer == null) {
-                Player.CustomersInsidePlayer = new List<Customer.Customer>();
+                Player.CustomersInsidePlayer = new List<Customer>();
             }
             someCustomer.Hide();
             someCustomer.IsInTransit = true;
-            Console.WriteLine("player picked up customer ("+someCustomer.name+")");
+            Console.WriteLine("Player picked up customer ("+someCustomer.name+")");
             Player.CustomersInsidePlayer.Add(someCustomer);
-            Console.WriteLine("Added customer to static Customer List");
         }
 
-        public void PlaceDownCustomer(pixel platformPixel,Customer.Customer someCustomer) {
+        /// <summary>
+        /// PLaces down customer, and sets its position, also awards points if the timer has
+        /// not yet expired
+        /// </summary>
+        public void PlaceDownCustomer(pixel platformPixel,Customer someCustomer) {
             //Placed down customer
             someCustomer.SetPos(platformPixel.Shape.Position+platformPixel.Shape.Extent);
             someCustomer.Show();
-            Console.WriteLine("player placed down customer ("+someCustomer.name+")");
+            Console.WriteLine("Player placed down customer ("+someCustomer.name+")");
             Console.WriteLine("at: "+someCustomer.entity.Shape.Position.X);
             someCustomer.HasTravled = true;
             someCustomer.IsInTransit = false;
@@ -199,6 +205,10 @@ namespace SpaceTaxi_2 {
             
         }
 
+        
+        /// <summary>
+        /// Returns the current speed of the player
+        /// </summary>
         public double currentSpeed() {
             return Entity.Shape.AsDynamicShape().Direction.Length();
         }

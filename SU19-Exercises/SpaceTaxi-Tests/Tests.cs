@@ -199,6 +199,45 @@ namespace SpaceTaxi_Tests {
             };
             Assert.AreEqual(Structure,lvlstructures.Structure);
         }
+
+        /// <summary>
+        /// TODO: Implement PlayerPixelCollision
+        /// Test for checking player collision with an object in the level that is dangerous.
+        /// </summary>
+        public void PlayerPixelCollision() {
+            //Place player beside pixel to check for collision
+        }
         
+        /// <summary>
+        /// TODO: Implement PlayerPlatform
+        /// Test for checking player collision with the platform and that the player does not die
+        /// </summary>
+        public void PlayerPlatform() {
+            //Place player beside pixel to check for collision
+        }
+        
+        /// <summary>
+        /// TODO: Implement PlayerPortal
+        /// Test for checking player collision with the portal and if the level changes
+        /// </summary>
+        public void PlayerPortal() {
+            //Place player beside pixel to check for collision
+        }
+        
+        /// <summary>
+        /// TODO: Implement PlayerPickUpCustomer
+        /// Test for checking player collision with a customer
+        /// </summary>
+        public void PlayerPickUpCustomer() {
+            //Place player beside a customer to check for collision
+        }
+        
+        /// <summary>
+        /// TODO: Implement PlayerPlaceDownCustomer
+        /// Test for checking player collision with a the platform while a customer is inside
+        /// </summary>
+        public void PlayerPlaceDownCustomer() {
+            //Place player on the platform to check for collision
+        }
     }
 }
