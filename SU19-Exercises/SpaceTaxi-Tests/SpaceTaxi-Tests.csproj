@@ -58,10 +58,18 @@
       <Project>{6b6b73fe-d105-4f0e-9b51-069b6fd6328f}</Project>
       <Name>SpaceTaxi-1</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SpaceTaxi-3\SpaceTaxi-3.csproj">
+      <Project>{e9a280be-da57-4731-8570-500279626beb}</Project>
+      <Name>SpaceTaxi-3</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Levels\short-n-sweet.txt" />
+    <Content Include="Levels\the-beach.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

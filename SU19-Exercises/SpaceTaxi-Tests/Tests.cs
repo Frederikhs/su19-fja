@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using DIKUArcade.Math;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using SpaceTaxi_1;
+using SpaceTaxi_2;
+using SpaceTaxi_3;
 
 namespace SpaceTaxi_Tests {
     [TestFixture]
@@ -13,7 +16,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void short_n_sweet_LvlCustomer() {
-            LvlCustomer lvlcustomer = new LvlCustomer(new TextLoader("short-n-sweet"));
+            SpaceTaxi_1.LvlCustomer lvlcustomer = new SpaceTaxi_1.LvlCustomer(new SpaceTaxi_1.TextLoader("short-n-sweet"));
             List<String> Customers = new List<string> {
                 "Customer: Alice 10 1 ^J 10 100"
             };
@@ -25,7 +28,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void short_n_sweet_LvlInfo() {
-            LvlInfo lvlinfo = new LvlInfo(new TextLoader("short-n-sweet"));
+            SpaceTaxi_1.LvlInfo lvlinfo = new SpaceTaxi_1.LvlInfo(new SpaceTaxi_1.TextLoader("short-n-sweet"));
             Dictionary<string, string> infoDic = new Dictionary<string, string> {
                 {"Name","SHORT -N- SWEET"},
                 {"Platforms","1"}
@@ -38,7 +41,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void short_n_sweet_LvlLegends() {
-            LvlLegends lvllegends = new LvlLegends(new TextLoader("short-n-sweet"));
+            SpaceTaxi_1.LvlLegends lvllegends = new SpaceTaxi_1.LvlLegends(new SpaceTaxi_1.TextLoader("short-n-sweet"));
             Dictionary<char, string> LegendsDic = new Dictionary<char, string> {
                 {'%', "white-square.png"},
                 {'#', "ironstone-square.png"},
@@ -71,7 +74,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void short_n_sweet_LvlStructure() {
-            LvlStructures lvlstructures = new LvlStructures(new TextLoader("short-n-sweet"));
+            SpaceTaxi_1.LvlStructures lvlstructures = new SpaceTaxi_1.LvlStructures(new SpaceTaxi_1.TextLoader("short-n-sweet"));
             List<String> Structure = new List<string> {
                 "%#%#%#%#%#%#%#%#%#^^^^^^%#%#%#%#%#%#%#%#",
                 "#               JW      JW             %",
@@ -105,7 +108,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void the_beach_LvlCustomer() {
-            LvlCustomer lvlcustomer = new LvlCustomer(new TextLoader("the-beach"));
+            SpaceTaxi_1.LvlCustomer lvlcustomer = new SpaceTaxi_1.LvlCustomer(new SpaceTaxi_1.TextLoader("the-beach"));
             List<String> Customers = new List<string> {
                 "Customer: Bob 10 J r 10 100",
                 "Customer: Carol 30 r ^ 10 100"
@@ -118,7 +121,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void the_beach_LvlInfo() {
-            LvlInfo lvlinfo = new LvlInfo(new TextLoader("the-beach"));
+            SpaceTaxi_1.LvlInfo lvlinfo = new SpaceTaxi_1.LvlInfo(new SpaceTaxi_1.TextLoader("the-beach"));
             Dictionary<string, string> infoDic = new Dictionary<string, string> {
                 {"Name","THE BEACH"},
                 {"Platforms","J, i, r"}
@@ -131,7 +134,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void the_beach_LvlLegends() {
-            LvlLegends lvllegends = new LvlLegends(new TextLoader("the-beach"));
+            SpaceTaxi_1.LvlLegends lvllegends = new SpaceTaxi_1.LvlLegends(new SpaceTaxi_1.TextLoader("the-beach"));
             Dictionary<char, string> LegendsDic = new Dictionary<char, string> {
                 {'A', "aspargus-edge-left.png"},
                 {'B', "aspargus-edge-right.png"},
@@ -171,7 +174,7 @@ namespace SpaceTaxi_Tests {
         /// </summary>
         [Test]
         public void the_beach_LvlStructure() {
-            LvlStructures lvlstructures = new LvlStructures(new TextLoader("the-beach"));
+            SpaceTaxi_1.LvlStructures lvlstructures = new SpaceTaxi_1.LvlStructures(new SpaceTaxi_1.TextLoader("the-beach"));
             List<String> Structure = new List<string> {
                 "CTTTTTTTTTTTTTTTTD^^^^^^CTTTTTTTTTTTTttt",
                 "A                                    stt",
@@ -204,6 +207,7 @@ namespace SpaceTaxi_Tests {
         /// TODO: Implement PlayerPixelCollision
         /// Test for checking player collision with an object in the level that is dangerous.
         /// </summary>
+        [Test]
         public void PlayerPixelCollision() {
             //Place player beside pixel to check for collision
         }
@@ -212,6 +216,7 @@ namespace SpaceTaxi_Tests {
         /// TODO: Implement PlayerPlatform
         /// Test for checking player collision with the platform and that the player does not die
         /// </summary>
+        [Test]
         public void PlayerPlatform() {
             //Place player beside pixel to check for collision
         }
@@ -220,6 +225,7 @@ namespace SpaceTaxi_Tests {
         /// TODO: Implement PlayerPortal
         /// Test for checking player collision with the portal and if the level changes
         /// </summary>
+        [Test]
         public void PlayerPortal() {
             //Place player beside pixel to check for collision
         }
@@ -228,6 +234,7 @@ namespace SpaceTaxi_Tests {
         /// TODO: Implement PlayerPickUpCustomer
         /// Test for checking player collision with a customer
         /// </summary>
+        [Test]
         public void PlayerPickUpCustomer() {
             //Place player beside a customer to check for collision
         }
@@ -236,8 +243,33 @@ namespace SpaceTaxi_Tests {
         /// TODO: Implement PlayerPlaceDownCustomer
         /// Test for checking player collision with a the platform while a customer is inside
         /// </summary>
+        [Test]
         public void PlayerPlaceDownCustomer() {
             //Place player on the platform to check for collision
+        }
+
+        /// <summary>
+        /// Test that the customer is show and that is has an extend
+        /// TODO: Test need environment with GameRunning for success
+        /// </summary>
+        [Test]
+        public void CustomerShow() {
+            Customer cust = new Customer("Test",0,'J',"K",5,1); 
+            cust.Show();
+            Assert.AreEqual(true, cust.visible);
+            Assert.AreEqual(new Vec2F(0.05f, 0.08f), cust.entity.Shape.Extent);
+        }
+        
+        /// <summary>
+        /// Test that the customer is hidden and that is has no extend
+        /// TODO: Test need environment with GameRunning for success
+        /// </summary>
+        [Test]
+        public void CustomerHide() {
+            Customer cust = new Customer("Test",0,'J',"K",5,1); 
+            cust.Hide();
+            Assert.AreEqual(false, cust.visible);
+            Assert.AreEqual(new Vec2F( 0f,0f), cust.entity.Shape.Extent);
         }
     }
 }
