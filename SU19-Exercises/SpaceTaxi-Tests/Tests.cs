@@ -250,7 +250,7 @@ namespace SpaceTaxi_Tests {
 
         /// <summary>
         /// Test that the customer is show and that is has an extend
-        /// TODO: Test need environment with GameRunning for success
+        /// TODO: Test need environment with GameRunning for success - Maybe move the level string outside the class (Customer)
         /// </summary>
         [Test]
         public void CustomerShow() {
