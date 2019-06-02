@@ -208,6 +208,7 @@ namespace SpaceTaxi_Tests {
         /// Test for checking player collision with an object in the level that is dangerous.
         /// </summary>
         [Test]
+        
         public void PlayerPixelCollision() {
             //Place player beside pixel to check for collision
         }

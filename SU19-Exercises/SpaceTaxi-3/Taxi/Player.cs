@@ -97,6 +97,7 @@ namespace SpaceTaxi_2 {
             someCustomer.HasTravled = true;
             someCustomer.IsInTransit = false;
             Points.AddPoints(someCustomer.points);
+            someCustomer.HideAfterSuccess();
         }
 
 

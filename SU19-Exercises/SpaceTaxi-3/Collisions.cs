@@ -6,6 +6,7 @@ using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
+using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using SpaceTaxi_2.SpaceTaxiState;
 using SpaceTaxi_2.SpaceTaxiStates;
@@ -82,17 +83,27 @@ namespace SpaceTaxi_2 {
                         GameRunning.CurrentLevel && !customer.expiredCustomer) {
                         Console.WriteLine("Played down customer on the same level it got picked up");
                         player.PlaceDownCustomer(pixel, customer);
+                        customer.SetPos(pixel.shape.Position);
+                        customer.Show();
+                        
                     } else if (!customer.DroppedOnSameLevel &&
                                customer.PickedUpLevel != GameRunning.CurrentLevel &&
                                !customer.expiredCustomer) {
                         Console.WriteLine("Played down customer on another level");
                         player.PlaceDownCustomer(pixel, customer);
+                        
+                        
+                        customer.SetPos(pixel.shape.Position);
+                        customer.Show();
                     } else {
                         Console.WriteLine("Customer expired "+customer.name);
                     }
 
                 } else if (customer.WildCardPlatform && !customer.expiredCustomer && customer.PickedUpLevel != GameRunning.CurrentLevel) {
                     player.PlaceDownCustomer(pixel, customer);
+                    
+                    customer.SetPos(pixel.shape.Position);
+                    customer.Show();
                     Console.WriteLine("Placed down "+customer.name+" on "+pixel.pixelChar);
                 }
             }

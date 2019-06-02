@@ -184,6 +184,12 @@ namespace SpaceTaxi_2 {
         public void SetPos(Vec2F pos) {
             shape.SetPosition(pos);
         }
+
+        public void HideAfterSuccess() {
+            GameRunning.instance.customerEvents.AddTimedEvent(
+                TimeSpanType.Seconds, 5, "Success_Timer", "Customer", name);
+            
+        }
         
         /// <summary>
         /// Listens for events and invokes methods if message and name matches this customer.
@@ -208,6 +214,11 @@ namespace SpaceTaxi_2 {
                             this.expiredCustomer = true;
                         }
                         break;
+                    case "Success_Timer":
+                        if (gameEvent.Parameter2 == name) {
+                            this.Hide();
+                        }
+                        break;
                 }
             }
         }
@@ -216,9 +227,10 @@ namespace SpaceTaxi_2 {
         /// Render the customers entity if it is not in transit and hos not yet travelled.
         /// </summary>
         public void RenderCustomer() {
-            if (!this.IsInTransit && !this.HasTravled) {
+            if (!this.IsInTransit) {
                 entity.RenderEntity();
             }
+            
         }
     }
 }
