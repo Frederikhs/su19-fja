@@ -73,7 +73,12 @@ namespace SpaceTaxi_2 {
 
             return false;
         }
-        
+        /// <summary>
+        /// Checks if customer is successfully landed on correct platform based on platform pixel
+        /// <param name="pixel pixel">
+        /// pixel for some platform the player has landed on
+        /// 
+        /// </summary>
         private void CheckLandCustomers(pixel pixel) {
             foreach (var customer in Player.CustomersInsidePlayer) {
                 if (customer.IsInTransit && customer.destinationPlatform ==
@@ -109,6 +114,9 @@ namespace SpaceTaxi_2 {
             }
         }
 
+        /// <summary>
+        /// Switches level from current to the opposite level as we only have two levels.
+        /// </summary>
         private void CollisionPortal() {
             switch (GameRunning.CurrentLevel) {
             case "the-beach":
@@ -122,6 +130,10 @@ namespace SpaceTaxi_2 {
             }
         }
 
+        /// <summary>
+        /// Checks for collision between player and customer.
+        /// Calls PickUpCustomer if customer not already in transit
+        /// </summary>
         private void ShouldPickUp() {
             foreach (var customer in customers) {
                 bool collision = CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(),
