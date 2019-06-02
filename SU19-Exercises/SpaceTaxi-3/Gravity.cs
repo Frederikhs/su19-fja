@@ -16,18 +16,30 @@ namespace SpaceTaxi_2 {
             vCurrent = 0;
             MaxSpeed = 0.00002f;
         }
-
+        
         /// <summary>
-        /// Calculates next velocity y vector based on the truster value,
+        /// Calculates next velocity y vector based on the thruster value,
         /// and the current velocity.
         /// </summary>
-        public float NextVel(float truster, bool platform) {
+        ///
+        /// <param name="thruster">
+        /// float value for the thruster
+        /// </param>
+        ///
+        /// <param name="platform">
+        /// bool if the player is on a platform it will not change velocity
+        /// </param>
+        ///
+        /// <returns>
+        /// float next velocity
+        /// </returns>
+        public float NextVel(float thruster, bool platform) {
             if (!platform) {
                 var DeltaT = 60.0f;
-                var Force = gravityForce + truster;
+                var Force = gravityForce + thruster;
 
                 if (vCurrent <= Maxgravity) {
-                    vCurrent = Maxgravity + truster;
+                    vCurrent = Maxgravity + thruster;
                 } else {
                     if (vCurrent >= MaxSpeed) {
                         vCurrent = MaxSpeed + gravityForce;

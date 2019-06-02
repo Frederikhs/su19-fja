@@ -42,6 +42,13 @@ namespace SpaceTaxi_2 {
             stateMachine = new StateMachine();
         }
 
+        /// <summary>
+        /// Updates game elements, renders object, and keeps track of time
+        /// </summary>
+        ///
+        /// <returns>
+        /// void
+        /// </returns>
         public void GameLoop() {
             while (win.IsRunning()) {
                 gameTimer.MeasureTime();
@@ -67,6 +74,21 @@ namespace SpaceTaxi_2 {
             }
         }
         
+        /// <summary>
+        /// Handles events that are assigned to the game object.
+        /// </summary>
+        ///
+        /// <param name="eventType">
+        /// GameEventType to handle
+        /// </param>
+        ///
+        /// <param name="gameEvent">
+        /// A GameEvent object of same type, as eventType which information
+        /// </param>
+        ///
+        /// <returns>
+        /// void
+        /// </returns>
         public void ProcessEvent(GameEventType eventType,
             GameEvent<object> gameEvent) {
             if (eventType == GameEventType.WindowEvent) {

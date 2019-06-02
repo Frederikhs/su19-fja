@@ -42,13 +42,9 @@ namespace SpaceTaxi_2 {
         public static List<Customer> CustomersInsidePlayer;
 
         // A Player has a shape
-        public Player() {
-            shape = new DynamicShape(new Vec2F(), new Vec2F());
-            taxiBoosterOffImageLeft =
-                new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png"));
-            taxiBoosterOffImageRight =
-                new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png"));
-            
+        public Player() { shape = new DynamicShape(new Vec2F(), new Vec2F());
+            taxiBoosterOffImageLeft = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png"));
+            taxiBoosterOffImageRight = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png"));
             OnLeftStrides = ImageStride.CreateStrides(2,
                 Path.Combine("Assets", "Images", "Taxi_Thrust_Back.png"));
             OnRightStrides = ImageStride.CreateStrides(2,
@@ -61,19 +57,12 @@ namespace SpaceTaxi_2 {
                 Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom.png"));
             OffUpRightStrides = ImageStride.CreateStrides(2,
                 Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Right.png"));
-            taxiBoosterOffImageUpLeft =
-                new ImageStride(80,OffUpLeftStrides);
-            taxiBoosterOffImageUpRight =
-                new ImageStride(80,OffUpRightStrides);
-            taxiBoosterOnImageLeft =
-                new ImageStride(80,OnLeftStrides);
-            taxiBoosterOnImageRight =
-                new ImageStride(80,OnRightStrides);
-            taxiBoosterOnImageUpRight =
-                new ImageStride(80,OnUpRightStrides);
-            taxiBoosterOnImageUpLeft =
-                new ImageStride(80,OnUpLeftStrides);
-            
+            taxiBoosterOffImageUpLeft = new ImageStride(80,OffUpLeftStrides);
+            taxiBoosterOffImageUpRight = new ImageStride(80,OffUpRightStrides);
+            taxiBoosterOnImageLeft = new ImageStride(80,OnLeftStrides);
+            taxiBoosterOnImageRight = new ImageStride(80,OnRightStrides);
+            taxiBoosterOnImageUpRight = new ImageStride(80,OnUpRightStrides);
+            taxiBoosterOnImageUpLeft = new ImageStride(80,OnUpLeftStrides);
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
             gravity = new Gravity();
@@ -83,7 +72,15 @@ namespace SpaceTaxi_2 {
             platform = false;
             tooFast = false;
 
+            Player.createCustomerList();
         }
+
+        public static void createCustomerList() {
+            if (Player.CustomersInsidePlayer == null) {
+                Player.CustomersInsidePlayer = new List<Customer>();
+            }
+        }
+        
         
         /// <summary>
         /// Player pick up, hides the customer and set it in transit. Adds customer to static list

@@ -69,6 +69,14 @@ namespace SpaceTaxi_2 {
         /// <summary>
         /// Sets the class variables depending on what platform the customer should land on
         /// </summary>
+        ///
+        /// <param name="platformWithHat">
+        /// platform 
+        /// </param>
+        ///
+        /// <returns>
+        /// void
+        /// </returns>
         private void FindPlatform(string platformWithHat) {
             if (platformWithHat.Contains("^")) {
                 if (platformWithHat.Length > 1) {
@@ -86,6 +94,10 @@ namespace SpaceTaxi_2 {
         /// Creates a TimedEvent for the customer to spawn. When the timed event is broadcasted
         /// the customer will appear with the Show method.
         /// </summary>
+        ///
+        /// <returns>
+        /// void
+        /// </returns>
         private void ShowAfter() {
             GameRunning.instance.customerEvents.AddTimedEvent(
                 TimeSpanType.Seconds, spawnAfter, "Show", "Customer", name);
@@ -94,6 +106,10 @@ namespace SpaceTaxi_2 {
         /// <summary>
         /// Generates the necessary images for the customer.
         /// </summary>
+        ///
+        /// <returns>
+        /// void
+        /// </returns>
         private void GenerateImage() {
             imageStandLeft =
                 new Image(Path.Combine("Assets", "Images", "CustomerStandLeft.png"));
@@ -109,6 +125,10 @@ namespace SpaceTaxi_2 {
         /// <summary>
         /// Returns the x position in the game.
         /// </summary>
+        /// ///
+        /// <returns>
+        /// void
+        /// </returns>
         private float GetPosX() {
             return this.entity.Shape.Position.X;
         }
