@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
+using System.Drawing.Text;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -15,11 +16,14 @@ namespace SpaceTaxi_2 {
         public EntityContainer<pixel> pixels;
         public List<Customer> customers;
         public Player player;
+        private float speedLimit;
+        
 
         public Collisions(EntityContainer<pixel> pixels, List<Customer> customers, Player player) {
             this.player = player;
             this.pixels = pixels;
             this.customers = customers;
+            speedLimit = 0.005f;
         }
 
         /// <summary>
@@ -41,23 +45,14 @@ namespace SpaceTaxi_2 {
                 
                 //If there is a collision, and the pixel is a portal, we change level
                 if (collision && pixel.type == pixel.pixelTypes.portal) {
-                    switch (GameRunning.CurrentLevel) {
-                        case "the-beach":
-                            CollisionEvents(GameEventType.GameStateEvent, "CHANGE_STATE",
-                                "GAME_RUNNING", "short-n-sweet");
-                            break;
-                        case "short-n-sweet":
-                            CollisionEvents(GameEventType.GameStateEvent, "CHANGE_STATE",
-                                "GAME_RUNNING", "the-beach");
-                            break;
-                    }
+                    CollisionPortal();
                     
                     //The collision should not end the game, so we return false
                     return false;
                 }
 
                 if (collision && pixel.type == pixel.pixelTypes.platform) {
-                    if (player.currentSpeed() > 0.005f) {
+                    if (player.currentSpeed() > speedLimit) {
                         //Player was too fast, Game Over
                         player.platform = false;
                         CollisionEvents(GameEventType.GameStateEvent, "CHANGE_STATE",
@@ -66,33 +61,54 @@ namespace SpaceTaxi_2 {
                     } else {
                         //Player was not too fast, and can land on platform
                         player.platform = true;
-
-                        foreach (var customer in Player.CustomersInsidePlayer) {
-                            if (customer.IsInTransit && customer.destinationPlatform ==
-                                pixel.pixelChar.ToString() && !customer.HasTravled) {
-
-                                if (customer.DroppedOnSameLevel && customer.PickedUpLevel ==
-                                    GameRunning.CurrentLevel && !customer.expiredCustomer) {
-                                    Console.WriteLine("Played down customer on the same level it got picked up");
-                                    player.PlaceDownCustomer(pixel, customer);
-                                } else if (!customer.DroppedOnSameLevel &&
-                                           customer.PickedUpLevel != GameRunning.CurrentLevel &&
-                                           !customer.expiredCustomer) {
-                                    Console.WriteLine("Played down customer on another level");
-                                    player.PlaceDownCustomer(pixel, customer);
-                                } else {
-                                    Console.WriteLine("Customer expired "+customer.name);
-                                }
-
-                            }
-                        }
-
+                        CheckLandCustomers(pixel);
                         return false;
                     }
                 }
 
             }
 
+            ShouldPickUp();
+
+            return false;
+        }
+        
+        private void CheckLandCustomers(pixel pixel) {
+            foreach (var customer in Player.CustomersInsidePlayer) {
+                if (customer.IsInTransit && customer.destinationPlatform ==
+                    pixel.pixelChar.ToString() && !customer.HasTravled) {
+
+                    if (customer.DroppedOnSameLevel && customer.PickedUpLevel ==
+                        GameRunning.CurrentLevel && !customer.expiredCustomer) {
+                        Console.WriteLine("Played down customer on the same level it got picked up");
+                        player.PlaceDownCustomer(pixel, customer);
+                    } else if (!customer.DroppedOnSameLevel &&
+                               customer.PickedUpLevel != GameRunning.CurrentLevel &&
+                               !customer.expiredCustomer) {
+                        Console.WriteLine("Played down customer on another level");
+                        player.PlaceDownCustomer(pixel, customer);
+                    } else {
+                        Console.WriteLine("Customer expired "+customer.name);
+                    }
+
+                }
+            }
+        }
+
+        private void CollisionPortal() {
+            switch (GameRunning.CurrentLevel) {
+            case "the-beach":
+                CollisionEvents(GameEventType.GameStateEvent, "CHANGE_STATE",
+                    "GAME_RUNNING", "short-n-sweet");
+                break;
+            case "short-n-sweet":
+                CollisionEvents(GameEventType.GameStateEvent, "CHANGE_STATE",
+                    "GAME_RUNNING", "the-beach");
+                break;
+            }
+        }
+
+        private void ShouldPickUp() {
             foreach (var customer in customers) {
                 bool collision = CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(),
                     customer.entity.Shape.AsDynamicShape()).Collision;
@@ -101,9 +117,8 @@ namespace SpaceTaxi_2 {
                     player.PickUpCustomer(customer);
                 }
             }
-
-            return false;
         }
+
 
         public void CollisionEvents(GameEventType eventType, string message, string param1, string param2) {
             SpaceTaxiBus.GetBus().RegisterEvent(
