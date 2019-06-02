@@ -6,9 +6,6 @@ using System.Text.RegularExpressions;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using SpaceTaxi_2.SpaceTaxiStates;
 
 namespace SpaceTaxi_2
 {
@@ -16,18 +13,14 @@ namespace SpaceTaxi_2
         private LvlLegends Legends;
         private LvlStructures Structure;
         private LvlCustomer Customer;
-        
-        public List<Entity> elements;
         private LvlInfo lvlinfo;
         private string[] lvlPlatforms;
         private List<char> lvlPlatformsChars;
         private Game game;
-        public float width;
-        public Player player;
-        private bool isDangerous;
-
+        private float width;
+        private Player player;
+        
         public EntityContainer<pixel> AllGraphics;
-
         public List<Customer> AllCustomersInGame;
 
         public GraphicsGenerator(LvlLegends legends, LvlStructures structures,
@@ -44,7 +37,6 @@ namespace SpaceTaxi_2
             this.game = game;
             this.player = player;
             this.width = width;
-            this.isDangerous = true;
 
             Platform.CreateContainers(this.lvlPlatformsChars);
             this.AllGraphics = GenerateImages();
@@ -52,11 +44,10 @@ namespace SpaceTaxi_2
         }
 
         /// <summary>
-        /// Finds each platform chars
+        /// Finds each platform's char
         /// </summary>
         private void FindPlatformChars() {
             lvlPlatforms = Regex.Split(lvlinfo.InfoDic["Platforms"], ", ");
-
             foreach (var stringChar in lvlPlatforms) {
                 this.lvlPlatformsChars.Add(Char.Parse(stringChar));
             }
@@ -64,115 +55,166 @@ namespace SpaceTaxi_2
         }
 
         /// <summary>
+        /// Creates a pixel
+        /// </summary>
+        ///
+        /// <param name="posX">
+        /// The x position for the pixel
+        /// </param>
+        ///
+        /// <param name="posY">
+        /// The y position for the pixel
+        /// </param>
+        ///
+        /// <param name="imageHeight">
+        /// The height of the pixel
+        /// </param>
+        ///
+        /// <param name="imageWidth">
+        /// The width of the pixel
+        /// </param>
+        ///
+        /// <param name="image">
+        /// The image string name of the png file, without the ".png"
+        /// </param>
+        ///
+        /// <param name="type">
+        /// The type of pixel, needs to be one of the pixel.pixelTypes
+        /// </param>
+        ///
+        /// <param name="pixelChar">
+        /// The char of the pixel
+        /// </param>
+        ///
+        /// <returns>
+        /// A pixel object
+        /// </returns>
+        private pixel CreatePixel(
+                float posX, float posY, float imageWidth, float imageHeight,
+                string image, pixel.pixelTypes type, char pixelChar) {
+            
+            Image img = new Image(Path.Combine("Assets", "Images", image));
+            
+            return (new pixel(game,
+                new DynamicShape(
+                    new Vec2F(posX, posY), new Vec2F(imageWidth, imageHeight)), img,
+                type, pixelChar));
+        }
+
+        /// <summary>
         /// Method for creating an entity container for a given level based on legends, structures, width of viewport, game and player.
         /// </summary>
         private EntityContainer<pixel> GenerateImages() {
-            var width = (int) this.width;
-            var height = (int) this.width;
-            var player = this.player;
+            //We know that the width and height of the level chars is 40x23,
+            //since we have 40 chars wide and 23 chars long level file
+            float imageWidth = ConvertRange(width / 40);
+            float imageHeight = ConvertRange(width / 23);
             
-            //We calculate the width and height of each "pixel"
-            //We know that the width and height of the level chars is 40x23
-            var image_width = ConvertRange((float)width / 40);
-            var image_height = ConvertRange((float)height / 23);
-            //Each image is to be image_width wide, and have image_height height
-            
-            //We start at pos -1,1 (top-left), each image is to be placed image_width and image_height apart
-            var posX = 0f;
-            var posY = 1f-1*image_height;
+            //We start at pos -1,1 (top-left)
+            float posX = 0f;
+            float posY = 1f-1*imageHeight;
 
+            //Pixel container with all graphical elements inside
             EntityContainer<pixel> returnContainer = new EntityContainer<pixel>();
                     
-            //We iterate over each line
-            
             foreach (var elem in Structure.Structure) {
-                //Then we iterate over each char in the line 
                 char[] line = new char[elem.Length];
                 line = elem.ToCharArray();
+                
                 foreach (char someChar in line) {
                     if (Legends.LegendsDic.ContainsKey(someChar)) {
-                        
+                        // Basic pixelType
                         var type = pixel.pixelTypes.dangerus;
                         
+                        //If the pixel is a platform, we place down a customer
                         if (lvlPlatforms.Contains(someChar.ToString())) {
-                            
                             type = pixel.pixelTypes.platform;
-                            
-                            //Placing customer
-                            foreach (var customerValues in Customer.AllCustomerDict) {
-                                if (customerValues["spawnPlatform"] == someChar.ToString() &&
-                                    customerValues["generated"] == "false") {
-                                    Customer temp = new Customer(
-                                        customerValues["name"],
-                                        Int32.Parse(customerValues["spawnAfter"]),
-                                        Char.Parse(customerValues["spawnPlatform"]),
-                                        customerValues["destinationPlatform"],
-                                        Int32.Parse(customerValues["taxiDuration"]),
-                                        Int32.Parse(customerValues["points"])
-                                        );
-
-                                    customerValues["generated"] = "true";
-
-                                    temp.visible = true;
-                                    temp.SetPos(new Vec2F(posX,posY+image_height-0.000001f));
-
-                                    Console.WriteLine("Spawned customer");
-                                    AllCustomersInGame.Add(temp);
-                                }
-
-                            }
-                            
+                            //Place the customer down
+                            PlaceCustomer(someChar, posX, posY, imageHeight);
                         }
-                        var image = new Image(Path.Combine("Assets", "Images", Legends.LegendsDic[someChar]));
-
-                        var somePixel = new pixel(game,
-                            new DynamicShape(
-                                new Vec2F(posX, posY), new Vec2F(image_width, image_height)), image,
+                        
+                        //Create the pixel
+                        var somePixel = CreatePixel(posX, posY, imageWidth, imageHeight, Legends.LegendsDic[someChar],
                             type, someChar);
                         
+                        //Add the pixel to the return container
                         returnContainer.AddStationaryEntity(somePixel);
+                        
+                        //If the pixel is a platform, also add to platform pixels list
                         if (lvlPlatforms.Contains(someChar.ToString())) {
                             Platform.AddPixel(somePixel);
                         }
 
-                    }
-                    else {
-                        switch (someChar)
-                        {
-                            case '^':
-                                var image = new Image(Path.Combine("Assets", "Images", "aspargus-passage1.png"));
-                                returnContainer.AddStationaryEntity(
-                                    new pixel(game,
-                                        new DynamicShape(
-                                            new Vec2F(posX,posY), new Vec2F(image_width, image_height)), image,pixel.pixelTypes.portal, someChar));
+                    }  else {
+                        switch (someChar) {
+                            case '^': //Portal
+                                returnContainer.AddStationaryEntity(CreatePixel(posX, posY,
+                                    imageWidth, imageHeight, "aspargus-passage1.png",
+                                    pixel.pixelTypes.portal,
+                                    someChar));
                                 break;
-                            case '>':
-                                //This is the player. We set the position
+                            case '>': //Player
                                 player.SetPosition(posX, posY);
-                                break;
-                            default:
                                 break;
                         }
                     }
 
-                    posX += image_width;
-                    isDangerous = true;
-                    
+                    //We are iterating the horizontal line, thus incrementing the x position
+                    posX += imageWidth;
                 }
 
+                //We are iterating the vertical line, thus decrementing the y position,
+                //and setting x position to 0
                 posX = 0f;
-                posY -= image_height;
-                isDangerous = true;
+                posY -= imageHeight;
             }
 
+            //Finally return the container with all the pixels, player, and customers inside inside
             return returnContainer;
         }
 
         /// <summary>
+        /// Places down a customer on the screen, and changes its generated key to true,
+        /// so it cannot be displayed more than once
+        /// </summary>
+        private void PlaceCustomer(char pixelChar, float posX, float posY, float imageHeight) {
+            //Placing customer
+            foreach (var customerValues in Customer.AllCustomerDict) {
+                if (customerValues["spawnPlatform"] == pixelChar.ToString() &&
+                    customerValues["generated"] == "false") {
+                    Customer temp = new Customer(
+                        customerValues["name"],
+                        Int32.Parse(customerValues["spawnAfter"]),
+                        Char.Parse(customerValues["spawnPlatform"]),
+                        customerValues["destinationPlatform"],
+                        Int32.Parse(customerValues["taxiDuration"]),
+                        Int32.Parse(customerValues["points"])
+                    );
+
+                    customerValues["generated"] = "true";
+
+                    temp.visible = true;
+                    temp.SetPos(new Vec2F(posX,posY+imageHeight-0.000001f));
+
+                    Console.WriteLine("Spawned customer");
+                    AllCustomersInGame.Add(temp);
+                }
+            }
+        }
+        
+        /// <summary>
         /// Convert the range of a float to the viewpoint
         /// </summary>
+        /// 
+        /// <param name="i">
+        /// The width of viewport/40
+        /// </param>
+        ///
+        /// <returns>
+        /// Converted pixel width or height based on viewport
+        /// </returns>
         private float ConvertRange(float i) {
-            return i*1/this.width;
+            return i*1/width;
         }
     }
 }
