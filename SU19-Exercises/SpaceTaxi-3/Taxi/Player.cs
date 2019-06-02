@@ -13,15 +13,15 @@ using SpaceTaxiGame;
 
 namespace SpaceTaxi_2 {
     public class Player : IGameEventProcessor<object> {
-        private readonly Image taxiBoosterOffImageLeft;
-        private readonly Image taxiBoosterOffImageRight;
+        private Image taxiBoosterOffImageLeft;
+        private Image taxiBoosterOffImageRight;
         private readonly Image taxiBoosterOffImageUp;
-        private readonly ImageStride taxiBoosterOnImageLeft;
-        private readonly ImageStride taxiBoosterOnImageRight;
-        private readonly ImageStride taxiBoosterOnImageUpRight;
-        private readonly ImageStride taxiBoosterOnImageUpLeft;
-        private readonly ImageStride taxiBoosterOffImageUpLeft;
-        private readonly ImageStride taxiBoosterOffImageUpRight;
+        private ImageStride taxiBoosterOnImageLeft;
+        private ImageStride taxiBoosterOnImageRight;
+        private ImageStride taxiBoosterOnImageUpRight;
+        private ImageStride taxiBoosterOnImageUpLeft;
+        private ImageStride taxiBoosterOffImageUpLeft;
+        private ImageStride taxiBoosterOffImageUpRight;
         private List<Image> OnRightStrides;
         private List<Image> OnUpRightStrides;
         private List<Image> OnLeftStrides;
@@ -38,28 +38,13 @@ namespace SpaceTaxi_2 {
         public bool platform;
         public float maxSpeed;
         public static List<Customer> CustomersInsidePlayer;
+        private float positiveThrust;
+        private float noThrust;
+        private float rightMove;
+        private float leftMove;
 
         public Player() { shape = new DynamicShape(new Vec2F(), new Vec2F());
-            taxiBoosterOffImageLeft = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png"));
-            taxiBoosterOffImageRight = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png"));
-            OnLeftStrides = ImageStride.CreateStrides(2,
-                Path.Combine("Assets", "Images", "Taxi_Thrust_Back.png"));
-            OnRightStrides = ImageStride.CreateStrides(2,
-                Path.Combine("Assets", "Images", "Taxi_Thrust_Back_Right.png"));
-            OnUpLeftStrides = ImageStride.CreateStrides(2,
-                Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Back.png"));
-            OnUpRightStrides = ImageStride.CreateStrides(2,
-                Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Back_Right.png"));
-            OffUpLeftStrides = ImageStride.CreateStrides(2,
-                Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom.png"));
-            OffUpRightStrides = ImageStride.CreateStrides(2,
-                Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Right.png"));
-            taxiBoosterOffImageUpLeft = new ImageStride(80,OffUpLeftStrides);
-            taxiBoosterOffImageUpRight = new ImageStride(80,OffUpRightStrides);
-            taxiBoosterOnImageLeft = new ImageStride(80,OnLeftStrides);
-            taxiBoosterOnImageRight = new ImageStride(80,OnRightStrides);
-            taxiBoosterOnImageUpRight = new ImageStride(80,OnUpRightStrides);
-            taxiBoosterOnImageUpLeft = new ImageStride(80,OnUpLeftStrides);
+            InitializeImages();
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
             gravity = new Gravity();
@@ -67,6 +52,10 @@ namespace SpaceTaxi_2 {
             tSideways = false;
             leftDir = true;
             platform = false;
+            positiveThrust = 0.000012f;
+            noThrust = 0.0f;
+            rightMove = 0.00008f;
+            leftMove = -0.00008f;
 
             Player.CreateCustomerList();
         }
@@ -176,28 +165,25 @@ namespace SpaceTaxi_2 {
             var x = 0f;
             switch (taxiOrientation) {
             case Orientation.RightT:
-                x = 0.00008f;
+                x = rightMove;
                 break;
             case Orientation.LeftT:
-                x = -0.00008f;
+                x = leftMove;
                 break;
             }
 
             if (thrusting && !platform) {
-                var dir = gravity.GetNextVelocity(0.000012f, platform);
+                var dir = gravity.GetNextVelocity(positiveThrust, platform);
                 Direction(new Vec2F(x, dir) + Entity.Shape.AsDynamicShape().Direction);
             } else if (!thrusting && !platform) {
-                var dir = gravity.GetNextVelocity(0f, platform);
+                var dir = gravity.GetNextVelocity(noThrust, platform);
                 Direction(new Vec2F(x, dir) + Entity.Shape.AsDynamicShape().Direction);
 
-            } else if (thrusting && platform) {
-                var dir = gravity.GetNextVelocity(0f, platform);
-                Direction(new Vec2F(x, dir));
             } else if (!thrusting && platform) {
-                var dir = gravity.GetNextVelocity(0f, platform);
+                var dir = gravity.GetNextVelocity(noThrust, platform);
                 Direction(new Vec2F(x, dir));
             } else {
-                Direction(new Vec2F(x, 0.0f));
+                Direction(new Vec2F(x, noThrust));
             }
 
             shape.Move();
@@ -235,6 +221,28 @@ namespace SpaceTaxi_2 {
         /// <returns>
         /// void
         /// </returns>
+        private void InitializeImages() {
+            taxiBoosterOffImageLeft = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png"));
+            taxiBoosterOffImageRight = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png"));
+            OnLeftStrides = ImageStride.CreateStrides(2,
+                Path.Combine("Assets", "Images", "Taxi_Thrust_Back.png"));
+            OnRightStrides = ImageStride.CreateStrides(2,
+                Path.Combine("Assets", "Images", "Taxi_Thrust_Back_Right.png"));
+            OnUpLeftStrides = ImageStride.CreateStrides(2,
+                Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Back.png"));
+            OnUpRightStrides = ImageStride.CreateStrides(2,
+                Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Back_Right.png"));
+            OffUpLeftStrides = ImageStride.CreateStrides(2,
+                Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom.png"));
+            OffUpRightStrides = ImageStride.CreateStrides(2,
+                Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Right.png"));
+            taxiBoosterOffImageUpLeft = new ImageStride(80,OffUpLeftStrides);
+            taxiBoosterOffImageUpRight = new ImageStride(80,OffUpRightStrides);
+            taxiBoosterOnImageLeft = new ImageStride(80,OnLeftStrides);
+            taxiBoosterOnImageRight = new ImageStride(80,OnRightStrides);
+            taxiBoosterOnImageUpRight = new ImageStride(80,OnUpRightStrides);
+            taxiBoosterOnImageUpLeft = new ImageStride(80,OnUpLeftStrides);
+        }
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.PlayerEvent) {
                 switch (gameEvent.Message) {
