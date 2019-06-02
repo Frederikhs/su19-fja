@@ -85,21 +85,39 @@ namespace SpaceTaxi_2 {
         }
 
         /// <summary>
-        /// PLaces down customer, and sets its position, also awards points if the timer has
+        /// Places down customer, and sets its position, also awards points if the timer has
         /// not yet expired
         /// </summary>
         public void PlaceDownCustomer(pixel platformPixel,Customer someCustomer) {
-            //Placed down customer
-            someCustomer.SetPos(platformPixel.Shape.Position+platformPixel.Shape.Extent);
-            someCustomer.Show();
-            Console.WriteLine("Player placed down customer ("+someCustomer.name+")");
-            Console.WriteLine("at: "+someCustomer.entity.Shape.Position.X);
-            someCustomer.HasTravled = true;
-            someCustomer.IsInTransit = false;
-            Points.AddPoints(someCustomer.points);
-            someCustomer.HideAfterSuccess();
+            //Place down customer
+
+            Console.WriteLine("hastravled; "+someCustomer.HasTravled);
+            Console.WriteLine("intransit; "+someCustomer.IsInTransit);
+
+            if (!someCustomer.HasTravled && someCustomer.IsInTransit) {
+                someCustomer.SetPos(platformPixel.Shape.Position + platformPixel.Shape.Extent);
+                someCustomer.Show();
+                Console.WriteLine("Player placed down customer (" + someCustomer.name + ")");
+                Console.WriteLine("at: " + someCustomer.entity.Shape.Position.X);
+                someCustomer.HasTravled = true;
+                someCustomer.IsInTransit = false;
+                Points.AddPoints(someCustomer.points);
+                someCustomer.HideAfterSuccess();
+            }
         }
 
+        /// <summary>
+        /// Removes a customer from the static CustomerInsidePlayer list
+        /// </summary>
+        private void RemoveCustomerFromList(Customer someCustomer) {
+            Player.CustomersInsidePlayer = new List<Customer>();
+            
+            foreach (var customer in Player.CustomersInsidePlayer) {
+                if (customer != someCustomer) {
+                    Player.CustomersInsidePlayer.Add(customer);
+                }
+            }
+        }
 
         /// <summary>
         /// Sets the players position to x,y
@@ -218,10 +236,6 @@ namespace SpaceTaxi_2 {
         /// <param name="gameEvent">
         /// A GameEvent object of same type, as eventType which information
         /// </param>
-        ///
-        /// <returns>
-        /// void
-        /// </returns>
         private void InitializeImages() {
             taxiBoosterOffImageLeft = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png"));
             taxiBoosterOffImageRight = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png"));

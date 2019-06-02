@@ -188,7 +188,13 @@ namespace SpaceTaxi_2 {
         public void HideAfterSuccess() {
             GameRunning.instance.customerEvents.AddTimedEvent(
                 TimeSpanType.Seconds, 5, "Success_Timer", "Customer", name);
-            
+            this.HasTravled = true;
+            this.IsInTransit = false;
+        }
+
+        private void EndCustomerLife() {
+            entity.Shape.Extent = new Vec2F(0f, 0f);
+            this.visible = false;
         }
         
         /// <summary>
@@ -216,7 +222,7 @@ namespace SpaceTaxi_2 {
                         break;
                     case "Success_Timer":
                         if (gameEvent.Parameter2 == name) {
-                            this.Hide();
+                            this.EndCustomerLife();
                         }
                         break;
                 }
