@@ -32,16 +32,13 @@ namespace SpaceTaxi_2 {
         private DynamicShape shape;
         private Orientation taxiOrientation;
         private Gravity gravity;
-        private bool Trusting;
+        private bool thrusting;
         private bool tSideways;
         private bool leftDir;
         public bool platform;
-        public bool tooFast;
         public float maxSpeed;
-
         public static List<Customer> CustomersInsidePlayer;
 
-        // A Player has a shape
         public Player() { shape = new DynamicShape(new Vec2F(), new Vec2F());
             taxiBoosterOffImageLeft = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png"));
             taxiBoosterOffImageRight = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png"));
@@ -66,16 +63,19 @@ namespace SpaceTaxi_2 {
             Entity = new Entity(shape, taxiBoosterOffImageLeft);
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
             gravity = new Gravity();
-            Trusting = false;
+            thrusting = false;
             tSideways = false;
             leftDir = true;
             platform = false;
-            tooFast = false;
 
-            Player.createCustomerList();
+            Player.CreateCustomerList();
         }
 
-        public static void createCustomerList() {
+        /// <summary>
+        /// Creates a new static list of customers that resides in the player class, if there is
+        /// not one yet
+        /// </summary>
+        private static void CreateCustomerList() {
             if (Player.CustomersInsidePlayer == null) {
                 Player.CustomersInsidePlayer = new List<Customer>();
             }
@@ -127,7 +127,9 @@ namespace SpaceTaxi_2 {
             shape.Extent.Y = height;
         }
         
-
+        /// <summary>
+        /// Render the players entity with the correct entity image
+        /// </summary>
         public void RenderPlayer() {
             switch (platform) {
                 case true:
@@ -181,18 +183,18 @@ namespace SpaceTaxi_2 {
                 break;
             }
 
-            if (Trusting && !platform) {
-                var dir = gravity.NextVel(0.000012f, platform);
+            if (thrusting && !platform) {
+                var dir = gravity.GetNextVelocity(0.000012f, platform);
                 Direction(new Vec2F(x, dir) + Entity.Shape.AsDynamicShape().Direction);
-            } else if (!Trusting && !platform) {
-                var dir = gravity.NextVel(0f, platform);
+            } else if (!thrusting && !platform) {
+                var dir = gravity.GetNextVelocity(0f, platform);
                 Direction(new Vec2F(x, dir) + Entity.Shape.AsDynamicShape().Direction);
 
-            } else if (Trusting && platform) {
-                var dir = gravity.NextVel(0f, platform);
+            } else if (thrusting && platform) {
+                var dir = gravity.GetNextVelocity(0f, platform);
                 Direction(new Vec2F(x, dir));
-            } else if (!Trusting && platform) {
-                var dir = gravity.NextVel(0f, platform);
+            } else if (!thrusting && platform) {
+                var dir = gravity.GetNextVelocity(0f, platform);
                 Direction(new Vec2F(x, dir));
             } else {
                 Direction(new Vec2F(x, 0.0f));
@@ -218,6 +220,21 @@ namespace SpaceTaxi_2 {
             Entity.Shape.AsDynamicShape().ChangeDirection(directionVector);
         }
 
+        /// <summary>
+        /// Handles events that are assigned to the game object.
+        /// </summary>
+        ///
+        /// <param name="eventType">
+        /// GameEventType to handle
+        /// </param>
+        ///
+        /// <param name="gameEvent">
+        /// A GameEvent object of same type, as eventType which information
+        /// </param>
+        ///
+        /// <returns>
+        /// void
+        /// </returns>
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.PlayerEvent) {
                 switch (gameEvent.Message) {
@@ -232,16 +249,16 @@ namespace SpaceTaxi_2 {
                         break;
                     
                     case "BOOSTER_UPWARDS":
-                        if (!Trusting) {
-                            Trusting = true;
+                        if (!thrusting) {
+                            thrusting = true;
                             tSideways = true;
                             platform = false;
                         }
                         break;
                     
                     case "STOP_ACCELERATE_UP":
-                        if (Trusting) {
-                            Trusting = false;
+                        if (thrusting) {
+                            thrusting = false;
                             tSideways = false;
                         }
                         break;
