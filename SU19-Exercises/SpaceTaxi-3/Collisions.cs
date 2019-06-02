@@ -91,6 +91,9 @@ namespace SpaceTaxi_2 {
                         Console.WriteLine("Customer expired "+customer.name);
                     }
 
+                } else if (customer.WildCardPlatform && !customer.expiredCustomer && customer.PickedUpLevel != GameRunning.CurrentLevel) {
+                    player.PlaceDownCustomer(pixel, customer);
+                    Console.WriteLine("Placed down "+customer.name+" on "+pixel.pixelChar);
                 }
             }
         }

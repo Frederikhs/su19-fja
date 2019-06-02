@@ -7,6 +7,13 @@ namespace SpaceTaxi_2 {
 
         public static List<List<pixel>> PlatformContainers { get; private set; }
 
+        /// <summary>
+        /// Create chars.length amount of lists in Platform.PlatformContainers
+        /// </summary>
+        /// 
+        /// <param name="chars">
+        /// The width of viewport/40
+        /// </param>
         public static void CreateContainers(List<char> chars) {
             Platform.ResetContainers();
             
@@ -15,6 +22,9 @@ namespace SpaceTaxi_2 {
             }
         }
         
+        /// <summary>
+        /// Adds a pixel to the static Platform.PlatformContainers list
+        /// </summary>
         public static void AddPixel(pixel pixel) {
             foreach (var container in Platform.PlatformContainers) {
                 if (container.Count > 0) {
@@ -27,10 +37,24 @@ namespace SpaceTaxi_2 {
             }
         }
 
+        /// <summary>
+        /// Resets the Platform.PlatformContainers list
+        /// </summary>
         private static void ResetContainers() {
             Platform.PlatformContainers = new List<List<pixel>>();
         }
 
+        /// <summary>
+        /// Get the width of a platform
+        /// </summary>
+        /// 
+        /// <param name="platformChar">
+        /// The char of which the platform is made of
+        /// </param>
+        ///
+        /// <returns>
+        /// Float array of start, and end pos
+        /// </returns>
         public static float[] GetWidth(char platformChar) {
 
             var WorkingContainer = new List<pixel>();
@@ -40,11 +64,6 @@ namespace SpaceTaxi_2 {
                 if (container.Count > 0) {
                     if (container[0].pixelChar == platformChar) {
                         WorkingContainer = container;
-//                        Console.WriteLine("Found working contaner for:"+container[0].pixelChar);
-//                        Console.WriteLine("Count platofrms:"+PlatformContainers.Count);
-//                        foreach (var askdnasod in PlatformContainers) {
-//                            Console.WriteLine("Container has: "+askdnasod[0].pixelChar);
-//                        }
                     }
                 }
             }

@@ -15,9 +15,8 @@ namespace SpaceTaxi_2 {
         public LvlCustomer(TextLoader loader) {
             AllCustomerDict = new List<Dictionary<string, string>>();
             
-            
             foreach (var customer in loader.GetCustomerInfo()) {
-                Console.WriteLine("CUSTOMER____:"+customer);
+                Console.WriteLine(":"+customer);
                 var CustValues = Regex.Split(customer, "Customer: ")[1];
                 
                 SomeCustomerDict = new Dictionary<string, string>();

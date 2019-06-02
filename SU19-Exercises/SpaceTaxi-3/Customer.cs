@@ -67,7 +67,9 @@ namespace SpaceTaxi_2 {
         }
 
         /// <summary>
-        /// Sets the class variables depending on what platform the customer should land on
+        /// Sets the class variables depending on what platform the customer should land on. If it
+        /// containers a ^ we do something, else we do not change anything, as destination platform
+        /// is the char that was in the constructor
         /// </summary>
         ///
         /// <param name="platformWithHat">
@@ -81,12 +83,15 @@ namespace SpaceTaxi_2 {
             if (platformWithHat.Contains("^")) {
                 if (platformWithHat.Length > 1) {
                     this.destinationPlatform = (platformWithHat.Split('^'))[1];
-                    this.PickedUpLevel = GameRunning.CurrentLevel;
                     this.DroppedOnSameLevel = false;
+                    Console.WriteLine("Customer ("+name+") is to be placed down on "+destinationPlatform+" in the next level");
 
                 } else {
                     this.WildCardPlatform = true;
+                    Console.WriteLine("Customer "+name+" is a wildcard");
                 }
+                
+                this.PickedUpLevel = GameRunning.CurrentLevel;
             }
         }
         
