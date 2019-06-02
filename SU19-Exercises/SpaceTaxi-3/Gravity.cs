@@ -33,7 +33,7 @@ namespace SpaceTaxi_2 {
         /// <returns>
         /// float next velocity
         /// </returns>
-        public float NextVel(float thruster, bool platform) {
+        public float GetNextVelocity(float thruster, bool platform) {
             if (!platform) {
                 var DeltaT = 60.0f;
                 var Force = gravityForce + thruster;
@@ -53,7 +53,6 @@ namespace SpaceTaxi_2 {
                 vCurrent = 0.0f;
                 return vCurrent;
             }
-
 
         }
 
