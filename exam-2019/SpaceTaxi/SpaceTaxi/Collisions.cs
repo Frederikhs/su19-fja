@@ -9,6 +9,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using SpaceTaxi.GameStates;
+using SpaceTaxi.Taxi;
 
 namespace SpaceTaxi {
     public class Collisions {
@@ -51,7 +52,7 @@ namespace SpaceTaxi {
                 }
 
                 if (collision && pixel.Type == Pixel.PixelTypes.Platform) {
-                    if (player.currentSpeed() > speedLimit) {
+                    if (player.GetPlayerSpeed() > speedLimit) {
                         //Player was too fast, Game Over
                         player.platform = false;
                         CollisionEvents(GameEventType.GameStateEvent, "CHANGE_STATE",

@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using SpaceTaxi.Taxi;
 
 namespace SpaceTaxi.LevelParser
 {

@@ -8,6 +8,7 @@ using DIKUArcade.Math;
 using DIKUArcade.State;
 using DIKUArcade.Timers;
 using SpaceTaxi.LevelParser;
+using SpaceTaxi.Taxi;
 
 namespace SpaceTaxi.GameStates {
     public class GameRunning : IGameState {
