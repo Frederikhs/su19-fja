@@ -7,11 +7,12 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.State;
 using DIKUArcade.Timers;
+using SpaceTaxi.LevelParser;
 
 namespace SpaceTaxi.GameStates {
     public class GameRunning : IGameState {
         public static GameRunning Instance;
-        public EntityContainer<pixel> PixelContainer;
+        public EntityContainer<Pixel> PixelContainer;
         public List<Customer> CustomerContainer;
         public static string CurrentLevel;
         public TimedEventContainer CustomerEvents;

@@ -87,7 +87,7 @@ namespace SpaceTaxi {
         /// Places down customer, and sets its position, also awards points if the timer has
         /// not yet expired
         /// </summary>
-        public void PlaceDownCustomer(pixel platformPixel,Customer someCustomer) {
+        public void PlaceDownCustomer(Pixel platformPixel,Customer someCustomer) {
             //Place down customer
 
             Console.WriteLine("hastravled; "+someCustomer.HasTravled);

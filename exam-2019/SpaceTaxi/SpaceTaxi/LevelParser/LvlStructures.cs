@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
-using DIKUArcade.Graphics;
 
-namespace SpaceTaxi {
+namespace SpaceTaxi.LevelParser {
     public class LvlStructures {
-        private TextLoader myLoader;
         public List<string> Structure;
 
         /// <summary>

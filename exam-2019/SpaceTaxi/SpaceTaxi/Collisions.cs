@@ -12,13 +12,13 @@ using SpaceTaxi.GameStates;
 
 namespace SpaceTaxi {
     public class Collisions {
-        public EntityContainer<pixel> pixels;
+        public EntityContainer<Pixel> pixels;
         public List<Customer> customers;
         public Player player;
         private float speedLimit;
         
 
-        public Collisions(EntityContainer<pixel> pixels, List<Customer> customers, Player player) {
+        public Collisions(EntityContainer<Pixel> pixels, List<Customer> customers, Player player) {
             this.player = player;
             this.pixels = pixels;
             this.customers = customers;
@@ -31,26 +31,26 @@ namespace SpaceTaxi {
         /// </summary>
         public bool CollisionCheck() {
             
-            foreach (pixel pixel in pixels) {
+            foreach (Pixel pixel in pixels) {
                 
                 //Bool for if the player collides with an object
                 bool collision = CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(),
                     pixel.Shape.AsDynamicShape()).Collision;
                 
                 //If there is a collision, and the pixel is dangerous, we return true 
-                if (collision && pixel.type == pixel.pixelTypes.dangerus) {
+                if (collision && pixel.Type == Pixel.PixelTypes.Dangerous) {
                     return true;
                 }
                 
                 //If there is a collision, and the pixel is a portal, we change level
-                if (collision && pixel.type == pixel.pixelTypes.portal) {
+                if (collision && pixel.Type == Pixel.PixelTypes.Portal) {
                     CollisionPortal();
                     
                     //The collision should not end the game, so we return false
                     return false;
                 }
 
-                if (collision && pixel.type == pixel.pixelTypes.platform) {
+                if (collision && pixel.Type == Pixel.PixelTypes.Platform) {
                     if (player.currentSpeed() > speedLimit) {
                         //Player was too fast, Game Over
                         player.platform = false;
@@ -77,10 +77,10 @@ namespace SpaceTaxi {
         /// pixel for some platform the player has landed on
         /// 
         /// </summary>
-        private void CheckLandCustomers(pixel pixel) {
+        private void CheckLandCustomers(Pixel pixel) {
             foreach (var customer in Player.CustomersInsidePlayer) {
                 if (customer.IsInTransit && customer.destinationPlatform ==
-                    pixel.pixelChar.ToString() && !customer.HasTravled) {
+                    pixel.PixelChar.ToString() && !customer.HasTravled) {
 
                     if (customer.DroppedOnSameLevel && customer.PickedUpLevel ==
                         GameRunning.CurrentLevel && !customer.expiredCustomer) {
@@ -107,7 +107,7 @@ namespace SpaceTaxi {
                     
                     customer.SetPos(pixel.shape.Position);
                     customer.Show();
-                    Console.WriteLine("Placed down "+customer.name+" on "+pixel.pixelChar);
+                    Console.WriteLine("Placed down "+customer.name+" on "+pixel.PixelChar);
                 }
             }
         }

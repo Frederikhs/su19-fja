@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace SpaceTaxi {
+namespace SpaceTaxi.LevelParser {
     public class LvlInfo {
         public Dictionary<string, string> InfoDic { get; }
 

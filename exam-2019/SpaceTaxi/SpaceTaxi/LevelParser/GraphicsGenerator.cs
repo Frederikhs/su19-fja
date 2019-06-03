@@ -7,29 +7,33 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
-namespace SpaceTaxi
+namespace SpaceTaxi.LevelParser
 {
     public class GraphicsGenerator {
-        private LvlLegends Legends;
-        private LvlStructures Structure;
-        private LvlCustomer Customer;
-        private LvlInfo lvlinfo;
-        private string[] lvlPlatforms;
-        private List<char> lvlPlatformsChars;
+        public EntityContainer<Pixel> AllGraphics;
+        public List<Customer> AllCustomersInGame;
+        
+        private LvlLegends legends;
+        private LvlStructures structure;
+        private LvlCustomer customer;
+        private LvlInfo info;
+        private string[] platforms;
+        private List<char> platformsChars;
         private Game game;
         private float width;
         private Player player;
-        
-        public EntityContainer<pixel> AllGraphics;
-        public List<Customer> AllCustomersInGame;
 
+        /// <summary>
+        /// Generates a level based on level element classes provided.
+        /// </summary>
         public GraphicsGenerator(LvlLegends legends, LvlStructures structures,
-            LvlInfo lvlinfo, LvlCustomer lvlcustomer, int width, Game game, Player player) {
-            this.Legends = legends;
-            this.Structure = structures;
-            this.lvlinfo = lvlinfo;
-            this.Customer = lvlcustomer;
-            this.lvlPlatformsChars = new List<char>();
+            LvlInfo info, LvlCustomer customer, int width, Game game, Player player) {
+            this.legends = legends;
+            this.structure = structures;
+            this.info = info;
+            this.customer = customer;
+            this.platformsChars = new List<char>();
+            
             FindPlatformChars();
             
             this.AllCustomersInGame = new List<Customer>();
@@ -38,7 +42,7 @@ namespace SpaceTaxi
             this.player = player;
             this.width = width;
 
-            Platform.CreateContainers(this.lvlPlatformsChars);
+            Platform.CreateContainers(this.platformsChars);
             this.AllGraphics = GenerateImages();
 
         }
@@ -47,9 +51,9 @@ namespace SpaceTaxi
         /// Finds each platform's char
         /// </summary>
         private void FindPlatformChars() {
-            lvlPlatforms = Regex.Split(lvlinfo.InfoDic["Platforms"], ", ");
-            foreach (var stringChar in lvlPlatforms) {
-                this.lvlPlatformsChars.Add(Char.Parse(stringChar));
+            platforms = Regex.Split(info.InfoDic["Platforms"], ", ");
+            foreach (var stringChar in platforms) {
+                this.platformsChars.Add(Char.Parse(stringChar));
             }
             
         }
@@ -89,22 +93,23 @@ namespace SpaceTaxi
         /// <returns>
         /// A pixel object
         /// </returns>
-        private pixel CreatePixel(
+        private Pixel CreatePixel(
                 float posX, float posY, float imageWidth, float imageHeight,
-                string image, pixel.pixelTypes type, char pixelChar) {
+                string image, Pixel.PixelTypes type, char pixelChar) {
             
             Image img = new Image(Path.Combine("Assets", "Images", image));
             
-            return (new pixel(game,
+            return (new Pixel(game,
                 new DynamicShape(
                     new Vec2F(posX, posY), new Vec2F(imageWidth, imageHeight)), img,
                 type, pixelChar));
         }
 
         /// <summary>
-        /// Method for creating an entity container for a given level based on legends, structures, width of viewport, game and player.
+        /// Method for creating an entity container for a given level based on legends, structures,
+        /// width of viewport, game and player.
         /// </summary>
-        private EntityContainer<pixel> GenerateImages() {
+        private EntityContainer<Pixel> GenerateImages() {
             //We know that the width and height of the level chars is 40x23,
             //since we have 40 chars wide and 23 chars long level file
             float imageWidth = ConvertRange(width / 40);
@@ -115,33 +120,33 @@ namespace SpaceTaxi
             float posY = 1f-1*imageHeight;
 
             //Pixel container with all graphical elements inside
-            EntityContainer<pixel> returnContainer = new EntityContainer<pixel>();
+            EntityContainer<Pixel> returnContainer = new EntityContainer<Pixel>();
                     
-            foreach (var elem in Structure.Structure) {
+            foreach (var elem in structure.Structure) {
                 char[] line = new char[elem.Length];
                 line = elem.ToCharArray();
                 
                 foreach (char someChar in line) {
-                    if (Legends.LegendsDic.ContainsKey(someChar)) {
+                    if (legends.LegendsDic.ContainsKey(someChar)) {
                         // Basic pixelType
-                        var type = pixel.pixelTypes.dangerus;
+                        var type = Pixel.PixelTypes.Dangerous;
                         
                         //If the pixel is a platform, we place down a customer
-                        if (lvlPlatforms.Contains(someChar.ToString())) {
-                            type = pixel.pixelTypes.platform;
+                        if (platforms.Contains(someChar.ToString())) {
+                            type = Pixel.PixelTypes.Platform;
                             //Place the customer down
                             PlaceCustomer(someChar, posX, posY, imageHeight);
                         }
                         
                         //Create the pixel
-                        var somePixel = CreatePixel(posX, posY, imageWidth, imageHeight, Legends.LegendsDic[someChar],
-                            type, someChar);
+                        var somePixel = CreatePixel(posX, posY, imageWidth, imageHeight,
+                            legends.LegendsDic[someChar], type, someChar);
                         
                         //Add the pixel to the return container
                         returnContainer.AddStationaryEntity(somePixel);
                         
                         //If the pixel is a platform, also add to platform pixels list
-                        if (lvlPlatforms.Contains(someChar.ToString())) {
+                        if (platforms.Contains(someChar.ToString())) {
                             Platform.AddPixel(somePixel);
                         }
 
@@ -150,7 +155,7 @@ namespace SpaceTaxi
                             case '^': //Portal
                                 returnContainer.AddStationaryEntity(CreatePixel(posX, posY,
                                     imageWidth, imageHeight, "aspargus-passage1.png",
-                                    pixel.pixelTypes.portal,
+                                    Pixel.PixelTypes.Portal,
                                     someChar));
                                 break;
                             case '>': //Player
@@ -177,9 +182,25 @@ namespace SpaceTaxi
         /// Places down a customer on the screen, and changes its generated key to true,
         /// so it cannot be displayed more than once
         /// </summary>
+        ///
+        /// <param name="pixelChar">
+        /// The char the customer should be placed on
+        /// </param>
+        ///
+        /// <param name="posX">
+        /// The x position of the customer
+        /// </param>
+        ///
+        /// <param name="posY">
+        /// The y position of the customer
+        /// </param>
+        ///
+        /// <param name="imageHeight">
+        /// The height of a pixel. The customers y position will be y+imageHeight 
+        /// </param>
         private void PlaceCustomer(char pixelChar, float posX, float posY, float imageHeight) {
             //Placing customer
-            foreach (var customerValues in Customer.AllCustomerDict) {
+            foreach (var customerValues in customer.AllCustomerDict) {
                 if (customerValues["spawnPlatform"] == pixelChar.ToString() &&
                     customerValues["generated"] == "false") {
                     Customer temp = new Customer(

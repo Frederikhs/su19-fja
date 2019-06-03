@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
-using DIKUArcade.Graphics;
 
-namespace SpaceTaxi {
+namespace SpaceTaxi.LevelParser {
     public class LvlLegends {
         public Dictionary<char, string> LegendsDic { get; }
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SpaceTaxi {
+namespace SpaceTaxi.LevelParser {
     public class TextLoader {
 
         private string[] allLevelText;
@@ -10,6 +10,10 @@ namespace SpaceTaxi {
         /// <summary>
         /// A TextLoader loads an entire .txt file into a string array
         /// </summary>
+        ///
+        /// <param name="levelString">
+        /// The string of the level i.e. "the-beach"
+        /// </param>
         public TextLoader(string levelString) {
             Console.WriteLine("Testloader created");
             var path = GetLevelFilePath(levelString+".txt");
@@ -19,6 +23,14 @@ namespace SpaceTaxi {
         /// <summary>
         /// Method for retrieving path to Levels
         /// </summary>
+        ///
+        /// <param name="filename">
+        /// The filename full i.e. "the-beach.txt"
+        /// </param>
+        ///
+        /// <returns>
+        /// a path string to the level file
+        /// </returns>
         private string GetLevelFilePath(string filename) {
             // Find base path.
             DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(
@@ -42,6 +54,10 @@ namespace SpaceTaxi {
         /// <summary>
         /// Method for getting a level map
         /// </summary>
+        ///
+        /// <returns>
+        /// A list of strings that are the level symbols / structure
+        /// </returns>
         public List<string> GetLvlStructure() {
             List<string> map = new List<string>(); 
             for (int i = 0; i < 23; i++) {
@@ -54,6 +70,10 @@ namespace SpaceTaxi {
         /// <summary>
         /// Method for getting level info
         /// </summary>
+        ///
+        /// <returns>
+        /// List of the level info, i.e. level name
+        /// </returns>
         public List<string> GetLvlInfo() {
             List<string> levelInfo = new List<string>();
             levelInfo.Add(allLevelText[24]);
@@ -65,6 +85,10 @@ namespace SpaceTaxi {
         /// <summary>
         /// Method for getting level legends
         /// </summary>
+        ///
+        /// <returns>
+        /// List of all level legends with char info to a image
+        /// </returns>
         public List<string> GetLvlLegends() {
             List<string> levelLegends = new List<string>();
 
@@ -82,6 +106,10 @@ namespace SpaceTaxi {
         /// <summary>
         /// Method for getting customer info
         /// </summary>
+        ///
+        /// <returns>
+        /// List of string with customer information
+        /// </returns>
         public List<string> GetCustomerInfo() {
             List<string> custInfo = new List<string>();
             

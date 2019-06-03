@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
-using DIKUArcade.Entities;
 
 namespace SpaceTaxi {
     public class Platform {
 
-        public static List<List<pixel>> PlatformContainers { get; private set; }
+        public static List<List<Pixel>> PlatformContainers { get; private set; }
 
         /// <summary>
         /// Create chars.length amount of lists in Platform.PlatformContainers
@@ -18,17 +16,17 @@ namespace SpaceTaxi {
             Platform.ResetContainers();
             
             foreach (var someChar in chars) {
-                Platform.PlatformContainers.Add(new List<pixel>());
+                Platform.PlatformContainers.Add(new List<Pixel>());
             }
         }
         
         /// <summary>
         /// Adds a pixel to the static Platform.PlatformContainers list
         /// </summary>
-        public static void AddPixel(pixel pixel) {
+        public static void AddPixel(Pixel pixel) {
             foreach (var container in Platform.PlatformContainers) {
                 if (container.Count > 0) {
-                    if (container[0].pixelChar == pixel.pixelChar) {
+                    if (container[0].PixelChar == pixel.PixelChar) {
                         container.Add(pixel);
                     }
                 } else {
@@ -41,7 +39,7 @@ namespace SpaceTaxi {
         /// Resets the Platform.PlatformContainers list
         /// </summary>
         private static void ResetContainers() {
-            Platform.PlatformContainers = new List<List<pixel>>();
+            Platform.PlatformContainers = new List<List<Pixel>>();
         }
 
         /// <summary>
@@ -57,12 +55,12 @@ namespace SpaceTaxi {
         /// </returns>
         public static float[] GetWidth(char platformChar) {
 
-            var WorkingContainer = new List<pixel>();
+            var WorkingContainer = new List<Pixel>();
             
             //Searching for working container
             foreach (var container in PlatformContainers) {
                 if (container.Count > 0) {
-                    if (container[0].pixelChar == platformChar) {
+                    if (container[0].PixelChar == platformChar) {
                         WorkingContainer = container;
                     }
                 }
