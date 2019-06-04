@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using DIKUArcade.EventBus;
 using NUnit.Framework;
 using SpaceTaxi;
 using SpaceTaxi.GameStates;
 using SpaceTaxi.LevelParser;
+using SpaceTaxi.Taxi;
 
 namespace SpaceTaxi_Tests {
     [TestFixture]
@@ -254,13 +256,17 @@ namespace SpaceTaxi_Tests {
         }
         
         /// <summary>
-        /// Testing Main Menu GetInstance
+        /// 
         /// </summary>
         [Test]
-        public void MainMenuGetInstance() {
-            var stat = new StateMachine();
-            //MainMenu.GetInstance("S");
-//            Assert.AreEqual(before,after);
+        public void PlayerPickUpCustomer() {
+            Assert.AreEqual(null,GameRunning.CurrentLevel);
+            var testCust = new Customer(
+                "", 0, 'c', "", 0, 0);
+//            Player.PickUpCustomer(testCust);
+//            Assert.AreEqual(CustomerState.InTransit,testCust.CustomerState);
+            //var isInside = Player.CustomersInsidePlayer.Contains(testCust);
+            //Assert.AreEqual(true, isInside);
         }
         
         
@@ -292,16 +298,7 @@ namespace SpaceTaxi_Tests {
         public void PlayerPortal() {
             //Place player beside pixel to check for collision
         }
-        
-        /// <summary>
-        /// TODO: Implement PlayerPickUpCustomer
-        /// Test for checking player collision with a customer
-        /// </summary>
-        [Test]
-        public void PlayerPickUpCustomer() {
-            //Place player beside a customer to check for collision
-        }
-        
+
         /// <summary>
         /// TODO: Implement PlayerPlaceDownCustomer
         /// Test for checking player collision with a the platform while a customer is inside

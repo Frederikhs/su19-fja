@@ -61,7 +61,6 @@
     <Compile Include="LevelParser\LvlLegends.cs" />
     <Compile Include="LevelParser\LvlStructures.cs" />
     <Compile Include="LevelParser\Pixel.cs" />
-    <Compile Include="LevelParser\Platform.cs" />
     <Compile Include="LevelParser\TextLoader.cs" />
     <Compile Include="Points.cs" />
     <Compile Include="Program.cs" />

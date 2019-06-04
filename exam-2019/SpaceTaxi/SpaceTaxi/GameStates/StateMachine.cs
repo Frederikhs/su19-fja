@@ -53,10 +53,6 @@ namespace SpaceTaxi.GameStates {
         /// <param name="param2">
         /// Used with resuming a level or going to the next
         /// </param>
-        ///
-        /// <returns>
-        /// void
-        /// </returns>
         private void SwitchState(GameStateType.EnumGameStateType stateType, string param2) {
             switch (stateType) {
             case GameStateType.EnumGameStateType.GameRunning:

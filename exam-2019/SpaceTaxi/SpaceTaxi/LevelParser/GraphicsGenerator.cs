@@ -42,8 +42,6 @@ namespace SpaceTaxi.LevelParser
             this.game = game;
             this.player = player;
             this.width = width;
-
-            Platform.CreateContainers(this.platformsChars);
             this.AllGraphics = GenerateImages();
 
         }
@@ -145,11 +143,6 @@ namespace SpaceTaxi.LevelParser
                         
                         //Add the pixel to the return container
                         returnContainer.AddStationaryEntity(somePixel);
-                        
-                        //If the pixel is a platform, also add to platform pixels list
-                        if (platforms.Contains(someChar.ToString())) {
-                            Platform.AddPixel(somePixel);
-                        }
 
                     }  else {
                         switch (someChar) {

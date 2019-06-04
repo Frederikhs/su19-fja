@@ -49,8 +49,9 @@ namespace SpaceTaxi {
             this.points = points;
             this.WildCardPlatform = false;
             GenerateImage();
-            SwitchState(CustomerState.ToBeDisplayed);
-            FindPlatform(this.destinationPlatform);
+            SpaceTaxiBus.GetBus().Subscribe(GameEventType.TimedEvent, this);
+//            SwitchState(CustomerState.ToBeDisplayed);
+//            FindPlatform(this.destinationPlatform);
         }
 
         /// <summary>
@@ -117,8 +118,12 @@ namespace SpaceTaxi {
                     Console.WriteLine(
                         "{0} is a wildcard, and can be placed anywhere on the next level",name);
                 }
-                
-                this.PickedUpLevel = GameRunning.CurrentLevel;
+
+                if (GameRunning.CurrentLevel != null) {
+                    this.PickedUpLevel = GameRunning.CurrentLevel;
+                } else {
+                    this.PickedUpLevel = "";
+                }
             } else {
                 Console.WriteLine("{0} is to be placed down on {1}",name,destinationPlatform);
             }
@@ -126,7 +131,7 @@ namespace SpaceTaxi {
         
         /// <summary>
         /// Creates a TimedEvent for the customer to spawn. When the timed event is broadcasted
-        /// the customer will appear with the Show method.
+        /// the customer will appear with the DisplayCustomer method.
         /// </summary>
         private void ShowAfter() {
             GameRunning.Instance.CustomerEvents.AddTimedEvent(
@@ -145,7 +150,6 @@ namespace SpaceTaxi {
             shape = new DynamicShape(new Vec2F(), new Vec2F(0.05f,0.08f));
             
             this.entity = new Entity(shape, imageStandLeft);
-            SpaceTaxiBus.GetBus().Subscribe(GameEventType.TimedEvent, this);
         }
 
         /// <summary>

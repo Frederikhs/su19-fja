@@ -72,7 +72,7 @@ namespace SpaceTaxi.Taxi {
         /// <summary>
         /// Player pick up, set the state to in transit
         /// </summary>
-        public void PickUpCustomer(Customer someCustomer) {
+        public static void PickUpCustomer(Customer someCustomer) {
             Player.CreateCustomerList();
             someCustomer.SwitchState(CustomerState.InTransit);
             Player.CustomersInsidePlayer.Add(someCustomer);
@@ -81,7 +81,7 @@ namespace SpaceTaxi.Taxi {
         /// <summary>
         /// Place down customer, set the state to delivered
         /// </summary>
-        public void PlaceDownCustomer(Pixel platformPixel, Customer someCustomer) {
+        public static void PlaceDownCustomer(Pixel platformPixel, Customer someCustomer) {
             if (someCustomer.CustomerState == CustomerState.InTransit) {
                 someCustomer.SetPos(platformPixel.Shape.Position + platformPixel.Shape.Extent);
                 someCustomer.SwitchState(CustomerState.Delivered);

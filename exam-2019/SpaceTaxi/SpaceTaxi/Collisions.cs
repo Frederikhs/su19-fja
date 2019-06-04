@@ -80,8 +80,7 @@ namespace SpaceTaxi {
 
                 if (customer.CustomerState != CustomerState.Expired) {
                     
-                    if (customer.CustomerState != CustomerState.InTransit &&
-                        customer.destinationPlatform == pixel.PixelChar.ToString()) {
+                    if (customer.destinationPlatform == pixel.PixelChar.ToString()) {
                         
                         if (customer.DroppedOnSameLevel && customer.PickedUpLevel ==
                             GameRunning.CurrentLevel) {
