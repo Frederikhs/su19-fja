@@ -417,12 +417,46 @@ namespace SpaceTaxi_Tests {
         }
         
         /// <summary>
-        /// Testing that we calculate velocity correct
+        /// Testing that we get next gravity while flying
         /// </summary>
         [Test]
         public void Gravity() {
             Gravity grav = new Gravity();
-            grav.GetNextVelocity(0, false);
+            Assert.AreEqual(-0.000239999994f,grav.GetNextVelocity(0f, false));
+            Assert.AreEqual(-0.00015f,grav.GetNextVelocity(0f, false));
+            Assert.AreEqual(-0.00015f,grav.GetNextVelocity(0f, false));
+        }
+        
+        /// <summary>
+        /// Testing that gravity does not change velocity, while on a platform
+        /// </summary>
+        [Test]
+        public void GravityPlatform() {
+            Gravity grav = new Gravity();
+            Assert.AreEqual(0f,grav.GetNextVelocity(0f, true));
+            Assert.AreEqual(0f,grav.GetNextVelocity(0f, true));
+            Assert.AreEqual(0f,grav.GetNextVelocity(0f, true));
+        }
+        
+        /// <summary>
+        /// Testing that adding points results in a score with that many points.
+        /// </summary>
+        [Test]
+        public void PointsAdd() {
+            Points pon = new Points(new Vec2F(0f,0f),new Vec2F(0f,0f));
+            Points.AddPoints(1);
+            Assert.AreEqual(1,Points.GetPoints());
+        }
+        
+        /// <summary>
+        /// Testing that resetting points, after some points are added, results in 0 points
+        /// </summary>
+        [Test]
+        public void PointsClear() {
+            Points pon = new Points(new Vec2F(0f,0f),new Vec2F(0f,0f));
+            Points.AddPoints(1);
+            Points.ResetPoints();
+            Assert.AreEqual(0,Points.GetPoints());
         }
     }
 }

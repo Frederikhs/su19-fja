@@ -3,8 +3,8 @@ using DIKUArcade.Math;
 
 namespace SpaceTaxi {
     public class Points {
-        private Text display;
         private static int score;
+        private Text display;
 
         public Points(Vec2F position, Vec2F extent) {
             Points.score = 0;
@@ -28,6 +28,13 @@ namespace SpaceTaxi {
         /// </summary>
         public static void ResetPoints() {
             Points.score = 0;
+        }
+
+        /// <summary>
+        /// Returns the current score
+        /// </summary>
+        public static int GetPoints() {
+            return Points.score;
         }
 
         /// <summary>
