@@ -51,11 +51,6 @@ namespace SpaceTaxi.GameStates {
                GameOver();
             } else {
                 player.Move();
-                
-                //This feature is not yet finished
-                //foreach (var customer in CustomerContainer) {
-                //    customer.WalkCustomer();
-                //}
             }
             CustomerEvents.ProcessTimedEvents();
         }
