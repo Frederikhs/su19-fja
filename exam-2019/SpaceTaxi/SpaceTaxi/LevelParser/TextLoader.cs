@@ -15,7 +15,6 @@ namespace SpaceTaxi.LevelParser {
         /// The string of the level i.e. "the-beach"
         /// </param>
         public TextLoader(string levelString) {
-            Console.WriteLine("Testloader created");
             var path = GetLevelFilePath(levelString+".txt");
             allLevelText = File.ReadAllLines(path);
         }

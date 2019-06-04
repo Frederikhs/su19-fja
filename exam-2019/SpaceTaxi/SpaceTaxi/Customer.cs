@@ -50,8 +50,8 @@ namespace SpaceTaxi {
             this.WildCardPlatform = false;
             GenerateImage();
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.TimedEvent, this);
-//            SwitchState(CustomerState.ToBeDisplayed);
-//            FindPlatform(this.destinationPlatform);
+            SwitchState(CustomerState.ToBeDisplayed);
+            FindPlatform(this.destinationPlatform);
         }
 
         /// <summary>

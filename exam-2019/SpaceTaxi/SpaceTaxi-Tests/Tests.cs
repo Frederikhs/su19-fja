@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using DIKUArcade;
+using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
+using DIKUArcade.Graphics;
+using DIKUArcade.Math;
 using NUnit.Framework;
 using SpaceTaxi;
 using SpaceTaxi.GameStates;
@@ -10,7 +15,12 @@ using SpaceTaxi.Taxi;
 namespace SpaceTaxi_Tests {
     [TestFixture]
     public class Tests {
-        
+
+        [SetUp]
+        public void Setup() {
+            Window.CreateOpenGLContext();
+        }
+
         /// <summary>
         /// Testing that we get the correct customer(s)
         /// </summary>
@@ -254,76 +264,165 @@ namespace SpaceTaxi_Tests {
             Assert.AreEqual(GameStateType.EnumGameStateType.GameRunning,
                 GameStateType.TransformStringToState("GAME_RUNNING"));
         }
-        
+
         /// <summary>
-        /// 
+        /// Testing we can pick up a customer and see that the customer changes status, and is
+        /// inside the static list of customers inside the player
         /// </summary>
         [Test]
         public void PlayerPickUpCustomer() {
-            Assert.AreEqual(null,GameRunning.CurrentLevel);
+            GameRunning.GetInstance("the-beach");
             var testCust = new Customer(
                 "", 0, 'c', "", 0, 0);
-//            Player.PickUpCustomer(testCust);
-//            Assert.AreEqual(CustomerState.InTransit,testCust.CustomerState);
-            //var isInside = Player.CustomersInsidePlayer.Contains(testCust);
-            //Assert.AreEqual(true, isInside);
-        }
-        
-        
-
-        /// <summary>
-        /// TODO: Implement PlayerPixelCollision
-        /// Test for checking player collision with an object in the level that is dangerous.
-        /// </summary>
-        [Test]
-        
-        public void PlayerPixelCollision() {
-            //Place player beside pixel to check for collision
+            Player.PickUpCustomer(testCust);
+            var isInside = Player.CustomersInsidePlayer.Contains(testCust);
+            
+            Assert.AreEqual(CustomerState.InTransit,testCust.CustomerState);
+            Assert.AreEqual(true, isInside);
         }
         
         /// <summary>
-        /// TODO: Implement PlayerPlatform
-        /// Test for checking player collision with the platform and that the player does not die
-        /// </summary>
-        [Test]
-        public void PlayerPlatform() {
-            //Place player beside pixel to check for collision
-        }
-        
-        /// <summary>
-        /// TODO: Implement PlayerPortal
-        /// Test for checking player collision with the portal and if the level changes
-        /// </summary>
-        [Test]
-        public void PlayerPortal() {
-            //Place player beside pixel to check for collision
-        }
-
-        /// <summary>
-        /// TODO: Implement PlayerPlaceDownCustomer
-        /// Test for checking player collision with a the platform while a customer is inside
+        /// Testing that we can place down a customer, and that the customer state changes
         /// </summary>
         [Test]
         public void PlayerPlaceDownCustomer() {
-            //Place player on the platform to check for collision
-        }
-
-        /// <summary>
-        /// Test that the customer is show and that is has an extend
-        /// TODO: Test need environment with GameRunning for success - Maybe move the level string outside the class (Customer)
-        /// </summary>
-        [Test]
-        public void CustomerShow() {
+            GameRunning.GetInstance("the-beach");
+            //Pickup a customer
+            var testCust = new Customer(
+                "", 0, 'c', "", 0, 0);
+            Player.PickUpCustomer(testCust);
             
+            //Place down a customer
+            Game game = new Game(); //Creating game
+            //Image for the pixel to be placed on
+            Image img = new Image(Path.Combine("Assets", "Images", "aspargus-edge-bottom.png"));
+            
+            //Pixel to be placed on
+             var pixel = new Pixel(game,
+                new DynamicShape(
+                    new Vec2F(0f,0f), new Vec2F(1f, 1f)), img,
+                Pixel.PixelTypes.Platform, 'x');
+
+            Player.PlaceDownCustomer(pixel,testCust);
+            Assert.AreEqual(CustomerState.Delivered,testCust.CustomerState);
         }
         
         /// <summary>
-        /// Test that the customer is hidden and that is has no extend
-        /// TODO: Test need environment with GameRunning for success
+        /// Testing that we can remove a customer from the CustomersInsidePlayer list
         /// </summary>
         [Test]
-        public void CustomerHide() {
+        public void PlayerRemoveCustomerFromList() {
+            GameRunning.GetInstance("the-beach");
+            var testCust = new Customer(
+                "", 0, 'c', "", 0, 0);
+            Player.PickUpCustomer(testCust);
             
+            Player.RemoveCustomerFromList(testCust);
+
+            Assert.AreEqual(false, Player.CustomersInsidePlayer.Contains(testCust));
+        }
+        
+        /// <summary>
+        /// Testing that we can clear the list of customers inside the player
+        /// </summary>
+        [Test]
+        public void PlayerClearListOfCustomers() {
+            List<Customer> empty = new List<Customer>();
+            
+            Player.ClearCustomers();
+            
+            Assert.AreEqual(empty, Player.CustomersInsidePlayer);
+        }
+        
+        /// <summary>
+        /// Testing that we can set the position of the player
+        /// </summary>
+        [Test]
+        public void PlayerSetPosition() {
+            Player player = new Player();
+            
+            player.SetPosition(1f,2f);
+            
+            Assert.AreEqual(1f, player.Entity.Shape.Position.X);
+            Assert.AreEqual(2f, player.Entity.Shape.Position.Y);
+        }
+        
+        /// <summary>
+        /// Testing that we can set the extend of the player
+        /// </summary>
+        [Test]
+        public void PlayerSetExtend() {
+            Player player = new Player();
+            
+            player.SetExtent(1f,2f);
+            
+            Assert.AreEqual(1f, player.Entity.Shape.Extent.X);
+            Assert.AreEqual(2f, player.Entity.Shape.Extent.Y);
+        }
+        
+        /// <summary>
+        /// Test of customer switch state
+        /// </summary>
+        [Test]
+        public void CustomerSwitchState() {
+            GameRunning.GetInstance("the-beach");
+            var testCust = new Customer(
+                "", 0, 'c', "", 0, 0);
+
+            testCust.SwitchState(CustomerState.Delivered);
+            Assert.AreEqual(CustomerState.Delivered,testCust.CustomerState);
+        }
+        
+        /// <summary>
+        /// Test of customer got picked up, and therefore the extend should be 0f,0f
+        /// </summary>
+        [Test]
+        public void CustomerGotPickedUp() {
+            GameRunning.GetInstance("the-beach");
+            var testCust = new Customer(
+                "", 0, 'c', "", 0, 0);
+
+            testCust.GotPickedUp();
+            Assert.AreEqual(0f,testCust.entity.Shape.Extent.X);
+            Assert.AreEqual(0f,testCust.entity.Shape.Extent.Y);
+        }
+        
+        /// <summary>
+        /// Test of customer got displayed
+        /// </summary>
+        [Test]
+        public void CustomerGotDisplayed() {
+            GameRunning.GetInstance("the-beach");
+            var testCust = new Customer(
+                "", 0, 'c', "", 0, 0);
+
+            testCust.DisplayCustomer();
+            Assert.AreEqual(0.05f,testCust.entity.Shape.Extent.X);
+            Assert.AreEqual(0.08f,testCust.entity.Shape.Extent.Y);
+        }
+        
+        /// <summary>
+        /// Testing that we can set the position of a customer
+        /// </summary>
+        [Test]
+        public void CustomerSetPosition() {
+            GameRunning.GetInstance("the-beach");
+            var testCust = new Customer(
+                "", 0, 'c', "", 0, 0);
+            
+            testCust.SetPos(new Vec2F(1f,2f));
+            
+            Assert.AreEqual(1f, testCust.entity.Shape.Position.X);
+            Assert.AreEqual(2f, testCust.entity.Shape.Position.Y);
+        }
+        
+        /// <summary>
+        /// Testing that we calculate velocity correct
+        /// </summary>
+        [Test]
+        public void Gravity() {
+            Gravity grav = new Gravity();
+            grav.GetNextVelocity(0, false);
         }
     }
 }

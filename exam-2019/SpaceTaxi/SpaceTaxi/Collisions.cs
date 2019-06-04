@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
 using DIKUArcade.Physics;
+using OpenTK;
 using SpaceTaxi.GameStates;
 using SpaceTaxi.Taxi;
 
@@ -21,17 +22,20 @@ namespace SpaceTaxi {
             speedLimit = 0.005f;
         }
 
+        private bool PixelPlayerCollision(Pixel pixel) {
+            return CollisionDetection.Aabb(Player.Entity.Shape.AsDynamicShape(),
+                pixel.Shape.AsDynamicShape()).Collision;
+        }
+
         /// <summary>
         /// Check if the player shape collides with pixel. If the pixel
         /// is dangerous, we die, else we may change level or sit on the platform
         /// </summary>
         public bool CollisionCheck() {
-            
             foreach (Pixel pixel in Pixels) {
                 
                 //Bool for if the player collides with an object
-                bool collision = CollisionDetection.Aabb(Player.Entity.Shape.AsDynamicShape(),
-                    pixel.Shape.AsDynamicShape()).Collision;
+                bool collision = PixelPlayerCollision(pixel);
                 
                 //If there is a collision, and the pixel is dangerous, we return true 
                 if (collision && pixel.Type == Pixel.PixelTypes.Dangerous) {
@@ -67,7 +71,7 @@ namespace SpaceTaxi {
 
             return false;
         }
-        
+
         /// <summary>
         /// Checks if customer is successfully landed on correct platform based on platform pixel
         /// </summary>
@@ -76,34 +80,36 @@ namespace SpaceTaxi {
         /// pixel for some platform the player has landed on
         /// </param>
         private void CheckLandCustomers(Pixel pixel) {
-            foreach (var customer in Player.CustomersInsidePlayer) {
+            if (Player.CustomersInsidePlayer != null) {
+                foreach (var customer in Player.CustomersInsidePlayer) {
 
-                if (customer.CustomerState != CustomerState.Expired) {
-                    
-                    if (customer.destinationPlatform == pixel.PixelChar.ToString()) {
-                        
-                        if (customer.DroppedOnSameLevel && customer.PickedUpLevel ==
-                            GameRunning.CurrentLevel) {
-                            
-                            Player.PlaceDownCustomer(pixel, customer);
+                    if (customer.CustomerState != CustomerState.Expired) {
 
-                        } else if (!customer.DroppedOnSameLevel &&
-                                   customer.PickedUpLevel != GameRunning.CurrentLevel &&
-                                   customer.CustomerState != CustomerState.Expired) {
+                        if (customer.destinationPlatform == pixel.PixelChar.ToString()) {
+
+                            if (customer.DroppedOnSameLevel && customer.PickedUpLevel ==
+                                GameRunning.CurrentLevel) {
+
+                                Player.PlaceDownCustomer(pixel, customer);
+
+                            } else if (!customer.DroppedOnSameLevel &&
+                                       customer.PickedUpLevel != GameRunning.CurrentLevel &&
+                                       customer.CustomerState != CustomerState.Expired) {
+
+                                Player.PlaceDownCustomer(pixel, customer);
+
+                            }
+
+                        } else if (customer.WildCardPlatform &&
+                                   customer.CustomerState != CustomerState.Expired &&
+                                   customer.PickedUpLevel != GameRunning.CurrentLevel) {
 
                             Player.PlaceDownCustomer(pixel, customer);
 
                         }
-                        
-                    } else if (customer.WildCardPlatform && 
-                               customer.CustomerState != CustomerState.Expired &&
-                               customer.PickedUpLevel != GameRunning.CurrentLevel) {
-
-                        Player.PlaceDownCustomer(pixel, customer);
-
                     }
+
                 }
-                
             }
         }
 

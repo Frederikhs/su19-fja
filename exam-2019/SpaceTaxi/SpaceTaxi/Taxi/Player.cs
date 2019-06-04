@@ -34,7 +34,7 @@ namespace SpaceTaxi.Taxi {
         private Orientation taxiOrientation;
         private Gravity gravity;
         private bool thrusting;
-        private bool tSideways;
+        private bool upThrust;
         private float positiveThrust;
         private float noThrust;
         private float rightMove;
@@ -49,7 +49,7 @@ namespace SpaceTaxi.Taxi {
             SpaceTaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
             gravity = new Gravity();
             thrusting = false;
-            tSideways = false;
+            upThrust = false;
             platform = false;
             positiveThrust = 0.000012f;
             noThrust = 0.0f;
@@ -154,28 +154,28 @@ namespace SpaceTaxi.Taxi {
                     break;
                 case false:
                     switch (taxiOrientation) {
-                    case Orientation.Left when !tSideways:
+                    case Orientation.Left when !upThrust:
                         Entity.Image = taxiBoosterOffImageLeft;
                         break;
-                    case Orientation.Right when !tSideways:
+                    case Orientation.Right when !upThrust:
                         Entity.Image = taxiBoosterOffImageRight;
                         break;
-                    case Orientation.Left when tSideways:
+                    case Orientation.Left when upThrust:
                         Entity.Image = taxiBoosterOffImageUpLeft;
                         break;
-                    case Orientation.Right when tSideways:
+                    case Orientation.Right when upThrust:
                         Entity.Image = taxiBoosterOffImageUpRight;
                         break;
-                    case Orientation.LeftT when !tSideways:
+                    case Orientation.LeftT when !upThrust:
                         Entity.Image = taxiBoosterOnImageLeft;
                         break;
-                    case Orientation.RightT when !tSideways:
+                    case Orientation.RightT when !upThrust:
                         Entity.Image = taxiBoosterOnImageRight;
                         break;
-                    case Orientation.LeftT when tSideways:
+                    case Orientation.LeftT when upThrust:
                         Entity.Image = taxiBoosterOnImageUpLeft;
                         break;
-                    case Orientation.RightT when tSideways:
+                    case Orientation.RightT when upThrust:
                         Entity.Image = taxiBoosterOnImageUpRight;
                         break;
                     }
@@ -289,7 +289,7 @@ namespace SpaceTaxi.Taxi {
                     case "BOOSTER_UPWARDS":
                         if (!thrusting) {
                             thrusting = true;
-                            tSideways = true;
+                            upThrust = true;
                             platform = false;
                         }
                         break;
@@ -297,7 +297,7 @@ namespace SpaceTaxi.Taxi {
                     case "STOP_ACCELERATE_UP":
                         if (thrusting) {
                             thrusting = false;
-                            tSideways = false;
+                            upThrust = false;
                         }
                         break;
 
