@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using DIKUArcade;
-using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
-using DIKUArcade.Graphics;
-using DIKUArcade.Math;
 using DIKUArcade.Timers;
 using SpaceTaxi.GameStates;
 
@@ -53,7 +48,6 @@ namespace SpaceTaxi {
 
                 while (gameTimer.ShouldUpdate()) {
                     win.PollEvents();
-                    eventBus.ProcessEvents();
                     SpaceTaxiBus.GetBus().ProcessEvents();
                     stateMachine.ActiveState.UpdateGameLogic();
                 }

@@ -9,6 +9,7 @@ namespace SpaceTaxi {
         public Points(Vec2F position, Vec2F extent) {
             Points.score = 0;
             display = new Text(Points.score.ToString(), position, extent);
+            display.SetColor(new Vec3I(255, 0, 0));
         }
         
         /// <summary>
@@ -18,12 +19,15 @@ namespace SpaceTaxi {
         /// <param name="points">
         /// int amount of points to add
         /// </param>
-        ///
-        /// <returns>
-        /// void
-        /// </returns>
         public static void AddPoints(int points) {
             Points.score += points;
+        }
+
+        /// <summary>
+        /// Resets the score to 0
+        /// </summary>
+        public static void ResetPoints() {
+            Points.score = 0;
         }
 
         /// <summary>
@@ -35,7 +39,6 @@ namespace SpaceTaxi {
         /// </returns>
         public void RenderScore() {
             display.SetText(string.Format("Score: {0}", Points.score.ToString()));
-            display.SetColor(new Vec3I(255, 0, 0));
             display.RenderText();
         }
     }

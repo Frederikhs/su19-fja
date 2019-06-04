@@ -214,11 +214,7 @@ namespace SpaceTaxi.LevelParser
                     );
 
                     customerValues["generated"] = "true";
-
-                    temp.visible = true;
                     temp.SetPos(new Vec2F(posX,posY+imageHeight-0.000001f));
-
-                    Console.WriteLine("Spawned customer");
                     AllCustomersInGame.Add(temp);
                 }
             }

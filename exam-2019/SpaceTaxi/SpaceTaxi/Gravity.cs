@@ -3,18 +3,20 @@ using DIKUArcade.Math;
 
 namespace SpaceTaxi {
     public class Gravity {
-
+        public float CurrentVelocity { get; private set; }
+        private float maxSpeed;
+        
         private float gravityForce;
-        private float Maxgravity;
-        public float vCurrent { get; private set; }
-        public float MaxSpeed;
-        public bool platform;
+        private float maxGravity;
 
+        /// <summary>
+        /// Sets velocity and speed values
+        /// </summary>
         public Gravity() {
             gravityForce = -0.000004f;
-            Maxgravity = -0.00015f;
-            vCurrent = 0;
-            MaxSpeed = 0.00002f;
+            maxGravity = -0.00015f;
+            CurrentVelocity = 0;
+            maxSpeed = 0.00002f;
         }
         
         /// <summary>
@@ -35,23 +37,23 @@ namespace SpaceTaxi {
         /// </returns>
         public float GetNextVelocity(float thruster, bool platform) {
             if (!platform) {
-                var DeltaT = 60.0f;
-                var Force = gravityForce + thruster;
+                var deltaT = 60.0f;
+                var force = gravityForce + thruster;
 
-                if (vCurrent <= Maxgravity) {
-                    vCurrent = Maxgravity + thruster;
+                if (CurrentVelocity <= maxGravity) {
+                    CurrentVelocity = maxGravity + thruster;
                 } else {
-                    if (vCurrent >= MaxSpeed) {
-                        vCurrent = MaxSpeed + gravityForce;
+                    if (CurrentVelocity >= maxSpeed) {
+                        CurrentVelocity = maxSpeed + gravityForce;
                     } else {
-                        vCurrent += Force * DeltaT;
+                        CurrentVelocity += force * deltaT;
                     }
                 }
 
-                return vCurrent;
+                return CurrentVelocity;
             } else {
-                vCurrent = 0.0f;
-                return vCurrent;
+                CurrentVelocity = 0.0f;
+                return CurrentVelocity;
             }
 
         }

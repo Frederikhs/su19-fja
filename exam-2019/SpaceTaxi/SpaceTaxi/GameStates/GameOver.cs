@@ -4,6 +4,7 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.State;
+using SpaceTaxi.Taxi;
 
 namespace SpaceTaxi.GameStates {
     public class GameOver : IGameState {
@@ -160,7 +161,6 @@ namespace SpaceTaxi.GameStates {
             title = new Text("Game Over", new Vec2F(0.2f, 0.3f), new Vec2F(0.5f, 0.5f));
             title.SetColor(inactive);
             title.SetFontSize(70);
-
         }
 
         /// <summary>
@@ -172,6 +172,11 @@ namespace SpaceTaxi.GameStates {
         /// Return static instance, or creates a new one
         /// </summary>
         public static GameOver GetInstance() {
+            //Reset the score, since the game is over
+            Points.ResetPoints();
+            //Also remove all customers who was in the taxi
+            Player.ClearCustomers();
+            
             return GameOver.instance ?? (GameOver.instance = new GameOver());
         }
 

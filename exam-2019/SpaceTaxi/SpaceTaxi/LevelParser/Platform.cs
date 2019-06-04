@@ -53,22 +53,22 @@ namespace SpaceTaxi {
         /// <returns>
         /// Float array of start, and end pos
         /// </returns>
-        public static float[] GetWidth(char platformChar) {
+        private static float[] GetWidth(char platformChar) {
 
-            var WorkingContainer = new List<Pixel>();
+            var workingContainer = new List<Pixel>();
             
             //Searching for working container
             foreach (var container in PlatformContainers) {
                 if (container.Count > 0) {
                     if (container[0].PixelChar == platformChar) {
-                        WorkingContainer = container;
+                        workingContainer = container;
                     }
                 }
             }
 
-            if (WorkingContainer.Count > 0) {
-                var start = WorkingContainer[0];
-                var end = WorkingContainer[WorkingContainer.Count - 1];
+            if (workingContainer.Count > 0) {
+                var start = workingContainer[0];
+                var end = workingContainer[workingContainer.Count - 1];
 
                 var startX = start.Shape.Position.X;
                 var endX = end.Shape.Position.X + end.Shape.Extent.X;
@@ -83,6 +83,14 @@ namespace SpaceTaxi {
                     0.0f
                 };
             }
+        }
+
+        public static float GetStart(char platformChar) {
+            return Platform.GetWidth(platformChar)[0];
+        }
+        
+        public static float GetEnd(char platformChar) {
+            return Platform.GetWidth(platformChar)[1];
         }
         
     }

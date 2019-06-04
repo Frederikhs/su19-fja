@@ -6,62 +6,93 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Timers;
 using SpaceTaxi.GameStates;
+using SpaceTaxi.Taxi;
 
 namespace SpaceTaxi {
-    public class Customer : IGameEventProcessor<object> {
 
-        public string name; // Name of the customer.
-        public int spawnAfter; // Number of seconds that should pass in the level, before the customer appears (is spawned).
+    public enum CustomerState {
+        ToBeDisplayed, //While the timer runs to display it
+        NotPickedUp, // While the customer is on a platform waiting
+        InTransit, // While the customer is inside the taxi
+        Expired, // While the customers travel timer expired
+        Delivered, // While the customer is delivered
+        Finished // While the customer is not on screen anymore and has been delivered
+    }
+    
+    public class Customer : IGameEventProcessor<object> {
+        public Entity entity { get; private set; }
         public char spawnPlatform; // Determining on which platform the customer should be spawned.
         public string destinationPlatform; // Destination platform of the customer.
         public string PickedUpLevel; // What place to place down the customer.
-        public int taxiDuration; // Number of seconds you have to drop off the customer at the correct platform.
-        public int points; // Number of points a correct drop off of the customer is worth.
         public bool WildCardPlatform; //If the customer can be dropped off on any platform.
         public bool DroppedOnSameLevel; //If the customer should be dropped off on the same level.
-        public bool visible; //If the customer is visible on screen.
-        
-        //TODO: Refractor into enum CustState
-        public bool expiredCustomer; //If the customer is expired. e.g. the taxiDuration is expired.
-        public bool IsInTransit; //If the customer is in transit
-        public bool HasTravled; //If the customer has travelled to his/her destination
+        public CustomerState CustomerState;
 
+        private int points; // Number of points a correct drop off of the customer is worth.
+        private string name; // Name of the customer.
+        private int spawnAfter; // Number of seconds that should pass in the level, before it appear.
+        private int taxiDuration; // Seconds you have to drop off the customer at the correct platform.
+        
         private Image imageStandLeft;
         private Image imageStandRight;
 
-        private float Start; //The start x position for the platform which the customer can walk.
-        private float End; //The end x position.
-
-        public bool OnPath; //If the customer is on the right path (platform)
-        private Direction walkingDirection; //What direction the customer is facing
-
-        private enum Direction {
-            StandLeft,
-            StandRight,
-            WalkLeft,
-            WalkRight
-        }
-
-        public Entity entity { get; private set; }
         private Shape shape;
 
         public Customer(string name, int spawnAfter, char spawnPlatform, string destinationPlatform,
             int taxiDuration, int points) {
+            
             this.name = name;
             this.spawnAfter = spawnAfter;
             this.spawnPlatform = spawnPlatform;
             this.destinationPlatform = destinationPlatform;
             this.taxiDuration = taxiDuration;
             this.points = points;
-            this.walkingDirection = Direction.WalkRight;
-            this.visible = false;
-            this.HasTravled = false;
             this.WildCardPlatform = false;
-            this.expiredCustomer = false;
             GenerateImage();
-            Hide();
-            ShowAfter();
+            SwitchState(CustomerState.ToBeDisplayed);
             FindPlatform(this.destinationPlatform);
+        }
+
+        /// <summary>
+        /// Changes the customers state
+        /// </summary>
+        ///
+        /// <param name="state">
+        /// The state to switch to 
+        /// </param>
+        public void SwitchState(CustomerState state) {
+            switch (state) {
+                case CustomerState.ToBeDisplayed:
+                    ShowAfter();
+                    break;
+                
+                case CustomerState.NotPickedUp:
+                    Console.WriteLine("{0} is ready to be picked up",name);
+                    DisplayCustomer();
+                    break;
+                
+                case CustomerState.InTransit:
+                    Console.WriteLine("{0} was picked up",name);
+                    GotPickedUp();
+                    break;
+                
+                case CustomerState.Expired:
+                    Console.WriteLine("{0} expired",name);
+                    break;
+                
+                case CustomerState.Delivered:
+                    Console.WriteLine("{0} has been delivered",name);
+                    DisplayCustomer();
+                    PlaceDownHideAfter();
+                    Points.AddPoints(points);
+                    break;
+                
+                case CustomerState.Finished:
+                    Console.WriteLine("{0} is no longer in the game",name);
+                    EndCustomerLife();
+                    break;
+            }
+            CustomerState = state;
         }
 
         /// <summary>
@@ -73,23 +104,23 @@ namespace SpaceTaxi {
         /// <param name="platformWithHat">
         /// platform 
         /// </param>
-        ///
-        /// <returns>
-        /// void
-        /// </returns>
         private void FindPlatform(string platformWithHat) {
             if (platformWithHat.Contains("^")) {
                 if (platformWithHat.Length > 1) {
                     this.destinationPlatform = (platformWithHat.Split('^'))[1];
                     this.DroppedOnSameLevel = false;
-                    Console.WriteLine("Customer ("+name+") is to be placed down on "+destinationPlatform+" in the next level");
+                    Console.WriteLine(
+                        "{0} is to be placed down on {1} in the next level",name,destinationPlatform);
 
                 } else {
                     this.WildCardPlatform = true;
-                    Console.WriteLine("Customer "+name+" is a wildcard");
+                    Console.WriteLine(
+                        "{0} is a wildcard, and can be placed anywhere on the next level",name);
                 }
                 
                 this.PickedUpLevel = GameRunning.CurrentLevel;
+            } else {
+                Console.WriteLine("{0} is to be placed down on {1}",name,destinationPlatform);
             }
         }
         
@@ -97,10 +128,6 @@ namespace SpaceTaxi {
         /// Creates a TimedEvent for the customer to spawn. When the timed event is broadcasted
         /// the customer will appear with the Show method.
         /// </summary>
-        ///
-        /// <returns>
-        /// void
-        /// </returns>
         private void ShowAfter() {
             GameRunning.Instance.CustomerEvents.AddTimedEvent(
                 TimeSpanType.Seconds, spawnAfter, "Show", "Customer", name);
@@ -109,10 +136,6 @@ namespace SpaceTaxi {
         /// <summary>
         /// Generates the necessary images for the customer.
         /// </summary>
-        ///
-        /// <returns>
-        /// void
-        /// </returns>
         private void GenerateImage() {
             imageStandLeft =
                 new Image(Path.Combine("Assets", "Images", "CustomerStandLeft.png"));
@@ -135,32 +158,12 @@ namespace SpaceTaxi {
         private float GetPosX() {
             return this.entity.Shape.Position.X;
         }
-        
-        
-        /// <summary>
-        /// Moves the customer in the direction its going, if it reached the end of the platform
-        /// its walking on, we change direction.
-        /// </summary>
-        public void WalkCustomer() {
-            if (walkingDirection == Direction.WalkRight &&
-                GetPosX() >= Platform.GetWidth(this.spawnPlatform)[1]) {
-                Console.WriteLine("CHanging direction");
-                shape.AsDynamicShape().ChangeDirection(new Vec2F(-0.0005f, 0.0f));
-                this.walkingDirection = Direction.WalkLeft;
-            } else if (walkingDirection == Direction.WalkLeft &&
-                       GetPosX() <= Platform.GetWidth(this.spawnPlatform)[0]) {
-                shape.AsDynamicShape().ChangeDirection(new Vec2F(0.0005f, 0.0f));
-                this.walkingDirection = Direction.WalkRight;
-            }
-            shape.Move();
-        }
 
         /// <summary>
         /// Hides the customer, this is used when the customer is picked up by a taxi. This method
         /// also starts the timer for the taxiDuration.
         /// </summary>
-        public void Hide() {
-            this.visible = false;
+        public void GotPickedUp() {
             entity.Shape.Extent = new Vec2F(0f, 0f);
             
             //Customer got picked up, starting timer
@@ -171,8 +174,7 @@ namespace SpaceTaxi {
         /// <summary>
         /// Shows the customer on the screen.
         /// </summary>
-        public void Show() {
-            this.visible = true;
+        public void DisplayCustomer() {
             entity.Shape.Extent = new Vec2F(0.05f, 0.08f);
         }
 
@@ -183,55 +185,50 @@ namespace SpaceTaxi {
             shape.SetPosition(pos);
         }
 
-        public void HideAfterSuccess() {
+        /// <summary>
+        /// After the customer has been placed, we hide the customer after 5 seconds
+        /// </summary>
+        public void PlaceDownHideAfter() {
             GameRunning.Instance.CustomerEvents.AddTimedEvent(
                 TimeSpanType.Seconds, 5, "Success_Timer", "Customer", name);
-            this.HasTravled = true;
-            this.IsInTransit = false;
         }
 
+        /// <summary>
+        /// Ends the customer, removes it from the customer inside player list, and set extend to 0
+        /// </summary>
         private void EndCustomerLife() {
+            Player.RemoveCustomerFromList(this);
             entity.Shape.Extent = new Vec2F(0f, 0f);
-            this.visible = false;
         }
         
         /// <summary>
         /// Listens for events and invokes methods if message and name matches this customer.
         /// </summary>
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
-            if (eventType == GameEventType.TimedEvent) {
+            if (eventType == GameEventType.TimedEvent && gameEvent.Parameter2 == name) {
                 switch (gameEvent.Message) {
-                    case "Show":
-                        if (gameEvent.Parameter2 == name) {
-                            this.Show();
-                        }
-                        break;
                     
-                    case "Hide":
-                        if (gameEvent.Parameter2 == name) {
-                            this.Hide();
-                        }
+                    case "Show":
+                        SwitchState(CustomerState.NotPickedUp);
                         break;
                     
                     case "Travel_Timer":
-                        if (gameEvent.Parameter2 == name) {
-                            this.expiredCustomer = true;
-                        }
+                        SwitchState(CustomerState.Expired);
                         break;
+                    
                     case "Success_Timer":
-                        if (gameEvent.Parameter2 == name) {
-                            this.EndCustomerLife();
-                        }
+                        SwitchState(CustomerState.Finished);
                         break;
                 }
             }
         }
         
         /// <summary>
-        /// Render the customers entity if it is not in transit and hos not yet travelled.
+        /// Render the customers entity
         /// </summary>
         public void RenderCustomer() {
-            if (!this.IsInTransit) {
+            if (CustomerState == CustomerState.NotPickedUp ||
+                CustomerState == CustomerState.Delivered) {
                 entity.RenderEntity();
             }
             

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
@@ -71,41 +70,32 @@ namespace SpaceTaxi.Taxi {
         }
         
         /// <summary>
-        /// Player pick up, hides the customer and set it in transit. Adds customer to static list
+        /// Player pick up, set the state to in transit
         /// </summary>
         public void PickUpCustomer(Customer someCustomer) {
             Player.CreateCustomerList();
-            someCustomer.Hide();
-            someCustomer.IsInTransit = true;
-            Console.WriteLine("Player picked up customer ("+someCustomer.name+")");
+            someCustomer.SwitchState(CustomerState.InTransit);
             Player.CustomersInsidePlayer.Add(someCustomer);
         }
 
         /// <summary>
-        /// Places down customer, and sets its position, also awards points if the timer has
-        /// not yet expired
+        /// Place down customer, set the state to delivered
         /// </summary>
-        public void PlaceDownCustomer(Pixel platformPixel,Customer someCustomer) {
-            //Place down customer
-            if (!someCustomer.HasTravled && someCustomer.IsInTransit) {
+        public void PlaceDownCustomer(Pixel platformPixel, Customer someCustomer) {
+            if (someCustomer.CustomerState == CustomerState.InTransit) {
                 someCustomer.SetPos(platformPixel.Shape.Position + platformPixel.Shape.Extent);
-                someCustomer.Show();
-                Console.WriteLine("Player placed down customer (" + someCustomer.name + ")");
-                Console.WriteLine("at: " + someCustomer.entity.Shape.Position.X);
-                someCustomer.HasTravled = true;
-                someCustomer.IsInTransit = false;
-                Points.AddPoints(someCustomer.points);
-                someCustomer.HideAfterSuccess();
+                someCustomer.SwitchState(CustomerState.Delivered);
             }
         }
 
         /// <summary>
         /// Removes a customer from the static CustomerInsidePlayer list
         /// </summary>
+        /// 
         /// <param name="someCustomer">
         /// The customer that should be removed from the static list of customers inside the player
         /// </param>
-        private void RemoveCustomerFromList(Customer someCustomer) {
+        public static void RemoveCustomerFromList(Customer someCustomer) {
             Player.CustomersInsidePlayer = new List<Customer>();
             
             foreach (var customer in Player.CustomersInsidePlayer) {
@@ -113,6 +103,13 @@ namespace SpaceTaxi.Taxi {
                     Player.CustomersInsidePlayer.Add(customer);
                 }
             }
+        }
+
+        /// <summary>
+        /// Clears the list of customers inside the player
+        /// </summary>
+        public static void ClearCustomers() {
+            Player.CustomersInsidePlayer = new List<Customer>();
         }
 
         /// <summary>
@@ -235,7 +232,7 @@ namespace SpaceTaxi.Taxi {
         /// <param name="directionVector">
         /// The new direction for the player
         /// </param>
-        public void ChangeDirection(Vec2F directionVector) {
+        private void ChangeDirection(Vec2F directionVector) {
             Entity.Shape.AsDynamicShape().ChangeDirection(directionVector);
         }
         
