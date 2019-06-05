@@ -73,7 +73,8 @@ namespace SpaceTaxi {
                     break;
                 
                 case CustomerState.InTransit:
-                    Console.WriteLine("{0} was picked up",name);
+                    Console.WriteLine(
+                        "{0} was picked up, you now have {1} seconds to deliver",name,taxiDuration);
                     GotPickedUp();
                     break;
                 
